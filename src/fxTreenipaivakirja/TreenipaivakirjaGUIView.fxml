@@ -126,15 +126,15 @@
                            <children>
                               <Label text="päivämäärä" />
                               <Label text="laji" GridPane.rowIndex="1" />
-                              <Label text="kesto" GridPane.rowIndex="2" />
-                              <Label text="matka" GridPane.rowIndex="3" />
+                              <Label text="kesto (min)" GridPane.rowIndex="2" />
+                              <Label text="matka (km)" GridPane.rowIndex="3" />
                               <Label text="kuormittavuus (1-10)" GridPane.rowIndex="4" />
                               <Label text="kommentti" GridPane.rowIndex="5" />
-                              <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                              <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-                              <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                              <TextField text="11.1.21" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                              <TextField text="juoksu" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <TextField text="60:32" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                              <TextField text="9.7" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                              <TextField text="6" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                               <TextField GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
                            </children>
                         </GridPane>
