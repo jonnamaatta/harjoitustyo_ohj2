@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #e6eeff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <Label alignment="BASELINE_CENTER" text="Treenipäiväkirja" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+   </center>
+   <bottom>
+      <HBox prefHeight="38.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
