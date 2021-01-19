@@ -33,6 +33,7 @@
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Tilastoja" />
                   <MenuItem mnemonicParsing="false" text="Tulosta...">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -146,7 +147,7 @@
                   <Label text="Omat lajit" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <StringGrid prefHeight="394.0" prefWidth="338.0" rivit="id|laji&#10;1| juoksu&#10;2|tennis&#10;3|kuntosali&#10;4|luistelu&#10;&#10;" BorderPane.alignment="CENTER">
+                  <StringGrid prefHeight="394.0" prefWidth="338.0" rivit="laji&#10; juoksu&#10;tennis&#10;kuntosali&#10;luistelu&#10;&#10;" BorderPane.alignment="CENTER">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
@@ -198,6 +199,13 @@
                </BorderPane.margin>
             </HBox>
          </right>
+         <center>
+            <Button mnemonicParsing="false" text="Tilastoja" BorderPane.alignment="CENTER">
+               <tooltip>
+                  <Tooltip text="Tilastoja harjoituskerroista" />
+               </tooltip>
+            </Button>
+         </center>
       </BorderPane>
    </bottom>
 </BorderPane>
