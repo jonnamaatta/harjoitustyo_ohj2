@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fi.jyu.mit.fxgui.ComboBoxChooser?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -37,11 +38,11 @@
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefWidth="200.0" text="juoksu">
+                  <ComboBoxChooser prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #cccccc;">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
-                  </TextField>
+                  </ComboBoxChooser>
                </children>
             </HBox>
             <HBox>

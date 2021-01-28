@@ -27,7 +27,7 @@ public class TreenipaivakirjaMain extends Application {
 	
 	/**
 	 * 
-	 * @param args
+	 * @param args joku
 	 */
 	public static void main(String[] args) {
 		launch(args);

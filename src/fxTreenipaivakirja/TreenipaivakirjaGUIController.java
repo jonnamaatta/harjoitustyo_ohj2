@@ -1,5 +1,4 @@
 package fxTreenipaivakirja;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import java.net.URL;
@@ -8,10 +7,23 @@ import java.util.ResourceBundle;
 import fi.jyu.mit.fxgui.*;
 
 /**
- * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
+ * Luokka kerhon käyttöliittymän tapahtumien hoitamiseksi.
  * @author jtmaatta
- * @version 3.1.2018
+ * @version 25.1.2021
  */
-public class TreenipaivakirjaGUIController {
-    //
+public class TreenipaivakirjaGUIController implements Initializable {
+
+    @Override
+    public void initialize(URL url, ResourceBundle bundle) {
+        //
+    }
+
+    /**
+     * Käsitellään uuden harjoituskerran lisääminen
+     */
+    @FXML private void handleUusiHarjoituskerta() {
+        Dialogs.showMessageDialog("Ei osata vielä lisätä");
+    }
+    
+
 }

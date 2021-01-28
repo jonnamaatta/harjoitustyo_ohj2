@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="868.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="868.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxTreenipaivakirja.TreenipaivakirjaGUIController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -48,7 +48,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" text="Lisää uusi harjoituskerta">
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiHarjoituskerta" text="Lisää uusi harjoituskerta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -162,7 +162,7 @@
          <left>
             <HBox spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button prefHeight="25.0" prefWidth="143.0" text="_Uusi harjoituskerta">
+                  <Button onAction="#handleUusiHarjoituskerta" prefHeight="25.0" prefWidth="143.0" text="_Uusi harjoituskerta">
                      <tooltip>
                         <Tooltip text="Uuden harjoituskerran lisääminen" />
                      </tooltip>
@@ -189,9 +189,10 @@
             </HBox>
          </left>
          <right>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="25.0" prefWidth="292.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="Lisää laji" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Lisää laji" />
+                  <Button mnemonicParsing="false" text="Muokkaa lajia" />
                   <Button mnemonicParsing="false" text="Poista laji" />
                </children>
                <BorderPane.margin>
