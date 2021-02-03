@@ -28,18 +28,18 @@
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" text="Tallenna">
+              <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Tilastoja" />
-                  <MenuItem mnemonicParsing="false" text="Tulosta...">
+                  <MenuItem mnemonicParsing="false" onAction="#handleTilastoja" text="Tilastoja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta...">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Lopeta">
+                  <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -53,16 +53,17 @@
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Poista harjoituskerta..." />
-                  <MenuItem mnemonicParsing="false" text="Muokkaa harjoituskertaa" />
-                  <MenuItem mnemonicParsing="false" text="Lisää laji" />
-                  <MenuItem mnemonicParsing="false" text="Poista laji" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaHarjoituskerta" text="Poista harjoituskerta..." />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaHarjoituskerta" text="Muokkaa harjoituskertaa" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleUusiLaji" text="Lisää laji" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaLajia" text="Muokkaa lajia" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaLaji" text="Poista laji" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" text="Apua" />
-                  <MenuItem mnemonicParsing="false" text="Tietoja..." />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja..." />
             </items>
           </Menu>
         </menus>
@@ -167,17 +168,17 @@
                         <Tooltip text="Uuden harjoituskerran lisääminen" />
                      </tooltip>
                   </Button>
-                  <Button text="_Muokkaa">
+                  <Button onAction="#handleMuokkaaHarjoituskerta" text="_Muokkaa">
                      <tooltip>
                         <Tooltip text="Harjoituskerran muokkaaminen" />
                      </tooltip>
                   </Button>
-                  <Button text="_Poista...">
+                  <Button onAction="#handlePoistaHarjoituskerta" text="_Poista...">
                      <tooltip>
                         <Tooltip text="Harjoituskerran poistaminen" />
                      </tooltip>
                   </Button>
-                  <Button mnemonicParsing="false" text="Tallenna">
+                  <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
                      <tooltip>
                         <Tooltip text="Muutosten tallentaminen" />
                      </tooltip>
@@ -191,9 +192,9 @@
          <right>
             <HBox prefHeight="25.0" prefWidth="292.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Lisää laji" />
-                  <Button mnemonicParsing="false" text="Muokkaa lajia" />
-                  <Button mnemonicParsing="false" text="Poista laji" />
+                  <Button mnemonicParsing="false" onAction="#handleUusiLaji" prefHeight="25.0" prefWidth="85.0" text="Lisää laji" />
+                  <Button mnemonicParsing="false" onAction="#handleMuokkaaLajia" text="Muokkaa lajia" />
+                  <Button mnemonicParsing="false" onAction="#handlePoistaLaji" text="Poista laji" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -201,7 +202,7 @@
             </HBox>
          </right>
          <center>
-            <Button mnemonicParsing="false" text="Tilastoja" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#handleTilastoja" text="Tilastoja" BorderPane.alignment="CENTER">
                <tooltip>
                   <Tooltip text="Tilastoja harjoituskerroista" />
                </tooltip>

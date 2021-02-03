@@ -7,9 +7,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
 /**
- * 
- * @author Jonna Määttä
- *
+ * @author jtmaatta
+ * @version 3.2.2021
  */
 public class TreenipaivakirjaMain extends Application {
 	@Override
