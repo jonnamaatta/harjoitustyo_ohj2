@@ -78,7 +78,7 @@
                      <center>
                         <BorderPane>
                            <center>
-                              <ListChooser prefHeight="6591.0" prefWidth="248.0" rivit="11.1.21&#10;8.2.21&#10;7.1.21&#10;5.1.21&#10;4.1.21&#10;1.1.21&#10;&#10;&#10;" />
+                              <ListChooser fx:id = "chooserLajit" prefHeight="6591.0" prefWidth="248.0" rivit="11.1.21&#10;8.2.21&#10;7.1.21&#10;5.1.21&#10;4.1.21&#10;1.1.21&#10;&#10;&#10;" />
                            </center>
                         </BorderPane>
                      </center>
@@ -106,7 +106,7 @@
                   <Label text="Harjoituskerran tiedot" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <ScrollPane fx:id="panelHarjoituskerta" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <content>
                         <GridPane hgap="10.0">
                           <columnConstraints>
