@@ -7,7 +7,7 @@ import java.util.List;
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran
  *
  * @author Jonna Määttä
- * @version 22.2.2021
+ * @version 6.3.2021
  */
 
 public class Harjoituskerrat {
@@ -25,6 +25,7 @@ public class Harjoituskerrat {
         alkiot = new Harjoituskerta[MAX_HARJOITUKSIA];
     }
 
+  
 
     /**
      * Lisää uuden harjoituskerran tietorakenteeseen.  Ottaa harjoituskerran omistukseensa.
@@ -45,8 +46,8 @@ public class Harjoituskerrat {
      * harjoitukset.anna(1) === juoksu1 === false;
      * harjoitukset.anna(1) === juoksu2 === true;
      * harjoitukset.anna(3) === juoksu1; #THROWS IndexOutOfBoundsException 
-     * harjoitukset.lisaa(juoksu1); jasenet.getLkm() === 4;
-     * harjoitukset.lisaa(juoksu1); jasenet.getLkm() === 5;
+     * harjoitukset.lisaa(juoksu1); harjoitukset.getLkm() === 4;
+     * harjoitukset.lisaa(juoksu1); harjoitukset.getLkm() === 5;
      * harjoitukset.lisaa(juoksu1);  #THROWS SailoException
      * </pre>
      */
@@ -128,26 +129,28 @@ public class Harjoituskerrat {
      */
     public List<Harjoituskerta> annaHarjoituskerrat(int tunnusnro) {
         List<Harjoituskerta> loydetyt = new ArrayList<Harjoituskerta>();
-        for (Harjoituskerta har : alkiot)
-            if (har.getTunnusNro() == tunnusnro) loydetyt.add(har);
+        for (Harjoituskerta har : alkiot) {
+            if (har == null) continue;
+            if (har.getLajiNro() == tunnusnro) loydetyt.add(har);
+        }
         return loydetyt;
+        
     }
-
-
 
 
     /**
      * Testiohjelma harjoituskerroille
      * @param args ei käytössä
+     * @throws SailoException plääplää
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SailoException {
         Harjoituskerrat harjoitukset = new Harjoituskerrat();
 
         Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
         juoksu1.rekisteroi();
-        juoksu1.taytaTestiarvot();
+        juoksu1.vastaaJuoksu(0);
         juoksu2.rekisteroi();
-        juoksu2.taytaTestiarvot();
+        juoksu2.vastaaJuoksu(1);
 
         try {
             harjoitukset.lisaa(juoksu1);
@@ -163,5 +166,4 @@ public class Harjoituskerrat {
             System.out.println(ex.getMessage());
         }      
     }
-
 }

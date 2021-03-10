@@ -27,16 +27,10 @@ public class Laji {
 
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot lajille.
-     * @param nro viite harjoituskertaan, jonka lajista on kyse
      */
-    public void vastaaJuoksu(int nro) {
+    public void vastaaJuoksu() {
         lajinNimi = "juoksu";
         ero = rand(1000,9999);
-    }
-    
-    @Override
-    public String toString() {
-        return lajinNimi;
     }
     
     
@@ -79,7 +73,24 @@ public class Laji {
         return tunnusNro;
     }
 
+    
+    /**
+     * @example
+     * <pre name="test">
+     * Laji har = new Laji();
+     * har.rekisteroi();
+     * har.vastaaJuoksu();
+     * har.toString() === "1|juoksu";
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return "" +
+        getTunnusNro() + "|" + lajinNimi;
+            
+    }
 
+    
     /**
      * Palautetaan lajin oma id
      * @return lajin id
@@ -105,7 +116,7 @@ public class Laji {
     public static void main(String[] args) {
         Laji har = new Laji();
         har.rekisteroi();
-        har.vastaaJuoksu(2);
+        har.vastaaJuoksu();
         har.tulosta(System.out);
     }
 

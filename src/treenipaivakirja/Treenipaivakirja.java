@@ -7,7 +7,7 @@ import java.util.List;
  * ovat vain "välittäjämetodeja" harjoituskertoihin..
  *
  * @author Jonna Määttä
- * @version 22.2.2021
+ * @version 6.3.2021
  */
 public class Treenipaivakirja {
     
@@ -92,7 +92,6 @@ public class Treenipaivakirja {
     }
 
 
-    
     /**
      * @param i indeksi
      * @return laji
@@ -120,6 +119,15 @@ public class Treenipaivakirja {
         harjoitukset.talleta();
         // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
     }
+   
+    
+    /**
+     * @param laji haluttava laji
+     * @return lajin harjoitukskerrat
+     */
+    public List<Harjoituskerta> annaHarjoituskerrat(Laji laji) {
+        return harjoitukset.annaHarjoituskerrat(laji.getTunnusNro());
+    }
 
 
     /**
@@ -132,21 +140,19 @@ public class Treenipaivakirja {
         try {
             Harjoituskerta tiistai1 = new Harjoituskerta(), tiistai2 = new Harjoituskerta();
             tiistai1.rekisteroi();
-            tiistai1.taytaTestiarvot();
+            tiistai1.vastaaJuoksu(0);
             tiistai2.rekisteroi();
-            tiistai2.taytaTestiarvot();
+            tiistai2.vastaaJuoksu(1);
 
             treenipaivakirja.lisaa(tiistai1);
             treenipaivakirja.lisaa(tiistai2);
             
-            int id1 = tiistai1.getLajiNro();
-            int id2 = tiistai2.getLajiNro();
             
-            Laji juoksu11 = new Laji(); juoksu11.rekisteroi(); juoksu11.vastaaJuoksu(id1); treenipaivakirja.lisaa(juoksu11);
-            Laji juoksu12 = new Laji(); juoksu12.rekisteroi(); juoksu12.vastaaJuoksu(id1); treenipaivakirja.lisaa(juoksu12);
-            Laji juoksu21 = new Laji(); juoksu21.rekisteroi(); juoksu21.vastaaJuoksu(id2); treenipaivakirja.lisaa(juoksu21);
-            Laji juoksu22 = new Laji(); juoksu22.rekisteroi(); juoksu22.vastaaJuoksu(id2); treenipaivakirja.lisaa(juoksu22);
-            Laji juoksu23 = new Laji(); juoksu23.rekisteroi(); juoksu23.vastaaJuoksu(id2); treenipaivakirja.lisaa(juoksu23);
+            Laji juoksu11 = new Laji(); juoksu11.rekisteroi(); juoksu11.vastaaJuoksu(); treenipaivakirja.lisaa(juoksu11);
+            Laji juoksu12 = new Laji(); juoksu12.rekisteroi(); juoksu12.vastaaJuoksu(); treenipaivakirja.lisaa(juoksu12);
+            Laji juoksu21 = new Laji(); juoksu21.rekisteroi(); juoksu21.vastaaJuoksu(); treenipaivakirja.lisaa(juoksu21);
+            Laji juoksu22 = new Laji(); juoksu22.rekisteroi(); juoksu22.vastaaJuoksu(); treenipaivakirja.lisaa(juoksu22);
+            Laji juoksu23 = new Laji(); juoksu23.rekisteroi(); juoksu23.vastaaJuoksu(); treenipaivakirja.lisaa(juoksu23);
 
             System.out.println("============= Treenipäiväkirjan testi =================");
 

@@ -1,12 +1,16 @@
 package treenipaivakirja;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 /**
  * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin
  *
  * @author Jonna Määttä
- * @version 1.3.2021
+ * @version 9.3.2021
  */
 public class Lajit implements Iterable<Laji> {
 
@@ -14,7 +18,7 @@ public class Lajit implements Iterable<Laji> {
 
     /** Taulukko lajeista */
     private final List<Laji> alkiot        = new ArrayList<Laji>();
-
+    private int              lkm              = 0;
 
     /**
      * Lajien alustaminen
@@ -46,12 +50,21 @@ public class Lajit implements Iterable<Laji> {
 
 
     /**
-     * Tallentaa harjoituskerrat tiedostoon.  
+     * Tallentaa lajit tiedostoon.  
      * TODO Kesken.
+     * @param tiednimi tiedoston nimi
      * @throws SailoException jos talletus epäonnistuu
      */
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
+    public void tallenna(String tiednimi) throws SailoException {
+        File ftied = new File(tiednimi + "/nimet.dat");
+        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
+            for (int i = 0; i < getLkm(); i++) {
+                Laji laji = anna(i);
+                fo.println(laji);
+            }
+        } catch (FileNotFoundException ex) {
+            throw new SailoException("Tiedosto " + ftied.getAbsolutePath() + "ei aukea");
+        }
     }
 
 
@@ -115,40 +128,43 @@ public class Lajit implements Iterable<Laji> {
             throw new IndexOutOfBoundsException("Laiton indeksi");
         }
         
-        return alkiot.get(i);
-        
+        return alkiot.get(i); 
     }
 
-
+    
+    
+    /**
+     * Palauttaa viitteen i:teen lajiin.
+     * @param i monennenko harjoituskerran viite halutaan
+     * @return viite harjoituskertaan, jonka indeksi on i
+     * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella  
+     */
+    public Laji anna(int i) throws IndexOutOfBoundsException {
+        return alkiot.get(i);
+    }
+    
     /**
      * Testiohjelma lajeille
      * @param args ei käytössä
+     * @throws SailoException kiinnostaa
      */
-    public static void main(String[] args) {
-        Lajit minunlajit = new Lajit();
-        Laji juoksu1 = new Laji();
-        juoksu1.rekisteroi();
-        juoksu1.vastaaJuoksu(2);
-        Laji juoksu2 = new Laji();
-        juoksu2.rekisteroi();
-        juoksu2.vastaaJuoksu(1);
-        Laji juoksu3 = new Laji();
-        juoksu3.rekisteroi();
-        juoksu3.vastaaJuoksu(2);
-        Laji juoksu4 = new Laji();
-        juoksu4.rekisteroi();
-        juoksu4.vastaaJuoksu(2);
+    public static void main(String args[]) throws SailoException {
+        Lajit uudet = new Lajit();
+        
+        Laji tennis1 = new Laji(), tennis2 = new Laji();
+        tennis1.rekisteroi();
+        tennis1.vastaaJuoksu();
+        tennis2.rekisteroi();
+        tennis2.vastaaJuoksu();
+    
+        uudet.lisaa(tennis1);
+        uudet.lisaa(tennis2);
 
-        minunlajit.lisaa(juoksu1);
-        minunlajit.lisaa(juoksu2);
-        minunlajit.lisaa(juoksu3);
-        minunlajit.lisaa(juoksu2);
-        minunlajit.lisaa(juoksu4);
-
-        System.out.println("============= Lajit testi =================");
-
-
-       
+            for (int i = 0; i < uudet.getLkm(); i++) {
+                Laji l = uudet.anna(i);
+                System.out.println("Laji nro: " + i);
+                l.tulosta(System.out);
+            }
+        
     }
-
 }

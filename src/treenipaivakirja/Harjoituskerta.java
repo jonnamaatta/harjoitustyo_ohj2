@@ -9,7 +9,7 @@ import java.util.List;
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 22.2.2021
+* @version 6.3.2021
 */
 public class Harjoituskerta {
     
@@ -77,10 +77,11 @@ public class Harjoituskerta {
     
     /**
     * Apumetodi, jolla saadaan täytettyä testiarvot harjoituskerralle.
+     * @param nro indeksi
     */
-    public void taytaTestiarvot() {
+    public void vastaaJuoksu(int nro) {
         pvm = "7.12.20 " + rand(1000,9999);
-        lajiNro = 1;
+        lajiNro = nro;
         kesto = "44:32";
         matka = 7.0;
         kuormittavuus = 6;
@@ -150,13 +151,13 @@ public class Harjoituskerta {
         juoksu1.rekisteroi();
         juoksu2.rekisteroi();
         juoksu1.tulosta(System.out);
-        juoksu1.taytaTestiarvot();
+        juoksu1.vastaaJuoksu(0);
         juoksu1.tulosta(System.out);
         
-        juoksu2.taytaTestiarvot();
+        juoksu2.vastaaJuoksu(0);
         juoksu2.tulosta(System.out);
         
-        juoksu2.taytaTestiarvot();
+        juoksu2.vastaaJuoksu(0);
         juoksu2.tulosta(System.out);
         }
     }

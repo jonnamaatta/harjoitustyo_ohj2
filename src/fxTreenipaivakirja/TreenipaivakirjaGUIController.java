@@ -12,6 +12,7 @@ import treenipaivakirja.Laji;
 import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
 
+import java.util.ArrayList;
 import java.util.List; 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import fi.jyu.mit.fxgui.*;
 /**
  * Luokka kerhon käyttöliittymän tapahtumien hoitamiseksi.
  * @author Jonna Määttä
- * @version 22.2.2021
+ * @version 6.3.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -54,7 +55,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään uuden harjoituskerran lisääminen
      */
     @FXML private void handleUusiHarjoituskerta() {
-      //  uusiHarjoituskerta();
+        uusiHarjoituskerta();
     }
     
     /**
@@ -89,7 +90,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään lajin poistaminen
      */
     @FXML private void handlePoistaLaji() {
-        Dialogs.showMessageDialog("Ei osata vielä poistaa lajia!");
+        Dialogs.showMessageDialog("Ei osata vielä!");
     }
     
     /**
@@ -168,23 +169,28 @@ public class TreenipaivakirjaGUIController implements Initializable {
 
           areaLaji.setText("");
           try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaLaji)) {
-              tulosta(os,lajiKohdalla);  
+              tulosta(os, lajiKohdalla);  
           }
       }
      
-       /**
-       * Tulostaa lajin tiedot
+      
+      /**
+       * Tulostaa tiedot
        * @param os tietovirta johon tulostetaan
        * @param l tulostettava laji
        */
       public void tulosta(PrintStream os, final Laji l) {
+        
           os.println("----------------------------------------------");
           l.tulosta(os);
           os.println("----------------------------------------------");
+
+          List <Harjoituskerta> esim = treenipaivakirja.annaHarjoituskerrat(l);
+              for (Harjoituskerta har : esim)
+                   har.tulosta(os);  
       }
-      
-      
      
+      
      /**
       * Näytetään virhe
       * @param virhe
@@ -236,17 +242,33 @@ public class TreenipaivakirjaGUIController implements Initializable {
             if (l.getTunnusNro() == lnro) index = i; {
             chooserLajit.add(l.getNimi(), l);
         }
-        chooserLajit.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää jäsenen
+        chooserLajit.setSelectedIndex(index); 
         }
      } 
 
+    
+    private void uusiHarjoituskerta() {
+        if ( lajiKohdalla == null ) return;  
+        Harjoituskerta har = new Harjoituskerta();  
+        har.rekisteroi();  
+        har.vastaaJuoksu(lajiKohdalla.getTunnusNro());  
+        try {
+            treenipaivakirja.lisaa(har);
+        } catch (SailoException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  
+        hae(lajiKohdalla.getTunnusNro());    
+    }
+    
+    
     /**
      * Lisätään uusi laji
      */
     private void uusiLaji() {
         Laji l = new Laji();
         l.rekisteroi();
-        l.vastaaJuoksu(1);
+        l.vastaaJuoksu();
         try {
             treenipaivakirja.lisaa(l);
         } catch (SailoException e) {
@@ -255,6 +277,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
         }
         hae(l.getTunnusNro());
     }
+    
     
     /**
      * Lajin muokkaus
