@@ -27,7 +27,7 @@ import fi.jyu.mit.fxgui.*;
 /**
  * Luokka kerhon käyttöliittymän tapahtumien hoitamiseksi.
  * @author Jonna Määttä
- * @version 6.3.2021
+ * @version 11.3.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -42,6 +42,10 @@ public class TreenipaivakirjaGUIController implements Initializable {
         alusta();
     }
     
+    
+    /*
+     * Käsitellään hakuehto
+     */
     @FXML private void handleHakuehto() {
         String hakukentta = cbKentat.getSelectedText();
         String ehto = hakuehto.getText(); 
@@ -143,6 +147,19 @@ public class TreenipaivakirjaGUIController implements Initializable {
     private Treenipaivakirja treenipaivakirja;
     private Laji lajiKohdalla;
     private TextArea areaLaji = new TextArea();
+    private String tiednimi = "treenit";  
+
+   
+    /**
+     * Kysytään tiedoston nimi ja luetaan se
+     * @return true jos onnistui, false jos ei
+     */
+    public boolean avaa() {
+        String uusinimi = tiednimi;
+        if (uusinimi == null) return false;
+        lueTiedosto(uusinimi);
+        return true;
+    }
 
     
     /**
@@ -157,8 +174,44 @@ public class TreenipaivakirjaGUIController implements Initializable {
           chooserLajit.clear();
           chooserLajit.addSelectionListener(e -> naytaLaji());
         }
+      
+      
+      /**
+       * Alustaa kerhon lukemalla sen valitun nimisestä tiedostosta
+       * @param nimi tiedosto josta kerhon tiedot luetaan
+       * @return null jos onnistuu, muuten virhe tekstinä
+       */
+      protected String lueTiedosto(String nimi) {
+          tiednimi = nimi;
+          try {
+              treenipaivakirja.lueTiedostosta(nimi);
+              hae(0);
+              return null;
+          } catch (SailoException e) {
+              hae(0);
+              String virhe = e.getMessage(); 
+              if ( virhe != null ) Dialogs.showMessageDialog(virhe);
+              return virhe;
+          }
+       }
 
       
+      /**
+       * Tietojen tallennus
+       * @return null jos onnistuu, muuten virhe tekstinä
+       */
+      private String tallenna() {
+          try {
+              treenipaivakirja.tallenna();
+              Dialogs.showMessageDialog("Tiedot tallennettu!");
+              return null;
+          } catch (SailoException ex) {
+              Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
+              return ex.getMessage();
+          }
+      }
+
+  
       /**
        * Näyttää listasta valitun lajin tiedot, tilapäisesti yhteen isoon edit-kenttään
        */
@@ -215,14 +268,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
         return true;
     }
     
-
-    /**
-     * Tietojen tallennus
-     */
-    private void tallenna() {
-        Dialogs.showMessageDialog("Tallennetaan! Mutta ei toimi vielä");
-    }
-    
     
     /**
      * Harjoituksen muokkaus
@@ -232,6 +277,10 @@ public class TreenipaivakirjaGUIController implements Initializable {
     }
     
     
+    /**
+     * Haetaan laji näyttöön
+     * @param lnro lajinumero
+     */
     private void hae(int lnro) {
         chooserLajit.clear();
        

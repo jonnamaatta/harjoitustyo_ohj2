@@ -5,6 +5,8 @@ import treenipaivakirja.Laji;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
@@ -42,6 +44,17 @@ public class Harjoituskerta {
     
     
     /**
+    * Asettaa tunnusnumeron ja samalla varmistaa että
+    * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+    * @param nr asetettava tunnusnumero
+    */
+   private void setTunnusNro(int nr) {
+       tunnusNro = nr;
+       if ( tunnusNro >= seuraavaNro ) seuraavaNro = tunnusNro + 1;
+   }
+
+    
+    /**
      * @return lajiNro
      */
     public int getLajiNro() {
@@ -60,6 +73,53 @@ public class Harjoituskerta {
     */
     public String getPvm() {
          return pvm;
+    }
+    
+    
+    /**
+     * @example
+     * <pre name="test">
+     * Harjoituskerta har = new Harjoituskerta();
+     * har.rekisteroi();
+     * har.vastaaJuoksu(1);
+     * har.toString() === "1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin";
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return "" + getTunnusNro() + "|" + pvm + "|" + lajiNro + "|" + kesto + "|" + matka +
+                "|" + kuormittavuus + "|" + kommentti;
+    }
+    
+   
+    /**
+     * Selvitää harrastuksen tiedot | erotellusta merkkijonosta.
+     * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusnro.
+     * @param rivi josta harrastuksen tiedot otetaan
+     * @example
+     * <pre name="test">
+     *   Harrastus harrastus = new Harrastus();
+     *   harrastus.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
+     *   harrastus.getJasenNro() === 10;
+     *   harrastus.toString()    === "2|10|Kalastus|1949|22";
+     *   
+     *   harrastus.rekisteroi();
+     *   int n = harrastus.getTunnusNro();
+     *   harrastus.parse(""+(n+20));
+     *   harrastus.rekisteroi();
+     *   harrastus.getTunnusNro() === n+20+1;
+     *   harrastus.toString()     === "" + (n+20+1) + "|10|Kalastus|1949|22";
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuffer sb = new StringBuffer(rivi);
+        setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+        pvm = Mjonot.erota(sb, '|', pvm);
+        lajiNro = Mjonot.erota(sb, '|', lajiNro);
+        kesto = Mjonot.erota(sb, '|', kesto);
+        matka = Mjonot.erota(sb, '|', matka);
+        kuormittavuus = Mjonot.erota(sb, '|', kuormittavuus);
+        kommentti = Mjonot.erota(sb, '|', kommentti);    
     }
 
 

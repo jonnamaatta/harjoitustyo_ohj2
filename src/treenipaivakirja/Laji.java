@@ -1,6 +1,9 @@
 package treenipaivakirja;
 
 import java.io.*;
+
+import fi.jyu.mit.ohj2.Mjonot;
+
 import static treenipaivakirja.Harjoituskerta.rand;
 
 /**
@@ -12,11 +15,21 @@ import static treenipaivakirja.Harjoituskerta.rand;
 public class Laji {
     private int tunnusNro;
     private String lajinNimi;
-    private int ero;
    
     private static int seuraavaNro = 1;
 
+    
+    /**
+    * Asettaa tunnusnumeron ja samalla varmistaa että
+    * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+    * @param nr asetettava tunnusnumero
+    */
+   private void setTunnusNro(int nr) {
+       tunnusNro = nr;
+       if ( tunnusNro >= seuraavaNro ) seuraavaNro = tunnusNro + 1;
+   }
 
+   
     /**
      * Alustetaan laji.  Toistaiseksi ei tarvitse tehdä mitään
      */
@@ -29,8 +42,7 @@ public class Laji {
      * Apumetodi, jolla saadaan täytettyä testiarvot lajille.
      */
     public void vastaaJuoksu() {
-        lajinNimi = "juoksu";
-        ero = rand(1000,9999);
+        lajinNimi = "juoksu " + rand(1000,9999);
     }
     
     
@@ -39,7 +51,7 @@ public class Laji {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(lajinNimi + " " + ero);
+        out.println(lajinNimi);
     }
 
 
@@ -86,8 +98,33 @@ public class Laji {
     @Override
     public String toString() {
         return "" +
-        getTunnusNro() + "|" + lajinNimi;
-            
+        this.getTunnusNro() + "|" + lajinNimi;   
+    }
+    
+    
+    /**
+     * Selvitää lajin tiedot | erotellusta merkkijonosta
+     * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusNro.
+     * @param rivi josta lajin tiedot otetaan
+     * 
+     * @example
+     * <pre name="test">
+     *   Laji laji = new Laji();
+     *   laji.parse("2  |  tennis");
+     *   laji.getTunnusNro() === 2;
+     *   laji.toString().startsWith("2|tennis") === true; 
+     *   laji.rekisteroi();
+     *   int n = laji.getTunnusNro();
+     *   laji.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
+     *   laji.rekisteroi();           // ja tarkistetaan että seuraavalla kertaa tulee yhtä isompi
+     *   laji.getTunnusNro() === n+20+1;
+     *     
+     * </pre>
+     */
+    public void parse(String rivi) {
+        StringBuilder sb = new StringBuilder(rivi);
+        setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+        lajinNimi = Mjonot.erota(sb, '|', lajinNimi);
     }
 
     

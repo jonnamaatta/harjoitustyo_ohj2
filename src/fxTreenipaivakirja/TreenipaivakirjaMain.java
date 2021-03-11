@@ -1,6 +1,7 @@
 package fxTreenipaivakirja;
 	
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import treenipaivakirja.Treenipaivakirja;
 import javafx.scene.Scene;
@@ -10,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * @author Jonna Määttä
- * @version 22.2.2021
+ * @version 11.3.2021
  */
 public class TreenipaivakirjaMain extends Application {
 	@Override
@@ -24,19 +25,18 @@ public class TreenipaivakirjaMain extends Application {
 			scene.getStylesheets().add(getClass().getResource("treenipaivakirja.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Treenipäiväkirja");
-			Treenipaivakirja treenipaivakirja = new Treenipaivakirja();
-			treenipaivakirjaCtrl.setTreenipaivakirja(treenipaivakirja);
-			
 			primaryStage.setOnCloseRequest((event) -> {
 			    if ( !treenipaivakirjaCtrl.voikoSulkea() ) event.consume();
 			});
 			
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+			Treenipaivakirja treenipaivakirja = new Treenipaivakirja();
+	            treenipaivakirjaCtrl.setTreenipaivakirja(treenipaivakirja);
+	            primaryStage.show();
+	            if ( !treenipaivakirjaCtrl.avaa() ) Platform.exit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 	/**
 	 * 
 	 * @param args joku

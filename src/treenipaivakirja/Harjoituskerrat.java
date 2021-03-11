@@ -1,31 +1,100 @@
 package treenipaivakirja;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran
  *
  * @author Jonna Määttä
- * @version 6.3.2021
+ * @version 11.3.2021
  */
 
-public class Harjoituskerrat {
+public class Harjoituskerrat  {
     
     private static final int MAX_HARJOITUKSIA = 10;
     private int              lkm              = 0;
     private String           tiedostonNimi    = "";
-    private Harjoituskerta   alkiot[];         
+    private Harjoituskerta   alkiot[]; 
+    private String tiedostonPerusNimi = "";
 
-
+    
     /**
      * Luodaan alustava taulukko
      */
     public Harjoituskerrat() {
         alkiot = new Harjoituskerta[MAX_HARJOITUKSIA];
     }
+    
+    
+    /**
+     * Asettaa tiedoston perusnimen ilan tarkenninta
+     * @param tied tallennustiedoston perusnimi
+     */
+    public void setTiedostonPerusNimi(String tied) {
+        tiedostonPerusNimi = tied;
+    }
+    
 
+    /**
+     * Lukee harjoituskerrat tiedostosta.  
+     * TODO TESTIT
+     * @param hakemisto tiedoston hakemisto
+     * @throws SailoException jos lukeminen epäonnistuu
+     */
+    public void lueTiedostosta(String hakemisto) throws SailoException {
+        String tiedNimi = hakemisto + "/harjoitukset.dat";
+        File ftied = new File(tiedNimi);
+        
+        try (Scanner fi = new Scanner(new FileInputStream(ftied))) {
+            while (fi.hasNext()) {
+                String s = "";
+                s = fi.nextLine();
+                Harjoituskerta h = new Harjoituskerta();
+                h.parse(s); // voisi palauttaa jotakin?
+                lisaa(h);
+            }
+        } catch (FileNotFoundException e) {
+            throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);  
+       } // catch (IOException e) {
+        //    throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
   
+    
+    
+    /**
+     * Tallentaa harjoituskerrat tiedostoon.  
+     * TODO Kesken.
+     * @param tiednimi tallennettavan tiedoston nimi
+     * @throws SailoException jos talletus epäonnistuu
+     */
+    public void tallenna(String tiednimi) throws SailoException {
+        File ftied = new File(tiednimi + "/harjoitukset.dat");
+        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
+            for (int i = 0; i < getLkm(); i++) {
+                Harjoituskerta h = anna(i);
+                fo.println(h);
+            }
+        } catch (FileNotFoundException ex) {
+            throw new SailoException("Tiedosto " + ftied.getAbsolutePath() + "ei aukea");
+        }
+    }
+
 
     /**
      * Lisää uuden harjoituskerran tietorakenteeseen.  Ottaa harjoituskerran omistukseensa.
@@ -52,7 +121,7 @@ public class Harjoituskerrat {
      * </pre>
      */
     public void lisaa(Harjoituskerta harjoitus) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
+        if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20);
         alkiot[lkm] = harjoitus;
         lkm++;
     }
@@ -68,26 +137,6 @@ public class Harjoituskerrat {
         if (i < 0 || lkm <= i)
             throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
         return alkiot[i];
-    }
-
-
-    /**
-     * Lukee harjoituskerrat tiedostosta.  Kesken.
-     * @param hakemisto tiedoston hakemisto
-     * @throws SailoException jos lukeminen epäonnistuu
-     */
-    public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + "/nimet.dat";
-        throw new SailoException("Ei osata vielä lukea tiedostoa " + tiedostonNimi);
-    }
-
-
-    /**
-     * Tallentaa harjoituskerrat tiedostoon.  Kesken.
-     * @throws SailoException jos talletus epäonnistuu
-     */
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
     }
 
 
@@ -146,6 +195,13 @@ public class Harjoituskerrat {
     public static void main(String args[]) throws SailoException {
         Harjoituskerrat harjoitukset = new Harjoituskerrat();
 
+        try {
+            harjoitukset.lueTiedostosta("treenit");
+            } catch (SailoException e) {
+                System.err.println(e.getMessage());
+            }
+            
+        
         Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
         juoksu1.rekisteroi();
         juoksu1.vastaaJuoksu(0);
@@ -158,12 +214,18 @@ public class Harjoituskerrat {
 
             for (int i = 0; i < harjoitukset.getLkm(); i++) {
                 Harjoituskerta harjoitus = harjoitukset.anna(i);
-                System.out.println("Jäsen nro: " + i);
+                System.out.println("Harjoituskerta nro: " + i);
                 harjoitus.tulosta(System.out);
             }
-
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
-        }      
+        }    
+        
+        try {
+            harjoitukset.tallenna("treenit");
+        } catch (SailoException e) {
+            e.printStackTrace();
+        }
     }
-}
+
+   }
