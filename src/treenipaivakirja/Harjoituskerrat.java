@@ -1,15 +1,10 @@
 package treenipaivakirja;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,6 +13,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import treenipaivakirja.Lajit.LajitIterator;
+
 /**
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran
  *
@@ -25,17 +22,18 @@ import java.util.Scanner;
  * @version 11.3.2021
  */
 
-public class Harjoituskerrat  {
+public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     
-    private static final int MAX_HARJOITUKSIA = 10;
-    private int              lkm              = 0;
-    private String           tiedostonNimi    = "";
+    private static final int MAX_HARJOITUKSIA   = 10;
+    private int              lkm                = 0;
+    private String           tiedostonNimi      = "";
     private Harjoituskerta   alkiot[]; 
-    private String tiedostonPerusNimi = "";
+    private String           tiedostonPerusNimi = "";
+    private boolean muutettu = false;
 
     
     /**
-     * Luodaan alustava taulukko
+     * Luodaan alustava taulukko harjoituskerroille.
      */
     public Harjoituskerrat() {
         alkiot = new Harjoituskerta[MAX_HARJOITUKSIA];
@@ -43,7 +41,7 @@ public class Harjoituskerrat  {
     
     
     /**
-     * Asettaa tiedoston perusnimen ilan tarkenninta
+     * Asettaa tiedoston perusnimen ilman tarkenninta.
      * @param tied tallennustiedoston perusnimi
      */
     public void setTiedostonPerusNimi(String tied) {
@@ -53,7 +51,7 @@ public class Harjoituskerrat  {
 
     /**
      * Lukee harjoituskerrat tiedostosta.  
-     * TODO TESTIT
+     * TODO KESKEN
      * @param hakemisto tiedoston hakemisto
      * @throws SailoException jos lukeminen epäonnistuu
      */
@@ -69,6 +67,7 @@ public class Harjoituskerrat  {
                 h.parse(s); // voisi palauttaa jotakin?
                 lisaa(h);
             }
+            muutettu = false;
         } catch (FileNotFoundException e) {
             throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);  
        } // catch (IOException e) {
@@ -76,14 +75,13 @@ public class Harjoituskerrat  {
         }
   
     
-    
     /**
      * Tallentaa harjoituskerrat tiedostoon.  
-     * TODO Kesken.
      * @param tiednimi tallennettavan tiedoston nimi
      * @throws SailoException jos talletus epäonnistuu
      */
     public void tallenna(String tiednimi) throws SailoException {
+        if ( !muutettu ) return;
         File ftied = new File(tiednimi + "/harjoitukset.dat");
         try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
             for (int i = 0; i < getLkm(); i++) {
@@ -93,6 +91,8 @@ public class Harjoituskerrat  {
         } catch (FileNotFoundException ex) {
             throw new SailoException("Tiedosto " + ftied.getAbsolutePath() + "ei aukea");
         }
+        
+        muutettu = false;
     }
 
 
@@ -124,6 +124,7 @@ public class Harjoituskerrat  {
         if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20);
         alkiot[lkm] = harjoitus;
         lkm++;
+        muutettu = true;
     }
 
 
@@ -148,6 +149,7 @@ public class Harjoituskerrat  {
         return lkm;
     }
     
+    
     /**
      * Haetaan kaikki lajin harjoituskerrat 
      * @param tunnusnro lajin tunnusnumero jolle harjoituksia haetaan
@@ -165,13 +167,13 @@ public class Harjoituskerrat  {
      *  Laji juoksu51 = new Laji(5); harrasteet.lisaa(juoksu51);
      *  
      *  List<Laji> loytyneet;
-     *  loytyneet = harrasteet.annaLajit(3);
+     *  loytyneet = harrasteet.annaHarjoituskerrat(3);
      *  loytyneet.size() === 0; 
-     *  loytyneet = harrasteet.annaLajit(1);
+     *  loytyneet = harrasteet.annaHarjoituskerrat(1);
      *  loytyneet.size() === 2; 
      *  loytyneet.get(0) == juoksu11 === true;
      *  loytyneet.get(1) == juoksu12 === true;
-     *  loytyneet = harrasteet.annaLajit(5);
+     *  loytyneet = harrasteet.annaHarjoituskerrat(5);
      *  loytyneet.size() === 1; 
      *  loytyneet.get(0) == juoksu51 === true;
      * </pre> 
@@ -183,7 +185,6 @@ public class Harjoituskerrat  {
             if (har.getLajiNro() == tunnusnro) loydetyt.add(har);
         }
         return loydetyt;
-        
     }
 
 
@@ -200,8 +201,7 @@ public class Harjoituskerrat  {
             } catch (SailoException e) {
                 System.err.println(e.getMessage());
             }
-            
-        
+             
         Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
         juoksu1.rekisteroi();
         juoksu1.vastaaJuoksu(0);
@@ -227,5 +227,125 @@ public class Harjoituskerrat  {
             e.printStackTrace();
         }
     }
+    
+    
+    /**
+     * Luokka harjoituskertojen iteroimiseksi.
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #PACKAGEIMPORT
+     * #import java.util.*;
+     * 
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+     * juoksu1.rekisteroi(); juoksu2.rekisteroi();
+     *
+     * harjoitukset.lisaa(juoksu1); 
+     * harjoitukset.lisaa(juoksu2); 
+     * harjoitukset.lisaa(juoksu1); 
+     * 
+     * StringBuffer ids = new StringBuffer(30);
+     * for (Harjoituskerta har:harjoitukset)   // Kokeillaan for-silmukan toimintaa
+     *   ids.append(" "+har.getTunnusNro());           
+     * 
+     * String tulos = " " + juoksu1.getTunnusNro() + " " + juoksu2.getTunnusNro() + " " + juoksu1.getTunnusNro();
+     * 
+     * ids.toString() === tulos; 
+     * 
+     * ids = new StringBuffer(30);
+     * for (Iterator<Harjoituskerta>  i=harjoitukset.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
+     *   Harjoituskerta har = i.next();
+     *   ids.append(" "+har.getTunnusNro());           
+     * }
+     * 
+     * ids.toString() === tulos;
+     * 
+     * Iterator<Harjoituskerta>  i=harjoitukset.iterator();
+     * i.next() == juoksu1  === true;
+     * i.next() == juoksu2  === true;
+     * i.next() == juoksu1  === true;
+     * 
+     * i.next();  #THROWS NoSuchElementException
+     *  
+     * </pre>
+     */
+    public class HarjoituskerratIterator implements Iterator<Harjoituskerta> {
+        private int kohdalla = 0;
 
+
+    /**
+    * Onko olemassa vielä seuraavaa harjoituskertaa
+    * @see java.util.Iterator#hasNext()
+    * @return true jos on vielä harjoituskertoja
+    */
+    @Override
+    public boolean hasNext() {
+        return kohdalla < getLkm();
+    }
+
+
+    /**
+     * Annetaan seuraava harjoituskerta
+     * @return seuraava harjoituskerta
+     * @throws NoSuchElementException jos seuraava alkiota ei enää ole
+     * @see java.util.Iterator#next()
+     */
+     @Override
+     public Harjoituskerta next() throws NoSuchElementException {
+         if ( !hasNext() ) throw new NoSuchElementException("Ei oo");
+         return anna(kohdalla++);
+     }
+
+
+    /**
+     * Tuhoamista ei ole toteutettu
+     * @throws UnsupportedOperationException aina
+     * @see java.util.Iterator#remove()
+     */
+     @Override
+     public void remove() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Me ei poisteta");
+        }
+    }
+
+
+    /**
+     * Palautetaan iteraattori harjoituskerroistaan.
+     * @return harjoituskerta iteraattori
+     */
+    @Override
+    public Iterator<Harjoituskerta> iterator() {
+        return new HarjoituskerratIterator();
+    }
+    
+
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien harjoituskertojen viitteet 
+     * @param hakuehto hakuehto 
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä harjoituskerroista
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *   Harjoituskerrat harjoitukset = new Harjoituskerrat();  
+     *   Harjoituskerta har1 = new Harjoituskerta(); har1.parse("1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
+     *   Harjoituskerta har2 = new Harjoituskerta(); har2.parse("2|9.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
+     *   Harjoituskerta har3 = new Harjoituskerta(); har3.parse("3|11.12.20|1|44:27|7.0|2|Nyt ei kulkenut oikein"); 
+     *   Harjoituskerta har4 = new Harjoituskerta(); har4.parse("4|15.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
+     *   Harjoituskerta har5 = new Harjoituskerta(); har5.parse("5|20.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
+     *   harjoitukset.lisaa(har1); harjoitukset.lisaa(har2); harjoitukset.lisaa(har3); harjoitukset.lisaa(har4); harjoitukset.lisaa(har5);
+     *   // TODO: toistaiseksi palauttaa kaikki harjoituskerrat
+     * </pre> 
+     */ 
+    @SuppressWarnings("unused")
+    public Collection<Harjoituskerta> etsi(String hakuehto, int k) { 
+        Collection<Harjoituskerta> loytyneet = new ArrayList<Harjoituskerta>(); 
+        for (Harjoituskerta h : this) { 
+            loytyneet.add(h);  
+        } 
+        return loytyneet; 
+    }
+
+    
    }

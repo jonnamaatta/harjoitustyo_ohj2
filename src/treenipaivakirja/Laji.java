@@ -8,9 +8,8 @@ import static treenipaivakirja.Harjoituskerta.rand;
 
 /**
  * Laji joka osaa mm. itse huolehtia tunnus_nro:staan.
- *
  * @author Jonna Määttä
- * @version 1.3.2021
+ * @version 18.3.2021
  */
 public class Laji {
     private int tunnusNro;
@@ -31,7 +30,7 @@ public class Laji {
 
    
     /**
-     * Alustetaan laji.  Toistaiseksi ei tarvitse tehdä mitään
+     * Alustetaan laji. Toistaiseksi ei tarvitse tehdä mitään.
      */
     public Laji() {
         // Vielä ei tarvita mitään
@@ -47,7 +46,7 @@ public class Laji {
     
     
     /**
-     * Tulostetaan lajin tiedot
+     * Tulostetaan lajin tiedot.
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
@@ -56,7 +55,7 @@ public class Laji {
 
 
     /**
-     * Tulostetaan harjoituksen tiedot
+     * Tulostetaan harjoituksen tiedot.
      * @param os tietovirta johon tulostetaan
      */
     public void tulosta(OutputStream os) {
@@ -89,10 +88,10 @@ public class Laji {
     /**
      * @example
      * <pre name="test">
-     * Laji har = new Laji();
-     * har.rekisteroi();
-     * har.vastaaJuoksu();
-     * har.toString() === "1|juoksu";
+     * Laji l = new Laji();
+     * l.rekisteroi();
+     * l.vastaaJuoksu();
+     * l.toString() === "1|juoksu";
      * </pre>
      */
     @Override
@@ -110,9 +109,9 @@ public class Laji {
      * @example
      * <pre name="test">
      *   Laji laji = new Laji();
-     *   laji.parse("2  |  tennis");
+     *   laji.parse("2  |  juoksu");
      *   laji.getTunnusNro() === 2;
-     *   laji.toString().startsWith("2|tennis") === true; 
+     *   laji.toString().startsWith("2|juoksu") === true; 
      *   laji.rekisteroi();
      *   int n = laji.getTunnusNro();
      *   laji.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
@@ -143,6 +142,16 @@ public class Laji {
      */
     public String getNimi() {
         return lajinNimi;
+    }
+    
+    
+    /**
+     * @param s lajille laitettava nimi
+     * @return virheilmoitus, null jos ok
+     */
+    public String setNimi(String s) {
+        lajinNimi = s;
+        return null;
     }
 
 

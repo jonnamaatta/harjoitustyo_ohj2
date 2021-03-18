@@ -1,9 +1,6 @@
 package treenipaivakirja;
  
 import java.io.*;
-import treenipaivakirja.Laji;
-import java.util.ArrayList;
-import java.util.List;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -11,7 +8,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 6.3.2021
+* @version 18.3.2021
 */
 public class Harjoituskerta {
     
@@ -19,8 +16,8 @@ public class Harjoituskerta {
     private String     pvm            = "";
     private int        lajiNro;
     private String     kesto          = "";
-    private double     matka          = 0;
-    private int        kuormittavuus  = 0;
+    private String     matka          = "";
+    private String     kuormittavuus  = "";
     private String     kommentti      = "";
 
     private static int seuraavaNro    = 1;
@@ -52,8 +49,57 @@ public class Harjoituskerta {
        tunnusNro = nr;
        if ( tunnusNro >= seuraavaNro ) seuraavaNro = tunnusNro + 1;
    }
+   
+   
+   /**
+    * @param s laitettava pvm
+    * @return virheilmotus, null jos ok
+    */
+   public String setPvm(String s) {
+       this.pvm = s;
+       return null;
+   }
 
+   
+   /**
+   * @param s laitettava kesto
+   * @return virheilmoitus, null jos ok
+   * */
+   public String setKesto(String s) {
+       this.kesto = s;
+       return null;
+   }
+   
+   
+  /**
+   * @param s laitettava matka
+   * @return virheilmoitus, null jos ok
+   * */
+   public String setMatka(String s) {
+       this.matka = s;
+       return null;
+   }
     
+  /**
+   * @param s laitettava kuormittavuus
+   * @return virheilmoitus, null jos ok
+   * */
+   public String setKuormittavuus(String s) {
+       this.kuormittavuus = s;
+       return null;
+   }
+     
+     
+  /**
+   * @param s laitettava kommentti
+   * @return virheilmoitus, null jos ok
+   * */
+   public String setKommentti(String s) {
+       this.kommentti = s;
+       return null;
+   }
+
+  
     /**
      * @return lajiNro
      */
@@ -66,14 +112,54 @@ public class Harjoituskerta {
     * @return harjoituskerran nimi
     * @example
     * <pre name="test">
-    *   Harjoituskerta tennis1 = new Harjoituskerta();
-    *   tennis1.vastaaTestiarvot();
-    *   tennis1.getPvm() =R= "7.12.20";
+    *   Harjoituskerta juoksu1 = new Harjoituskerta();
+    *   juoksu1.vastaaTestiarvot();
+    *   juoksu1.getPvm() =R= "7.12.20";
     * </pre>
     */
     public String getPvm() {
          return pvm;
     }
+    
+    
+    /**
+     * Palauttaa harjoituskerran tunnusnumeron.
+     * @return harjoituskerran tunnusnumero
+     */
+     public int getTunnusNro() {
+          return tunnusNro;
+     }
+     
+     
+    /**
+     * @return kesto
+     */
+     public String getKesto() {
+        return kesto;
+     }
+      
+      
+    /**
+     * @return matka
+     */
+     public String getMatka() {
+         return matka;
+     }
+       
+       
+    /**
+     * @return kuormittavuus
+     */
+     public String getKuormittavuus() {
+         return kuormittavuus;
+     }
+        
+    /**
+     * @return kommentti
+     */
+     public String getKommentti() {
+         return kommentti;
+     }
     
     
     /**
@@ -93,22 +179,22 @@ public class Harjoituskerta {
     
    
     /**
-     * Selvitää harrastuksen tiedot | erotellusta merkkijonosta.
+     * Selvittää harjoituskerran tiedot | erotellusta merkkijonosta.
      * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusnro.
-     * @param rivi josta harrastuksen tiedot otetaan
+     * @param rivi josta harjoituskerran tiedot otetaan
      * @example
      * <pre name="test">
-     *   Harrastus harrastus = new Harrastus();
-     *   harrastus.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
-     *   harrastus.getJasenNro() === 10;
-     *   harrastus.toString()    === "2|10|Kalastus|1949|22";
+     *   Harjoituskerta har = new Harjoituskerta();
+     *   har.parse("   1  |  7.12.20  |   1  | 44:32 | 7.0 | 6 |Jaksoin juosta todella hyvin  ");
+     *   har.getLajiNro() === 1;
+     *   har.toString()    === "1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin";
      *   
-     *   harrastus.rekisteroi();
-     *   int n = harrastus.getTunnusNro();
-     *   harrastus.parse(""+(n+20));
-     *   harrastus.rekisteroi();
-     *   harrastus.getTunnusNro() === n+20+1;
-     *   harrastus.toString()     === "" + (n+20+1) + "|10|Kalastus|1949|22";
+     *   har.rekisteroi();
+     *   int n = har.getTunnusNro();
+     *   har.parse(""+(n+20));
+     *   har.rekisteroi();
+     *   har.getTunnusNro() === n+20+1;
+     *   har.toString()     === "" + (n+20+1) + "1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin";
      * </pre>
      */
     public void parse(String rivi) {
@@ -143,14 +229,14 @@ public class Harjoituskerta {
         pvm = "7.12.20 " + rand(1000,9999);
         lajiNro = nro;
         kesto = "44:32";
-        matka = 7.0;
-        kuormittavuus = 6;
+        matka = "7.0";
+        kuormittavuus = "6";
         kommentti = "Jaksoin juosta todella hyvin";
     }
 
     
     /**
-    * Tulostetaan harjoituskerran
+    * Tulostetaan harjoituskerta
     * @param out tietovirta johon tulostetaan
     */
     public void tulosta(PrintStream out) {
@@ -191,15 +277,6 @@ public class Harjoituskerta {
         seuraavaNro++;
         return tunnusNro;
     }
-
-
-    /**
-    * Palauttaa harjoituskerran tunnusnumeron.
-    * @return harjoituskerran tunnusnumero
-    */
-    public int getTunnusNro() {
-         return tunnusNro;
-    }
     
        
     /**
@@ -219,5 +296,5 @@ public class Harjoituskerta {
         
         juoksu2.vastaaJuoksu(0);
         juoksu2.tulosta(System.out);
-        }
-    }
+        }   
+}

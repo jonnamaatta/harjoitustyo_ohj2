@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import treenipaivakirja.Treenipaivakirja;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
 
@@ -37,8 +36,10 @@ public class TreenipaivakirjaMain extends Application {
 	            e.printStackTrace();
 	        }
 	    }
+	
+	
 	/**
-	 * 
+	 * Käynnistetään pääohjelma
 	 * @param args joku
 	 */
 	public static void main(String[] args) {

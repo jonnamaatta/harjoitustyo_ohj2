@@ -78,7 +78,7 @@
                      <center>
                         <BorderPane>
                            <center>
-                              <ListChooser fx:id = "chooserLajit" prefHeight="6591.0" prefWidth="248.0" rivit="11.1.21&#10;8.2.21&#10;7.1.21&#10;5.1.21&#10;4.1.21&#10;1.1.21&#10;&#10;&#10;" />
+                              <ListChooser fx:id="chooserLajit" prefHeight="6591.0" prefWidth="248.0" rivit="11.1.21&#10;8.2.21&#10;7.1.21&#10;5.1.21&#10;4.1.21&#10;1.1.21&#10;&#10;&#10;" />
                            </center>
                         </BorderPane>
                      </center>
@@ -148,7 +148,7 @@
                   <Label text="Omat lajit" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <StringGrid prefHeight="394.0" prefWidth="338.0" rivit="laji&#10; juoksu&#10;tennis&#10;kuntosali&#10;luistelu&#10;&#10;" BorderPane.alignment="CENTER">
+                  <StringGrid fx:id="tableLajit" editable = "true" prefHeight="394.0" prefWidth="338.0" rivit="laji&#10;juoksu&#10;tennis&#10;kuntosali&#10;luistelu&#10;&#10;" BorderPane.alignment="CENTER">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>

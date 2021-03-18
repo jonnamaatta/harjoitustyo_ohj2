@@ -16,8 +16,9 @@ import java.util.*;
  */
 public class Lajit implements Iterable<Laji> {
 
-    private String                      tiedostonNimi = "";
+    private String tiedostonNimi      = "";
     private String tiedostonPerusNimi = "";
+    private boolean muutettu = false;
     
     /** Taulukko lajeista */
     private final List<Laji> alkiot        = new ArrayList<Laji>();
@@ -42,15 +43,16 @@ public class Lajit implements Iterable<Laji> {
 
     /**
      * Lisää uuden lajin tietorakenteeseen.  Ottaa lajin omistukseensa.
-     * @param har lisättävä laji.  Huom tietorakenne muuttuu omistajaksi
+     * @param l lisättävä laji.  Huom tietorakenne muuttuu omistajaksi
      */
-    public void lisaa(Laji har) {
-        alkiot.add(har);
+    public void lisaa(Laji l) {
+        alkiot.add(l);
+        muutettu = true;
     }
 
 
     /**
-     * Lukee harjoituskerrat tiedostosta.  
+     * Lukee lajit tiedostosta.  
      * TODO Kesken.
      * @param hakemisto tiedoston hakemisto
      * @throws SailoException jos lukeminen epäonnistuu
@@ -67,6 +69,7 @@ public class Lajit implements Iterable<Laji> {
                 laji.parse(s); // voisi palauttaa jotakin?
                 lisaa(laji);
             }
+            muutettu = false;
         } catch (FileNotFoundException e) {
             throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);
        // } catch (IOException e) {
@@ -83,6 +86,7 @@ public class Lajit implements Iterable<Laji> {
      * @throws SailoException jos talletus epäonnistuu
      */
     public void tallenna(String tiednimi) throws SailoException {
+        if ( !muutettu ) return;
         File ftied = new File(tiednimi + "/lajit.dat");
         try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
             for (int i = 0; i < getLkm(); i++) {
@@ -92,6 +96,8 @@ public class Lajit implements Iterable<Laji> {
         } catch (FileNotFoundException ex) {
             throw new SailoException("Tiedosto " + ftied.getAbsolutePath() + "ei aukea");
         }
+        
+        muutettu = false;
     }
 
 
@@ -105,7 +111,7 @@ public class Lajit implements Iterable<Laji> {
 
     
     /**
-     * @param i harjotuksen indeksi
+     * @param i lajin indeksi
      * @return alkio
      * @throws IndexOutOfBoundsException poikkeus
      */
@@ -132,7 +138,7 @@ public class Lajit implements Iterable<Laji> {
     /**
      * Testiohjelma lajeille
      * @param args ei käytössä
-     * @throws SailoException kiinnostaa
+     * @throws SailoException poikkeus
      */
     public static void main(String args[]) throws SailoException {
         Lajit uudetLajit = new Lajit();
@@ -168,41 +174,41 @@ public class Lajit implements Iterable<Laji> {
     
     
     /**
-     * Luokka jäsenten iteroimiseksi.
+     * Luokka lajien iteroimiseksi.
      * @example
      * <pre name="test">
      * #THROWS SailoException 
      * #PACKAGEIMPORT
      * #import java.util.*;
      * 
-     * Jasenet jasenet = new Jasenet();
-     * Jasen aku1 = new Jasen(), aku2 = new Jasen();
-     * aku1.rekisteroi(); aku2.rekisteroi();
+     * Lajit lajit = new Lajit();
+     * Laji laji1 = new Laji(), laji2 = new Laji();
+     * laji1.rekisteroi(); laji2.rekisteroi();
      *
-     * jasenet.lisaa(aku1); 
-     * jasenet.lisaa(aku2); 
-     * jasenet.lisaa(aku1); 
+     * lajit.lisaa(laji1); 
+     * lajit.lisaa(laji2); 
+     * lajit.lisaa(laji1); 
      * 
      * StringBuffer ids = new StringBuffer(30);
-     * for (Jasen jasen:jasenet)   // Kokeillaan for-silmukan toimintaa
-     *   ids.append(" "+jasen.getTunnusNro());           
+     * for (Laji laji:lajit)   // Kokeillaan for-silmukan toimintaa
+     *   ids.append(" "+laji.getTunnusNro());           
      * 
-     * String tulos = " " + aku1.getTunnusNro() + " " + aku2.getTunnusNro() + " " + aku1.getTunnusNro();
+     * String tulos = " " + laji1.getTunnusNro() + " " + laji2.getTunnusNro() + " " + laji1.getTunnusNro();
      * 
      * ids.toString() === tulos; 
      * 
      * ids = new StringBuffer(30);
-     * for (Iterator<Jasen>  i=jasenet.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
-     *   Jasen jasen = i.next();
-     *   ids.append(" "+jasen.getTunnusNro());           
+     * for (Iterator<Laji>  i=lajit.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
+     *   Laji laji = i.next();
+     *   ids.append(" "+laji.getTunnusNro());           
      * }
      * 
      * ids.toString() === tulos;
      * 
-     * Iterator<Jasen>  i=jasenet.iterator();
-     * i.next() == aku1  === true;
-     * i.next() == aku2  === true;
-     * i.next() == aku1  === true;
+     * Iterator<Laji>  i=lajit.iterator();
+     * i.next() == laji1  === true;
+     * i.next() == laji2  === true;
+     * i.next() == laji1  === true;
      * 
      * i.next();  #THROWS NoSuchElementException
      *  
@@ -210,47 +216,47 @@ public class Lajit implements Iterable<Laji> {
      */
     public class LajitIterator implements Iterator<Laji> {
         private int kohdalla = 0;
+    
+
+    /**
+     * Onko olemassa vielä seuraavaa lajia
+     * @see java.util.Iterator#hasNext()
+     * @return true jos on vielä lajeja
+     */
+     @Override
+     public boolean hasNext() {
+        return kohdalla < getLkm();
+     }
 
 
-        /**
-         * Onko olemassa vielä seuraavaa jäsentä
-         * @see java.util.Iterator#hasNext()
-         * @return true jos on vielä jäseniä
-         */
-        @Override
-        public boolean hasNext() {
-            return kohdalla < getLkm();
-        }
+    /**
+     * Annetaan seuraava laji
+     * @return seuraava laji
+     * @throws NoSuchElementException jos seuraava alkiota ei enää ole
+     * @see java.util.Iterator#next()
+     */
+     @Override
+     public Laji next() throws NoSuchElementException {
+        if ( !hasNext() ) throw new NoSuchElementException("Ei oo");
+        return anna(kohdalla++);
+     }
 
 
-        /**
-         * Annetaan seuraava jäsen
-         * @return seuraava jäsen
-         * @throws NoSuchElementException jos seuraava alkiota ei enää ole
-         * @see java.util.Iterator#next()
-         */
-        @Override
-        public Laji next() throws NoSuchElementException {
-            if ( !hasNext() ) throw new NoSuchElementException("Ei oo");
-            return anna(kohdalla++);
-        }
-
-
-        /**
-         * Tuhoamista ei ole toteutettu
-         * @throws UnsupportedOperationException aina
-         * @see java.util.Iterator#remove()
-         */
-        @Override
-        public void remove() throws UnsupportedOperationException {
-            throw new UnsupportedOperationException("Me ei poisteta");
+    /**
+    * Tuhoamista ei ole toteutettu
+    * @throws UnsupportedOperationException aina
+    * @see java.util.Iterator#remove()
+    */
+    @Override
+   public void remove() throws UnsupportedOperationException {
+       throw new UnsupportedOperationException("Me ei poisteta");
         }
     }
 
 
     /**
-     * Palautetaan iteraattori jäsenistään.
-     * @return jäsen iteraattori
+     * Palautetaan iteraattori lajeistaan.
+     * @return laji iteraattori
      */
     @Override
     public Iterator<Laji> iterator() {
@@ -259,20 +265,20 @@ public class Lajit implements Iterable<Laji> {
 
 
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien lajien viitteet 
      * @param hakuehto hakuehto 
      * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä jäsenistä 
+     * @return tietorakenteen löytyneistä lajeista
      * @example 
      * <pre name="test"> 
      * #THROWS SailoException  
-     *   Jasenet jasenet = new Jasenet(); 
-     *   Jasen jasen1 = new Jasen(); jasen1.parse("1|Ankka Aku|030201-115H|Paratiisitie 13|"); 
-     *   Jasen jasen2 = new Jasen(); jasen2.parse("2|Ankka Tupu||030552-123B|"); 
-     *   Jasen jasen3 = new Jasen(); jasen3.parse("3|Susi Sepe|121237-121V||131313|Perämetsä"); 
-     *   Jasen jasen4 = new Jasen(); jasen4.parse("4|Ankka Iines|030245-115V|Ankkakuja 9"); 
-     *   Jasen jasen5 = new Jasen(); jasen5.parse("5|Ankka Roope|091007-408U|Ankkakuja 12"); 
-     *   jasenet.lisaa(jasen1); jasenet.lisaa(jasen2); jasenet.lisaa(jasen3); jasenet.lisaa(jasen4); jasenet.lisaa(jasen5);
+     *   Lajit lajit = new Lajit(); 
+     *   Laji laji1 = new Laji(); laji1.parse("1|juoksu"); 
+     *   Laji laji2 = new Laji(); laji2.parse("2|tennis"); 
+     *   Laji laji3 = new Laji(); laji3.parse("3|kävely"); 
+     *   Laji laji4 = new Laji(); laji4.parse("4|kuntosali"); 
+     *   Laji laji5 = new Laji(); laji5.parse("5|tennis"); 
+     *   lajit.lisaa(laji1); lajit.lisaa(laji2); lajit.lisaa(laji3); lajit.lisaa(laji4); lajit.lisaa(laji5);
      *   // TODO: toistaiseksi palauttaa kaikki jäsenet 
      * </pre> 
      */ 

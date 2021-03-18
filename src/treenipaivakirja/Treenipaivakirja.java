@@ -18,7 +18,7 @@ public class Treenipaivakirja {
 
 
     /**
-     * Lukee kerhon tiedot tiedostosta
+     * Lukee treenipäiväkirjaan tiedot tiedostosta
      * @param nimi jota käyteään lukemisessa
      * @throws SailoException jos lukeminen epäonnistuu
      * 
@@ -28,57 +28,57 @@ public class Treenipaivakirja {
      * #import java.io.*;
      * #import java.util.*;
      * 
-     *  Kerho kerho = new Kerho();
+     *  Treenipaivakirja treeni = new Treenipaivakirja();
      *  
-     *  Jasen aku1 = new Jasen(); aku1.vastaaAkuAnkka(); aku1.rekisteroi();
-     *  Jasen aku2 = new Jasen(); aku2.vastaaAkuAnkka(); aku2.rekisteroi();
-     *  Harrastus pitsi21 = new Harrastus(); pitsi21.vastaaPitsinNyplays(aku2.getTunnusNro());
-     *  Harrastus pitsi11 = new Harrastus(); pitsi11.vastaaPitsinNyplays(aku1.getTunnusNro());
-     *  Harrastus pitsi22 = new Harrastus(); pitsi22.vastaaPitsinNyplays(aku2.getTunnusNro()); 
-     *  Harrastus pitsi12 = new Harrastus(); pitsi12.vastaaPitsinNyplays(aku1.getTunnusNro()); 
-     *  Harrastus pitsi23 = new Harrastus(); pitsi23.vastaaPitsinNyplays(aku2.getTunnusNro());
+     *  Laji Laji1 = new Laji(); laji1.vastaaJuoksu(); laji1.rekisteroi();
+     *  Laji laji2 = new Laji(); laji2.vastaaJuoksu(); laji2.rekisteroi();
+     *  Harjoituskerta har21 = new Harjoituskerta(); har21.vastaaJuoksu(laji2.getTunnusNro());
+     *  Harjoituskerta har11 = new Harjoituskerta(); har11.vastaaJuoksu(laji1.getTunnusNro());
+     *  Harjoituskerta har22 = new Harjoituskerta(); har22.vastaaJuoksu(laji2.getTunnusNro()); 
+     *  Harjoituskerta har12 = new Harjoituskerta(); har12.vastaaJuoksu(laji1.getTunnusNro()); 
+     *  Harjoituskerta har23 = new Harjoituskerta(); har23.vastaaJuoksu(laji2.getTunnusNro());
      *   
-     *  String hakemisto = "testikelmit";
+     *  String hakemisto = "testitreenit";
      *  File dir = new File(hakemisto);
-     *  File ftied  = new File(hakemisto+"/nimet.dat");
-     *  File fhtied = new File(hakemisto+"/harrastukset.dat");
+     *  File ftied  = new File(hakemisto+"/lajit.dat");
+     *  File fhtied = new File(hakemisto+"/harjoitukset.dat");
      *  dir.mkdir();  
      *  ftied.delete();
      *  fhtied.delete();
-     *  kerho.lueTiedostosta(hakemisto); #THROWS SailoException
-     *  kerho.lisaa(aku1);
-     *  kerho.lisaa(aku2);
-     *  kerho.lisaa(pitsi21);
-     *  kerho.lisaa(pitsi11);
-     *  kerho.lisaa(pitsi22);
-     *  kerho.lisaa(pitsi12);
-     *  kerho.lisaa(pitsi23);
-     *  kerho.tallenna();
-     *  kerho = new Kerho();
-     *  kerho.lueTiedostosta(hakemisto);
-     *  Collection<Jasen> kaikki = kerho.etsi("",-1); 
-     *  Iterator<Jasen> it = kaikki.iterator();
-     *  it.next() === aku1;
-     *  it.next() === aku2;
+     *  treenipaivakirja.lueTiedostosta(hakemisto); #THROWS SailoException
+     *  treenipaivakirja.lisaa(laji1);
+     *  treenipaivakirja.lisaa(laji2);
+     *  treenipaivakirja.lisaa(har21);
+     *  treenipaivakirja.lisaa(har11);
+     *  treenipaivakirja.lisaa(har22);
+     *  treenipaivakirja.lisaa(har12);
+     *  treenipaivakirja.lisaa(har23);
+     *  treenipaivakirja.tallenna();
+     *  treenipaivakirja = new Treenipaivakirja();
+     *  treenipaivakirja.lueTiedostosta(hakemisto);
+     *  Collection<Laji> kaikki = kerho.etsi("",-1); 
+     *  Iterator<Laji> it = kaikki.iterator();
+     *  it.next() === laji1;
+     *  it.next() === laji2;
      *  it.hasNext() === false;
-     *  List<Harrastus> loytyneet = kerho.annaHarrastukset(aku1);
-     *  Iterator<Harrastus> ih = loytyneet.iterator();
-     *  ih.next() === pitsi11;
-     *  ih.next() === pitsi12;
+     *  List<Harjoituskerta> loytyneet = treenipaivakirja.annaHarjoituskerrat(laji1);
+     *  Iterator<Harjoituskerta> ih = loytyneet.iterator();
+     *  ih.next() === har11;
+     *  ih.next() === har12;
      *  ih.hasNext() === false;
-     *  loytyneet = kerho.annaHarrastukset(aku2);
+     *  loytyneet = treenipaivakirja.annaHarjoituskerra(laji2);
      *  ih = loytyneet.iterator();
-     *  ih.next() === pitsi21;
-     *  ih.next() === pitsi22;
-     *  ih.next() === pitsi23;
+     *  ih.next() === har21;
+     *  ih.next() === har22;
+     *  ih.next() === har23;
      *  ih.hasNext() === false;
-     *  kerho.lisaa(aku2);
-     *  kerho.lisaa(pitsi23);
-     *  kerho.tallenna();
+     *  treenipaivakirja.lisaa(laji2);
+     *  treenipaivakirja.lisaa(har23);
+     *  treenipaivakirja.tallenna();
      *  ftied.delete()  === true;
      *  fhtied.delete() === true;
-     *  File fbak = new File(hakemisto+"/nimet.bak");
-     *  File fhbak = new File(hakemisto+"/harrastukset.bak");
+     *  File fbak = new File(hakemisto+"/lajit.bak");
+     *  File fhbak = new File(hakemisto+"/harjoitukset.bak");
      *  fbak.delete() === true;
      *  fhbak.delete() === true;
      *  dir.delete() === true;
