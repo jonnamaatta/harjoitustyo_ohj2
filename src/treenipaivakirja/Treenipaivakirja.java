@@ -9,7 +9,7 @@ import java.util.List;
  * ovat vain "välittäjämetodeja" harjoituskertoihin..
  *
  * @author Jonna Määttä
- * @version 11.3.2021
+ * @version 20.3.2021
  */
 public class Treenipaivakirja {
     
@@ -202,8 +202,8 @@ public class Treenipaivakirja {
      * @return tietorakenteen löytyneistä jäsenistä 
      * @throws SailoException Jos jotakin menee väärin
      */ 
-    public Collection<Laji> etsi(String hakuehto, int k) throws SailoException { 
-        return lajit.etsi(hakuehto, k); 
+    public Collection<Harjoituskerta> etsi(String hakuehto, int k) throws SailoException { 
+        return harjoitukset.etsi(hakuehto, k); 
     } 
 
 
@@ -247,6 +247,18 @@ public class Treenipaivakirja {
         harjoitukset.setTiedostonPerusNimi(hakemistonNimi + "harjoitukset");
         lajit.setTiedostonPerusNimi(hakemistonNimi + "lajit");
     }
+    
+    
+    /** 
+     * Korvaa harjoituksen tietorakenteessa.  Ottaa harjoituksen omistukseensa. 
+     * Etsitään samalla tunnusnumerolla oleva harjoitus.  Jos ei löydy, 
+     * niin lisätään uutena harjoituksena. 
+     * @param harjoitus lisättävän harjoituksen viite.  Huom tietorakenne muuttuu omistajaksi 
+     * @throws SailoException jos tietorakenne on jo täynnä 
+     */ 
+    public void korvaaTaiLisaa(Harjoituskerta harjoitus) throws SailoException { 
+        harjoitukset.korvaaTaiLisaa(harjoitus); 
+    } 
 
 
     /**

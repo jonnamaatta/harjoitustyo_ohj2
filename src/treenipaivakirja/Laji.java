@@ -138,7 +138,7 @@ public class Laji {
     
     /**
      * Palautetaan lajin nimi
-     * @return lajin id
+     * @return lajin nimi
      */
     public String getNimi() {
         return lajinNimi;

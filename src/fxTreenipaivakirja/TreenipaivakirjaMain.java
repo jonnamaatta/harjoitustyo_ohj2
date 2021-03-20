@@ -18,7 +18,7 @@ public class TreenipaivakirjaMain extends Application {
 		try {
 			final FXMLLoader ldr = new FXMLLoader(getClass().getResource("TreenipaivakirjaGUIView.fxml"));
 			final Pane root = (Pane)ldr.load();
-			final TreenipaivakirjaGUIController treenipaivakirjaCtrl = (TreenipaivakirjaGUIController)ldr.getController();
+			final TreenipaivakirjaGUIController treenipaivakirjaCtrl = (TreenipaivakirjaGUIController) ldr.getController();
 			
 			final Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("treenipaivakirja.css").toExternalForm());
@@ -27,6 +27,7 @@ public class TreenipaivakirjaMain extends Application {
 			primaryStage.setOnCloseRequest((event) -> {
 			    if ( !treenipaivakirjaCtrl.voikoSulkea() ) event.consume();
 			});
+			
 			
 			Treenipaivakirja treenipaivakirja = new Treenipaivakirja();
 	            treenipaivakirjaCtrl.setTreenipaivakirja(treenipaivakirja);

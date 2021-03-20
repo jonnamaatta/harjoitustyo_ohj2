@@ -10,7 +10,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 * @author Jonna Määttä
 * @version 18.3.2021
 */
-public class Harjoituskerta {
+public class Harjoituskerta implements Cloneable {
     
     private int        tunnusNro;
     private String     pvm            = "";
@@ -277,6 +277,29 @@ public class Harjoituskerta {
         seuraavaNro++;
         return tunnusNro;
     }
+    
+    
+    /**
+     * Tehdään identtinen klooni harjoituskerrasta
+     * @return Object kloonattu harjoituskerta
+     * @example
+     * <pre name="test">
+     * #THROWS CloneNotSupportedException 
+     *   Harjoituskerta c = new Harjoituskerta();
+     *   jasen.parse("   3  |  Ankka Aku   | 123");
+     *   Jasen kopio = jasen.clone();
+     *   kopio.toString() === jasen.toString();
+     *   jasen.parse("   4  |  Ankka Tupu   | 123");
+     *   kopio.toString().equals(jasen.toString()) === false;
+     * </pre>
+     */
+    @Override
+    public Harjoituskerta clone() throws CloneNotSupportedException {
+        Harjoituskerta uusi;
+        uusi = (Harjoituskerta) super.clone();
+        return uusi;
+    }
+    
     
        
     /**

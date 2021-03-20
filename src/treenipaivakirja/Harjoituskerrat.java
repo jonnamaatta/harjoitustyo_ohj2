@@ -19,7 +19,7 @@ import treenipaivakirja.Lajit.LajitIterator;
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran
  *
  * @author Jonna Määttä
- * @version 11.3.2021
+ * @version 20.3.2021
  */
 
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {
@@ -185,6 +185,46 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             if (har.getLajiNro() == tunnusnro) loydetyt.add(har);
         }
         return loydetyt;
+    }
+    
+    
+    /**
+     * Korvaa harjoituskerran tietorakenteessa.  Ottaa harjoituskerran omistukseensa.
+     * Etsitään samalla tunnusnumerolla oleva harjoituskerta.  Jos ei löydy,
+     * niin lisätään uutena harjoituskertana.
+     * @param harjoitus lisättävän harjoituskerran viite. Huom tietorakenne muuttuu omistajaksi
+     * @throws SailoException jos tietorakenne on jo täynnä
+     * <pre name="test">
+     * #THROWS SailoException,CloneNotSupportedException
+     * #PACKAGEIMPORT
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta harjoitus1 = new Harjoituskerta(), harjoitus2 = new Harjoituskerta();
+     * harjoitus1.rekisteroi(); harjoitus2.rekisteroi();
+     * harjoitukset.getLkm() === 0;
+     * harjoitukset.korvaaTaiLisaa(harjoitus1); harjoitukset.getLkm() === 1;
+     * harjoitukset.korvaaTaiLisaa(harjoitus2); harjoitukset.getLkm() === 2;
+     * Harjoituskerta harjoitus3 = harjoitus1.clone();
+     * harjoitus3.setKuormittavuus("3");
+     * Iterator<Harjoituskerta> it = harjoitukset.iterator();
+     * it.next() == harjoitus1 === true;
+     * harjoitukset.korvaaTaiLisaa(harjoitus3); harjoitukset.getLkm() === 2;
+     * it = harjoitukset.iterator();
+     * Harjoituskerta j0 = it.next();
+     * j0 === harjoitus3;
+     * j0 == harjoitus3 === true;
+     * j0 == harjoitus1 === false;
+     * </pre>
+     */
+    public void korvaaTaiLisaa(Harjoituskerta harjoitus) throws SailoException {
+        int id = harjoitus.getTunnusNro();
+        for (int i = 0; i < lkm; i++) {
+            if ( alkiot[i].getTunnusNro() == id ) {
+                alkiot[i] = harjoitus;
+                muutettu = true;
+                return;
+            }
+        }
+        lisaa(harjoitus);
     }
 
 
