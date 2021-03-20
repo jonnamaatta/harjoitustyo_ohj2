@@ -9,10 +9,11 @@ import java.io.PrintStream;
 import java.util.*;
 
 /**
- * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin
+ * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin.
  *
  * @author Jonna Määttä
- * @version 11.3.2021
+ * @version 20.3.2021
+ * 
  */
 public class Lajit implements Iterable<Laji> {
 
@@ -25,7 +26,7 @@ public class Lajit implements Iterable<Laji> {
 
     
     /**
-     * Lajien alustaminen
+     * Lajien alustaminen.
      */
     public Lajit() {
         // toistaiseksi ei tarvitse tehdä mitään
@@ -33,7 +34,7 @@ public class Lajit implements Iterable<Laji> {
 
     
     /**
-     * Asettaa tiedoston perusnimen ilan tarkenninta
+     * Asettaa tiedoston perusnimen ilan tarkenninta.
      * @param tied tallennustiedoston perusnimi
      */
     public void setTiedostonPerusNimi(String tied) {
@@ -42,8 +43,8 @@ public class Lajit implements Iterable<Laji> {
     
 
     /**
-     * Lisää uuden lajin tietorakenteeseen.  Ottaa lajin omistukseensa.
-     * @param l lisättävä laji.  Huom tietorakenne muuttuu omistajaksi
+     * Lisää uuden lajin tietorakenteeseen. Ottaa lajin omistukseensa.
+     * @param l lisättävä laji. Huom tietorakenne muuttuu omistajaksi
      */
     public void lisaa(Laji l) {
         alkiot.add(l);
@@ -102,7 +103,7 @@ public class Lajit implements Iterable<Laji> {
 
 
     /**
-     * Palauttaa treenipäiväkirjan lajien lukumäärän
+     * Palauttaa treenipäiväkirjan lajien lukumäärän.
      * @return lajien lukumäärä
      */
     public int getLkm() {
@@ -136,7 +137,7 @@ public class Lajit implements Iterable<Laji> {
     
     
     /**
-     * Testiohjelma lajeille
+     * Testiohjelma lajeille.
      * @param args ei käytössä
      * @throws SailoException poikkeus
      */
@@ -218,25 +219,25 @@ public class Lajit implements Iterable<Laji> {
         private int kohdalla = 0;
     
 
-    /**
-     * Onko olemassa vielä seuraavaa lajia
-     * @see java.util.Iterator#hasNext()
-     * @return true jos on vielä lajeja
-     */
-     @Override
-     public boolean hasNext() {
-        return kohdalla < getLkm();
+   /**
+    * Onko olemassa vielä seuraavaa lajia
+    * @see java.util.Iterator#hasNext()
+    * @return true jos on vielä lajeja
+    */
+    @Override
+    public boolean hasNext() {
+       return kohdalla < getLkm();
      }
 
 
-    /**
-     * Annetaan seuraava laji
-     * @return seuraava laji
-     * @throws NoSuchElementException jos seuraava alkiota ei enää ole
-     * @see java.util.Iterator#next()
-     */
-     @Override
-     public Laji next() throws NoSuchElementException {
+   /**
+    * Annetaan seuraava laji
+    * @return seuraava laji
+    * @throws NoSuchElementException jos seuraava alkiota ei enää ole
+    * @see java.util.Iterator#next()
+    */
+    @Override
+    public Laji next() throws NoSuchElementException {
         if ( !hasNext() ) throw new NoSuchElementException("Ei oo");
         return anna(kohdalla++);
      }
@@ -248,7 +249,7 @@ public class Lajit implements Iterable<Laji> {
     * @see java.util.Iterator#remove()
     */
     @Override
-   public void remove() throws UnsupportedOperationException {
+    public void remove() throws UnsupportedOperationException {
        throw new UnsupportedOperationException("Me ei poisteta");
         }
     }
@@ -279,7 +280,7 @@ public class Lajit implements Iterable<Laji> {
      *   Laji laji4 = new Laji(); laji4.parse("4|kuntosali"); 
      *   Laji laji5 = new Laji(); laji5.parse("5|tennis"); 
      *   lajit.lisaa(laji1); lajit.lisaa(laji2); lajit.lisaa(laji3); lajit.lisaa(laji4); lajit.lisaa(laji5);
-     *   // TODO: toistaiseksi palauttaa kaikki jäsenet 
+     *   // TODO: toistaiseksi palauttaa kaikki harjoituskerrat.
      * </pre> 
      */ 
     @SuppressWarnings("unused")

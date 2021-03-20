@@ -17,13 +17,13 @@ import treenipaivakirja.Laji;
  * Kysytään lajin tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 18.3.2021
+ * @version 20.3.2021
  *
  */
 public class LajiDialogController implements ModalControllerInterface<Laji>,Initializable  {
 
     @FXML private TextField editNimi;
-    @FXML private Label labelVirhe;
+    @FXML private Label     labelVirhe;
 
     
     @Override
@@ -47,8 +47,8 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
    
 
     /**
-     * Tyhjentään tekstikentät 
-     * @param edits tauluko jossa tyhjennettäviä tektsikenttiä
+     * Tyhjennetään tekstikentät.
+     * @param edits taulukko jossa tyhjennettäviä tekstikenttiä
      */
     public static void tyhjenna(TextField[] edits) {
         for (TextField edit : edits)
@@ -57,9 +57,9 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
 
 
     /**
-     * Tekee tarvittavat muut alustukset. Mm laittaa edit-kentistä tulevan
-     * tapahtuman menemään kasitteleMuutosJaseneen-metodiin ja vie sille
-     * kentännumeron parametrina.
+     * Tekee tarvittavat muut alustukset, esim. laittaa edit-kentistä tulevan
+     * tapahtuman menemään kasitteleMuutosLajiin-metodiin ja vie sille
+     * kentän numeron parametrina.
      */
     protected void alusta() {
         edits = new TextField[]{editNimi};
@@ -105,7 +105,7 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
 
     
     /**
-     * Käsitellään jäseneen tullut muutos
+     * Käsitellään lajiin tullut muutos.
      * @param edit muuttunut kenttä
      */
     private void kasitteleMuutosLajiin(int k, TextField edit) {
@@ -129,7 +129,7 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
     
     
     /**
-     * Näytetään lajin tiedot TextField komponentteihin
+     * Näytetään lajin tiedot TextField-komponentteihin.
      * @param edits taulukko jossa tekstikenttiä
      * @param laji näytettävä laji
      */
@@ -140,7 +140,7 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
     
     
     /**
-     * Luodaan jäsenen kysymisdialogi ja palautetaan sama tietue muutettuna tai null
+     * Luodaan lajin kysymisdialogi ja palautetaan sama tietue muutettuna tai null.
      * TODO: korjattava toimimaan
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä dataan näytetään oletuksena

@@ -8,7 +8,8 @@ import fi.jyu.mit.ohj2.Mjonot;
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 18.3.2021
+* @version 20.3.2021
+* 
 */
 public class Harjoituskerta implements Cloneable {
     
@@ -32,7 +33,7 @@ public class Harjoituskerta implements Cloneable {
     
     
     /**
-     * Alustetaan tietyn harjoituskerran laji 
+     * Alustetaan tietyn harjoituskerran laji.
      * @param lajiNro lajin viitenumero 
      */
     public Harjoituskerta(int lajiNro) {
@@ -52,6 +53,7 @@ public class Harjoituskerta implements Cloneable {
    
    
    /**
+    * Asettaa harjoituskerralle päivämäärän.
     * @param s laitettava pvm
     * @return virheilmotus, null jos ok
     */
@@ -61,7 +63,8 @@ public class Harjoituskerta implements Cloneable {
    }
 
    
-   /**
+  /**
+   * Asettaa harjoituskerralle keston.
    * @param s laitettava kesto
    * @return virheilmoitus, null jos ok
    * */
@@ -72,6 +75,7 @@ public class Harjoituskerta implements Cloneable {
    
    
   /**
+   * Asettaa harjoituskerralle matkan.
    * @param s laitettava matka
    * @return virheilmoitus, null jos ok
    * */
@@ -81,6 +85,7 @@ public class Harjoituskerta implements Cloneable {
    }
     
   /**
+   * Asettaa harjoituskerralle kuormittavuuden.
    * @param s laitettava kuormittavuus
    * @return virheilmoitus, null jos ok
    * */
@@ -91,6 +96,7 @@ public class Harjoituskerta implements Cloneable {
      
      
   /**
+   * Asettaa harjoituskerralle kommentin.
    * @param s laitettava kommentti
    * @return virheilmoitus, null jos ok
    * */
@@ -101,6 +107,7 @@ public class Harjoituskerta implements Cloneable {
 
   
     /**
+     * Palauttaa harjoituskerran lajinumeron.
      * @return lajiNro
      */
     public int getLajiNro() {
@@ -109,6 +116,7 @@ public class Harjoituskerta implements Cloneable {
     
     
    /**
+    * Palauttaa harjoituskerran päivämäärän.
     * @return harjoituskerran nimi
     * @example
     * <pre name="test">
@@ -132,6 +140,7 @@ public class Harjoituskerta implements Cloneable {
      
      
     /**
+     * Palauttaa harjoituskerran keston.
      * @return kesto
      */
      public String getKesto() {
@@ -140,6 +149,7 @@ public class Harjoituskerta implements Cloneable {
       
       
     /**
+     * Paluttaa harjoituskerran kommentin.
      * @return matka
      */
      public String getMatka() {
@@ -148,13 +158,16 @@ public class Harjoituskerta implements Cloneable {
        
        
     /**
+     * Palauttaa harjoituskerran kuormittavuuden.
      * @return kuormittavuus
      */
      public String getKuormittavuus() {
          return kuormittavuus;
      }
         
+     
     /**
+     * Palauttaa harjoituskerran kommentin.
      * @return kommentti
      */
      public String getKommentti() {
@@ -236,7 +249,7 @@ public class Harjoituskerta implements Cloneable {
 
     
     /**
-    * Tulostetaan harjoituskerta
+    * Tulostetaan harjoituskerta.
     * @param out tietovirta johon tulostetaan
     */
     public void tulosta(PrintStream out) {
@@ -249,7 +262,7 @@ public class Harjoituskerta implements Cloneable {
     
     
     /**
-    * Tulostetaan harjoituskerran tiedot
+    * Tulostetaan harjoituskerran tiedot.
     * @param os tietovirta johon tulostetaan
     */
     public void tulosta(OutputStream os) {
@@ -285,12 +298,12 @@ public class Harjoituskerta implements Cloneable {
      * @example
      * <pre name="test">
      * #THROWS CloneNotSupportedException 
-     *   Harjoituskerta c = new Harjoituskerta();
-     *   jasen.parse("   3  |  Ankka Aku   | 123");
-     *   Jasen kopio = jasen.clone();
-     *   kopio.toString() === jasen.toString();
-     *   jasen.parse("   4  |  Ankka Tupu   | 123");
-     *   kopio.toString().equals(jasen.toString()) === false;
+     *   Harjoituskerta har = new Harjoituskerta();
+     *   har.parse("   1  |  7.12.20  |   1  | 44:32 | 7.0 | 6 |Jaksoin juosta todella hyvin  ");
+     *   Harjoituskerta kopio = har.clone();
+     *   kopio.toString() === har.toString();
+     *   har.parse(" 2  |  9.12.20  |   2 | 45:21 | 5.0 | 7 | Ihan OK meni ");
+     *   kopio.toString().equals(har.toString()) === false;
      * </pre>
      */
     @Override
@@ -320,4 +333,6 @@ public class Harjoituskerta implements Cloneable {
         juoksu2.vastaaJuoksu(0);
         juoksu2.tulosta(System.out);
         }   
+    
+    
 }

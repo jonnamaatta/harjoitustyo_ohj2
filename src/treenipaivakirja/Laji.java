@@ -8,13 +8,14 @@ import static treenipaivakirja.Harjoituskerta.rand;
 
 /**
  * Laji joka osaa mm. itse huolehtia tunnus_nro:staan.
+ * 
  * @author Jonna Määttä
- * @version 18.3.2021
+ * @version 20.3.2021
+ * 
  */
 public class Laji {
-    private int tunnusNro;
-    private String lajinNimi;
-   
+    private int        tunnusNro;
+    private String     lajinNimi; 
     private static int seuraavaNro = 1;
 
     
@@ -102,7 +103,7 @@ public class Laji {
     
     
     /**
-     * Selvitää lajin tiedot | erotellusta merkkijonosta
+     * Selvitää lajin tiedot | erotellusta merkkijonosta.
      * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusNro.
      * @param rivi josta lajin tiedot otetaan
      * 
@@ -128,7 +129,7 @@ public class Laji {
 
     
     /**
-     * Palautetaan lajin oma id
+     * Palautetaan lajin oma id.
      * @return lajin id
      */
     public int getTunnusNro() {
@@ -137,7 +138,7 @@ public class Laji {
     
     
     /**
-     * Palautetaan lajin nimi
+     * Palautetaan lajin nimi.
      * @return lajin nimi
      */
     public String getNimi() {
@@ -146,6 +147,7 @@ public class Laji {
     
     
     /**
+     * Asetetaan lajille nimi.
      * @param s lajille laitettava nimi
      * @return virheilmoitus, null jos ok
      */

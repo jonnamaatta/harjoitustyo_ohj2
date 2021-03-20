@@ -148,7 +148,7 @@
                   <Label text="Omat lajit" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <StringGrid fx:id="tableLajit" editable="true" prefHeight="394.0" prefWidth="338.0" rivit="laji&#10;juoksu&#10;tennis&#10;kuntosali&#10;luistelu&#10;&#10;" BorderPane.alignment="CENTER">
+                  <StringGrid fx:id="tableLajit" editable="true" prefHeight="394.0" prefWidth="338.0" rivit="laji&#10;juoksu&#10;&#10;&#10;" BorderPane.alignment="CENTER">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>

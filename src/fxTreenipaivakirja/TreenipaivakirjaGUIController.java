@@ -24,22 +24,24 @@ import fi.jyu.mit.fxgui.*;
 
 /**
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
+ * 
  * @author Jonna Määttä
- * @version 19.3.2021
+ * @version 20.3.2021
+ * 
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
-    @FXML private TextField hakuehto;
-    @FXML private ComboBoxChooser<String> cbKentat;
-    @FXML private Label labelVirhe;
-    @FXML private ScrollPane panelHarjoituskerta;
+    @FXML private TextField                   hakuehto;
+    @FXML private TextField                   editPvm; 
+    @FXML private TextField                   editKesto; 
+    @FXML private TextField                   editMatka;
+    @FXML private TextField                   editKuormittavuus;
+    @FXML private TextField                   editKommentti;
+    @FXML private ComboBoxChooser<String>     cbKentat;
+    @FXML private ScrollPane                  panelHarjoituskerta;
     @FXML private ListChooser<Harjoituskerta> chooserHarjoitukset;
-    @FXML private StringGrid<Laji> tableLajit;
-    @FXML private TextField editPvm; 
-    @FXML private TextField editKesto; 
-    @FXML private TextField editMatka;
-    @FXML private TextField editKuormittavuus;
-    @FXML private TextField editKommentti;
+    @FXML private StringGrid<Laji>            tableLajit;
+    @FXML private Label                       labelVirhe;
 
     
     @Override
@@ -48,8 +50,8 @@ public class TreenipaivakirjaGUIController implements Initializable {
     }
     
     
-    /*
-     * Käsitellään hakuehto
+    /**
+     * Käsitellään hakuehto.
      */
     @FXML private void handleHakuehto() {
         String hakukentta = cbKentat.getSelectedText();
@@ -60,9 +62,9 @@ public class TreenipaivakirjaGUIController implements Initializable {
             naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
     }
 
-    
+   
     /**
-     * Käsitellään uuden harjoituskerran lisääminen
+     * Käsitellään uuden harjoituskerran lisääminen.
      */
     @FXML private void handleUusiHarjoituskerta() {
         uusiHarjoituskerta();
@@ -70,7 +72,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään harjoituskerran muokkaaminen
+     * Käsitellään harjoituskerran muokkaaminen.
      */
     @FXML private void handleMuokkaaHarjoituskerta() {
         muokkaaHarjoitusta();
@@ -78,7 +80,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään harjoituskerran poistaminen
+     * Käsitellään harjoituskerran poistaminen.
      */
     @FXML private void handlePoistaHarjoituskerta() {
         Dialogs.showMessageDialog("Ei osata vielä poistaa harjoituskertaa!");
@@ -86,7 +88,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään uuden lajin lisääminen
+     * Käsitellään uuden lajin lisääminen.
      */
     @FXML private void handleUusiLaji() {
         uusiLaji();
@@ -94,7 +96,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään lajin muokkaaminen
+     * Käsitellään lajin muokkaaminen.
      */
     @FXML private void handleMuokkaaLajia() {
         muokkaaLajia();
@@ -102,7 +104,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään lajin poistaminen
+     * Käsitellään lajin poistaminen.
      */
     @FXML private void handlePoistaLaji() {
         Dialogs.showMessageDialog("Ei osata vielä!");
@@ -110,7 +112,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään tallentaminen
+     * Käsitellään tallentaminen.
      */
     @FXML private void handleTallenna() {
         tallenna();
@@ -118,7 +120,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään lopettaminen
+     * Käsitellään lopettaminen.
      */
     @FXML private void handleLopeta() {
         tallenna();
@@ -127,7 +129,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      
     
     /**
-     * Käsitellään tietojen näyttäminen
+     * Käsitellään tietojen näyttäminen.
      */
     @FXML private void handleTietoja() {
         Dialogs.showMessageDialog("Treenipäiväkirja");
@@ -135,7 +137,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään tilastojen näyttäminen
+     * Käsitellään tilastojen näyttäminen.
      */
     @FXML private void handleTilastoja() {
         tilastoja();
@@ -143,7 +145,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään harjoituskertojen tulostaminen
+     * Käsitellään harjoituskertojen tulostaminen.
      */
     @FXML private void handleTulosta() {
         Dialogs.showMessageDialog("Ei osata vielä tulostaa!");
@@ -151,7 +153,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Käsitellään "Apua"-osion näyttäminen
+     * Käsitellään "Apua"-osion näyttäminen.
      */
     @FXML private void handleApua() {
         Dialogs.showMessageDialog("Ei osata vielä auttaa!");
@@ -162,29 +164,25 @@ public class TreenipaivakirjaGUIController implements Initializable {
     // Tästä eteenpäin ei käyttöliittymään suoraan liittyvää koodia
     
     private Treenipaivakirja treenipaivakirja;
-    private Harjoituskerta harjoitusKohdalla;
-    // private TextArea areaLaji = new TextArea();
-    private String tiednimi = "treenit";  
-    private Treenipaivakirja treeni;
-    private TextField edits[];
+    private Harjoituskerta   harjoitusKohdalla;
+    private String           tiednimi = "treenit";  
+    private TextField        edits[];
     
     
     /**
-     * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
-     * yksi iso tekstikenttä, johon voidaan tulostaa harjoitusten tiedot.
-     * Alustetaan myös lajilistan kuuntelija 
+     * Tekee muut tarvittavat alustukset.
      */
-      protected void alusta() {
+      protected void alusta()  {
           chooserHarjoitukset.clear();
           chooserHarjoitukset.addSelectionListener(e -> naytaHarjoituskerta());
-          
-          edits = new TextField[]{editPvm, editKesto, editMatka, editKuormittavuus, editKommentti};
-        }
+         
+          edits = new TextField[]{editPvm, editKesto, editMatka, editKuormittavuus, editKommentti};     
+      }
       
       
       /**
-       * Alustaa treenipäiväkirjan lukemalla sen valitun nimisestä tiedostosta
-       * @param nimi tiedosto josta kerhon tiedot luetaan
+       * Alustaa treenipäiväkirjan lukemalla sen valitun nimisestä tiedostosta.
+       * @param nimi tiedosto josta treenipäiväkirjan tiedot luetaan
        * @return null jos onnistuu, muuten virhe tekstinä
        */
       protected String lueTiedosto(String nimi) {
@@ -192,18 +190,20 @@ public class TreenipaivakirjaGUIController implements Initializable {
           try {
               treenipaivakirja.lueTiedostosta(nimi);
               hae(0);
+              haeLaji(0);
               return null;
           } catch (SailoException e) {
               hae(0);
+              haeLaji(0);
               String virhe = e.getMessage(); 
               if ( virhe != null ) Dialogs.showMessageDialog(virhe);
               return virhe;
           }
-       }
+      }
 
 
       /**
-       * Kysytään tiedoston nimi ja luetaan se
+       * Kysytään tiedoston nimi ja luetaan se.
        * @return true jos onnistui, false jos ei
        */
       public boolean avaa() {
@@ -215,7 +215,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
       
       
       /**
-       * Tietojen tallennus
+       * Tietojen tallennus.
        * @return null jos onnistuu, muuten virhe tekstinä
        */
       private String tallenna() {
@@ -228,11 +228,10 @@ public class TreenipaivakirjaGUIController implements Initializable {
               return ex.getMessage();
           }
       }
-     
-      
+        
       
       /**
-       * Tarkistetaan onko tallennus tehty
+       * Tarkistetaan onko tallennus tehty.
        * @return true jos saa sulkea sovelluksen, false jos ei
        */
       public boolean voikoSulkea() {
@@ -247,13 +246,12 @@ public class TreenipaivakirjaGUIController implements Initializable {
       protected void naytaHarjoituskerta() {
           harjoitusKohdalla = chooserHarjoitukset.getSelectedObject();
           if (harjoitusKohdalla == null) return;
-          
           HarjoitusDialogController.naytaHarjoitus(edits, harjoitusKohdalla);
-      }
+          }
       
-      
+ 
       /**
-       * Hakee harjoituskerran tiedot listaan
+       * Hakee harjoituskerran tiedot listaan.
        * @param hnro harjotuksen numero, joka aktivoidaan haun jälkeen
        */
       protected void hae(int hnro) {
@@ -262,7 +260,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
           int index = 0; 
           Collection<Harjoituskerta> harjoitukset; 
           try { 
-              harjoitukset = treenipaivakirja.etsi("", 1); 
+              harjoitukset = treenipaivakirja.etsiHarjoitus("", 1); 
               int i = 0; 
               for (Harjoituskerta harjoitus:harjoitukset) { 
                   if (harjoitus.getTunnusNro() == hnro) index = i; 
@@ -276,10 +274,31 @@ public class TreenipaivakirjaGUIController implements Initializable {
       }
       
       
+     /** Hakee lajin tiedot listaan
+      * @param lnro lajin numero
+      */
+      protected void haeLaji(int lnro) {
+          tableLajit.clear();
+         
+          int index = 0; 
+          Collection<Laji> lajit; 
+          try { 
+              lajit = treenipaivakirja.etsiLaji("", 1); 
+              int i = 0; 
+              for (Laji laji:lajit) { 
+                  if (laji.getTunnusNro() == lnro) index = i; 
+                  tableLajit.add(laji.getNimi()); 
+                  i++; 
+              } 
+          } catch (SailoException ex) { 
+              Dialogs.showMessageDialog("Lajin hakemisessa ongelmia! " + ex.getMessage()); 
+          }        
+          tableLajit.getSelectionModel().select(index); // tästä tulee muutosviesti joka näyttää lajin
+      }
+      
       
       /**
-       * Uuden harjoituskerran lisääminen
-       * TODO: lisää parametrilistaan treenipaivakirja
+       * Uuden harjoituskerran lisääminen.
        */
       private void uusiHarjoituskerta() {
           try {
@@ -297,9 +316,9 @@ public class TreenipaivakirjaGUIController implements Initializable {
 
       
       /**
-       * Tulostaa harjoituksen tiedot
+       * Tulostaa harjoituskerran tiedot.
        * @param os tietovirta johon tulostetaan
-       * @param harjoitus tulostettava jäsen
+       * @param harjoitus tulostettava harjoituskerta
        */
       public void tulosta(PrintStream os, final Harjoituskerta harjoitus) {
           os.println("----------------------------------------------");
@@ -307,11 +326,10 @@ public class TreenipaivakirjaGUIController implements Initializable {
           os.println("----------------------------------------------");
       }
      
-     
       
      /**
-      * Näytetään virhe
-      * @param virhe
+      * Näytetään virhe.
+      * @param virhe virhe, joka näytetään
       */
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
@@ -325,15 +343,15 @@ public class TreenipaivakirjaGUIController implements Initializable {
   
     
     /**
-     * Harjoituksen muokkaus
+     * Harjoituskerran muokkaus.
      */
     private void muokkaaHarjoitusta() {
-         if ( harjoitusKohdalla == null ) return; 
+        if ( harjoitusKohdalla == null ) return; 
         try { 
            Harjoituskerta uusi;
            uusi = HarjoitusDialogController.kysyHarjoitus(null, harjoitusKohdalla.clone(), treenipaivakirja); 
-            if ( uusi == null ) return; 
-            treenipaivakirja.korvaaTaiLisaa(uusi); 
+           if ( uusi == null ) return; 
+           treenipaivakirja.korvaaTaiLisaa(uusi); 
            hae(uusi.getTunnusNro()); 
        } catch (CloneNotSupportedException e) { 
          //
@@ -344,7 +362,8 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Uuden lajin lisääminen
+     * Uuden lajin lisääminen.
+     * TODO: Muokkaa sellaiseksi, että avaa dialogin
      */
     private void uusiLaji() {
         Laji l = new Laji();
@@ -356,12 +375,12 @@ public class TreenipaivakirjaGUIController implements Initializable {
             Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
             return;
         }
-        hae(l.getTunnusNro());
+        haeLaji(l.getTunnusNro());
     }
     
     
     /**
-     * Lajin muokkaus
+     * Lajin muokkaus.
      */
     private void muokkaaLajia() {
         ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("LajiDialogView.fxml"),"Lajin muokkaaminen", null, "");
@@ -369,7 +388,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Tilastojen näyttäminen
+     * Tilastojen näyttäminen.
      */
     private void tilastoja() {
         ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("TilastotView.fxml"),"Tilastojen näyttäminen", null, "");
@@ -377,8 +396,8 @@ public class TreenipaivakirjaGUIController implements Initializable {
 
     
     /**
-     * Asetetaan viite käytettävään kerhoon
-     * @param treenipaivakirja käytettävä kerho
+     * Asetetaan viite käytettävään treenipäiväkirjaan.
+     * @param treenipaivakirja käytettävä treenipäiväkirja.
      */
     public void setTreenipaivakirja(Treenipaivakirja treenipaivakirja) {
         this.treenipaivakirja = treenipaivakirja;

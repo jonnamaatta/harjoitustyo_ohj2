@@ -16,20 +16,20 @@ import java.util.Scanner;
 import treenipaivakirja.Lajit.LajitIterator;
 
 /**
- * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran
+ * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
  *
  * @author Jonna Määttä
  * @version 20.3.2021
+ * 
  */
-
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     
     private static final int MAX_HARJOITUKSIA   = 10;
     private int              lkm                = 0;
-    private String           tiedostonNimi      = "";
     private Harjoituskerta   alkiot[]; 
+    private String           tiedostonNimi      = "";
     private String           tiedostonPerusNimi = "";
-    private boolean muutettu = false;
+    private boolean          muutettu           = false;
 
     
     /**
@@ -70,7 +70,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             muutettu = false;
         } catch (FileNotFoundException e) {
             throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);  
-       } // catch (IOException e) {
+        } // catch (IOException e) {
         //    throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
         }
   
@@ -97,8 +97,8 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
 
     /**
-     * Lisää uuden harjoituskerran tietorakenteeseen.  Ottaa harjoituskerran omistukseensa.
-     * @param harjoitus lisättävän harjoituskerran viite.  Huom tietorakenne muuttuu omistajaksi
+     * Lisää uuden harjoituskerran tietorakenteeseen. Ottaa harjoituskerran omistukseensa.
+     * @param harjoitus lisättävän harjoituskerran viite. Huom tietorakenne muuttuu omistajaksi
      * @throws SailoException jos tietorakenne on jo täynnä
      * @example
      * <pre name="test">
@@ -142,8 +142,8 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
 
     /**
-     * Palauttaa harjoitusten lukumäärän
-     * @return harjoitusten lukumäärä
+     * Palauttaa harjoituuskertojen lukumäärän.
+     * @return harjoituskertojen lukumäärä
      */
     public int getLkm() {
         return lkm;
@@ -151,29 +151,29 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     
     
     /**
-     * Haetaan kaikki lajin harjoituskerrat 
+     * Haetaan kaikki lajin harjoituskerrat.
      * @param tunnusnro lajin tunnusnumero jolle harjoituksia haetaan
      * @return tietorakenne jossa viiteet löydettyihin harjoituskertoihin
      * @example
      * <pre name="test">
      * #import java.util.*;
      * 
-     *  Lajit harrasteet = new Lajit();
-     *  Laji juoksu21 = new Laji(2); harrasteet.lisaa(juoksu21);
-     *  Laji juoksu11 = new Laji(1); harrasteet.lisaa(juoksu11);
-     *  Laji juoksu22 = new Laji(2); harrasteet.lisaa(juoksu22);
-     *  Laji juoksu12 = new Laji(1); harrasteet.lisaa(juoksu12);
-     *  Laji juoksu23 = new Laji(2); harrasteet.lisaa(juoksu23);
-     *  Laji juoksu51 = new Laji(5); harrasteet.lisaa(juoksu51);
+     *  Lajit lajit = new Lajit();
+     *  Laji juoksu21 = new Laji(2); lajit.lisaa(juoksu21);
+     *  Laji juoksu11 = new Laji(1); lajit.lisaa(juoksu11);
+     *  Laji juoksu22 = new Laji(2); lajit.lisaa(juoksu22);
+     *  Laji juoksu12 = new Laji(1); lajit.lisaa(juoksu12);
+     *  Laji juoksu23 = new Laji(2); lajit.lisaa(juoksu23);
+     *  Laji juoksu51 = new Laji(5); lajit.lisaa(juoksu51);
      *  
      *  List<Laji> loytyneet;
-     *  loytyneet = harrasteet.annaHarjoituskerrat(3);
+     *  loytyneet = lajit.annaHarjoituskerrat(3);
      *  loytyneet.size() === 0; 
-     *  loytyneet = harrasteet.annaHarjoituskerrat(1);
+     *  loytyneet = lajit.annaHarjoituskerrat(1);
      *  loytyneet.size() === 2; 
      *  loytyneet.get(0) == juoksu11 === true;
      *  loytyneet.get(1) == juoksu12 === true;
-     *  loytyneet = harrasteet.annaHarjoituskerrat(5);
+     *  loytyneet = lajit.annaHarjoituskerrat(5);
      *  loytyneet.size() === 1; 
      *  loytyneet.get(0) == juoksu51 === true;
      * </pre> 
@@ -189,7 +189,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     
     
     /**
-     * Korvaa harjoituskerran tietorakenteessa.  Ottaa harjoituskerran omistukseensa.
+     * Korvaa harjoituskerran tietorakenteessa. Ottaa harjoituskerran omistukseensa.
      * Etsitään samalla tunnusnumerolla oleva harjoituskerta.  Jos ei löydy,
      * niin lisätään uutena harjoituskertana.
      * @param harjoitus lisättävän harjoituskerran viite. Huom tietorakenne muuttuu omistajaksi
@@ -229,9 +229,9 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
 
     /**
-     * Testiohjelma harjoituskerroille
+     * Testiohjelma harjoituskerroille.
      * @param args ei käytössä
-     * @throws SailoException plääplää
+     * @throws SailoException jos epäonnistuu
      */
     public static void main(String args[]) throws SailoException {
         Harjoituskerrat harjoitukset = new Harjoituskerrat();
@@ -388,4 +388,4 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     }
 
     
-   }
+}

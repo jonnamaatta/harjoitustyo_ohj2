@@ -28,7 +28,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     @FXML private TextField editMatka;
     @FXML private TextField editKuormittavuus;    
     @FXML private TextField editKommentti;    
-    @FXML private Label labelVirhe;
+    @FXML private Label     labelVirhe;
     
 
     @Override
@@ -39,7 +39,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     @FXML private void handleOK() {
         if ( harjoitusKohdalla != null && harjoitusKohdalla.getPvm().trim().equals("") ) {
-            naytaVirhe("Päivämäärä ei saa olla tyhjä");
+            naytaVirhe("Päivämäärä ei saa olla tyhjä.");
             return;
         }
         ModalController.closeStage(labelVirhe);
@@ -59,8 +59,8 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
    
 
     /**
-     * Tyhjentään tekstikentät 
-     * @param edits tauluko jossa tyhjennettäviä tektsikenttiä
+     * Tyhjentää tekstikentät.
+     * @param edits taulukko, jossa tyhjennettäviä tekstikenttiä
      */
     public static void tyhjenna(TextField[] edits) {
         for (TextField edit : edits)
@@ -69,9 +69,9 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
 
 
     /**
-     * Tekee tarvittavat muut alustukset. Mm laittaa edit-kentistä tulevan
+     * Tekee tarvittavat muut alustukset, esim. laittaa edit-kentistä tulevan
      * tapahtuman menemään kasitteleMuutosHarjoitukseen-metodiin ja vie sille
-     * kentännumeron parametrina.
+     * kentän numeron parametrina.
      */
     protected void alusta() {
         edits = new TextField[]{editPvm, editKesto, editMatka, editKuormittavuus, editKommentti};
@@ -97,7 +97,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     
     /**
-     * Mitä tehdään kun dialogi on näytetty
+     * Mitä tehdään kun dialogi on näytetty.
      */
     @Override
     public void handleShown() {
@@ -117,7 +117,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
 
     
     /**
-     * Käsitellään harjoitukseen tullut muutos
+     * Käsitellään harjoitukseen tullut muutos.
      * @param edit muuttunut kenttä
      */
     private void kasitteleMuutosHarjoitukseen(int k, TextField edit) {
@@ -145,7 +145,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     
     /**
-     * Näytetään harjoituskerran tiedot TextField komponentteihin
+     * Näytetään harjoituskerran tiedot TextField komponentteihin.
      * @param edits taulukko jossa tekstikenttiä
      * @param har näytettävä harjoitus
      */
@@ -160,7 +160,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     
     /**
-     * Luodaan harjoituskerran kysymisdialogi ja palautetaan sama tietue muutettuna tai null
+     * Luodaan harjoituskerran kysymisdialogi ja palautetaan sama tietue muutettuna tai null.
      * TODO: korjattava toimimaan
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä dataan näytetään oletuksena

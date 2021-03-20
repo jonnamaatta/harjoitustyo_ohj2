@@ -5,16 +5,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Treenipäiväkirja-luokka, joka huolehtii harjoituskerroista.  Pääosin kaikki metodit
- * ovat vain "välittäjämetodeja" harjoituskertoihin..
+ * Treenipäiväkirja-luokka, joka huolehtii harjoituskerroista. Pääosin kaikki metodit
+ * ovat vain "välittäjämetodeja" harjoituskertoihin.
  *
  * @author Jonna Määttä
  * @version 20.3.2021
+ * 
  */
 public class Treenipaivakirja {
-    
     private Harjoituskerrat harjoitukset = new Harjoituskerrat();
-    private Lajit lajit = new Lajit(); 
+    private Lajit           lajit        = new Lajit(); 
 
 
     /**
@@ -56,7 +56,7 @@ public class Treenipaivakirja {
      *  treenipaivakirja.tallenna();
      *  treenipaivakirja = new Treenipaivakirja();
      *  treenipaivakirja.lueTiedostosta(hakemisto);
-     *  Collection<Laji> kaikki = kerho.etsi("",-1); 
+     *  Collection<Laji> kaikki = treenipaivakirja.etsi("",-1); 
      *  Iterator<Laji> it = kaikki.iterator();
      *  it.next() === laji1;
      *  it.next() === laji2;
@@ -94,9 +94,7 @@ public class Treenipaivakirja {
     
     
     /**
-    * Tallenttaa kerhon tiedot tiedostoon.  
-    * Vaikka jäsenten tallettamien epäonistuisi, niin yritetään silti tallettaa
-    * harrastuksia ennen poikkeuksen heittämistä.
+    * Tallentaa treenipäiväkirjan tiedot tiedostoon.  
     * @throws SailoException jos tallettamisessa ongelmia
     */
     public void tallenna() throws SailoException {
@@ -117,8 +115,8 @@ public class Treenipaivakirja {
 
 
     /**
-     * Palauttaa harjoitusten määrän
-     * @return harjoitusten määrä
+     * Palauttaa lajien määrän.
+     * @return lajien määrä
      */
     public int getLajit() {
         return lajit.getLkm();
@@ -126,13 +124,25 @@ public class Treenipaivakirja {
     
     
     /**
-     * Palauttaa harjoitusten määrän
+     * Palauttaa harjoitusten määrän.
      * @return harjoitusten määrä
      */
     public int getHarjoitukset() {
         return harjoitukset.getLkm();
     }
-
+    
+    
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien lajien viitteet.
+     * @param hakuehto hakuehto  
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä lajeista
+     * @throws SailoException Jos jotakin menee väärin
+     */ 
+    public Collection<Laji> etsiLaji(String hakuehto, int k) throws SailoException { 
+        return lajit.etsi(hakuehto, k); 
+    } 
+    
 
 
     /**
@@ -146,7 +156,7 @@ public class Treenipaivakirja {
 
 
     /**
-     * Lisää treenipäiväkirjaan uuden harjoituksen
+     * Lisää treenipäiväkirjaan uuden harjoituskerran.
      * @param harjoitus lisättävä harjoituskerta
      * @throws SailoException jos lisäystä ei voida tehdä
      * @example
@@ -175,7 +185,7 @@ public class Treenipaivakirja {
 
     
     /**
-     * Listään uusi laji 
+     * Lisätään uusi laji.
      * @param laj lisättävä laji
      * @throws SailoException poikkeus
      */
@@ -185,7 +195,7 @@ public class Treenipaivakirja {
 
     
     /**
-     * Palauttaa i:n harjoituskerran
+     * Palauttaa i:n harjoituskerran.
      * @param i monesko harjoituskerta palautetaan
      * @return viite i:teen harjoitukseen
      * @throws IndexOutOfBoundsException jos i väärin
@@ -196,19 +206,19 @@ public class Treenipaivakirja {
 
     
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien harjoituskertojen viitteet.
      * @param hakuehto hakuehto  
      * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä jäsenistä 
+     * @return tietorakenteen löytyneistä harjoituskerroista
      * @throws SailoException Jos jotakin menee väärin
      */ 
-    public Collection<Harjoituskerta> etsi(String hakuehto, int k) throws SailoException { 
+    public Collection<Harjoituskerta> etsiHarjoitus(String hakuehto, int k) throws SailoException { 
         return harjoitukset.etsi(hakuehto, k); 
     } 
 
 
     /**
-     * @param i indeksi
+     * @param i lajin indeksi
      * @return laji
      */
     public Laji annaLaji(int i) {
@@ -217,7 +227,7 @@ public class Treenipaivakirja {
 
 
     /**
-     * Tallettaa treenipäiväkirjan tiedot tiedostoon
+     * Tallettaa treenipäiväkirjan tiedot tiedostoon.
      * @throws SailoException jos tallettamisessa ongelmia
      */
     public void talleta() throws SailoException {
@@ -228,7 +238,7 @@ public class Treenipaivakirja {
     
     /**
      * @param laji haluttava laji
-     * @return lajin harjoitukskerrat
+     * @return lajin harjoituskerrat
      */
     public List<Harjoituskerta> annaHarjoituskerrat(Laji laji) {
         return harjoitukset.annaHarjoituskerrat(laji.getTunnusNro());
@@ -236,7 +246,7 @@ public class Treenipaivakirja {
     
     
     /**
-     * Asettaa tiedostojen perusnimet
+     * Asettaa tiedostojen perusnimet.
      * @param nimi uusi nimi
      */
     public void setTiedosto(String nimi) {
@@ -250,10 +260,10 @@ public class Treenipaivakirja {
     
     
     /** 
-     * Korvaa harjoituksen tietorakenteessa.  Ottaa harjoituksen omistukseensa. 
-     * Etsitään samalla tunnusnumerolla oleva harjoitus.  Jos ei löydy, 
-     * niin lisätään uutena harjoituksena. 
-     * @param harjoitus lisättävän harjoituksen viite.  Huom tietorakenne muuttuu omistajaksi 
+     * Korvaa harjoituskerran tietorakenteessa. Ottaa harjoituskerran omistukseensa. 
+     * Etsitään samalla tunnusnumerolla oleva harjoituskerta. Jos ei löydy, 
+     * niin lisätään uutena harjoituskertana. 
+     * @param harjoitus lisättävän harjoituskerran viite. Huom tietorakenne muuttuu omistajaksi 
      * @throws SailoException jos tietorakenne on jo täynnä 
      */ 
     public void korvaaTaiLisaa(Harjoituskerta harjoitus) throws SailoException { 
@@ -262,7 +272,7 @@ public class Treenipaivakirja {
 
 
     /**
-     * Testiohjelma treenipäiväkirjasta
+     * Testiohjelma treenipäiväkirjasta.
      * @param args ei käytössä
      */
     public static void main(String args[]) {
