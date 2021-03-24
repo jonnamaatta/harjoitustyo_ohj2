@@ -26,7 +26,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 20.3.2021
+ * @version 24.3.2021
  * 
  */
 public class TreenipaivakirjaGUIController implements Initializable {
@@ -165,6 +165,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     private Treenipaivakirja treenipaivakirja;
     private Harjoituskerta   harjoitusKohdalla;
+    private Laji             lajiKohdalla;
     private String           tiednimi = "treenit";  
     private TextField        edits[];
     
@@ -366,16 +367,19 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * TODO: Muokkaa sellaiseksi, että avaa dialogin
      */
     private void uusiLaji() {
-        Laji l = new Laji();
-        l.rekisteroi();
-        l.vastaaJuoksu();
         try {
-            treenipaivakirja.lisaa(l);
+            Laji uusi = new Laji();
+            uusi = LajiDialogController.kysyLaji(null, uusi, 0);
+            if ( uusi == null ) return;
+            uusi.rekisteroi();
+            treenipaivakirja.lisaa(uusi);
+            haeLaji(uusi.getTunnusNro()); 
+            tableLajit.selectRow(1000);  // järjestetään viimeinen rivi valituksi
+            //HarjoitusDialogController.vieLaji(uusi.getTunnusNro());
         } catch (SailoException e) {
-            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
-            return;
+            Dialogs.showMessageDialog("Lisääminen epäonnistui: " + e.getMessage());
         }
-        haeLaji(l.getTunnusNro());
+        
     }
     
     
@@ -383,7 +387,20 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Lajin muokkaus.
      */
     private void muokkaaLajia() {
-        ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("LajiDialogView.fxml"),"Lajin muokkaaminen", null, "");
+        int r = tableLajit.getRowNr();
+        if ( r < 0 ) return; // klikattu ehkä otsikkoriviä
+        Laji laji = tableLajit.getObject();
+        if ( laji == null ) return;
+        int k = tableLajit.getColumnNr()+laji.ekaKentta();
+        try {
+            laji = LajiDialogController.kysyLaji(null, laji.clone(), k);
+            if ( laji == null ) return;
+            treenipaivakirja.korvaaTaiLisaaLaji(laji); 
+            tableLajit.selectRow(r);  // järjestetään sama rivi takaisin valituksi
+        } catch (CloneNotSupportedException  e) { /* clone on tehty */  
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia lisäämisessä: " + e.getMessage());
+        }
     }
     
     

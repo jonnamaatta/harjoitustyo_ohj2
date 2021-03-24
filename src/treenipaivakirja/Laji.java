@@ -10,10 +10,10 @@ import static treenipaivakirja.Harjoituskerta.rand;
  * Laji joka osaa mm. itse huolehtia tunnus_nro:staan.
  * 
  * @author Jonna Määttä
- * @version 20.3.2021
+ * @version 24.3.2021
  * 
  */
-public class Laji {
+public class Laji implements Cloneable {
     private int        tunnusNro;
     private String     lajinNimi; 
     private static int seuraavaNro = 1;
@@ -155,6 +155,37 @@ public class Laji {
         lajinNimi = s;
         return null;
     }
+    
+    
+    /**
+     * Tehdään identtinen klooni lajista
+     * @return Object kloonattu laji
+     * @example
+     * <pre name="test">
+     * #THROWS CloneNotSupportedException 
+     *   Harjoituskerta har = new Harjoituskerta();
+     *   har.parse("   1  |  7.12.20  |   1  | 44:32 | 7.0 | 6 |Jaksoin juosta todella hyvin  ");
+     *   Harjoituskerta kopio = har.clone();
+     *   kopio.toString() === har.toString();
+     *   har.parse(" 2  |  9.12.20  |   2 | 45:21 | 5.0 | 7 | Ihan OK meni ");
+     *   kopio.toString().equals(har.toString()) === false;
+     * </pre>
+     */
+    @Override
+    public Laji clone() throws CloneNotSupportedException {
+        Laji uusi;
+        uusi = (Laji) super.clone();
+        return uusi;
+    }
+    
+    
+    /**
+     * @return ensimmäinen käyttäjän syötettävän kentän indeksi
+     */
+    public int ekaKentta() {
+        return 2;
+    }
+    
 
 
     /**

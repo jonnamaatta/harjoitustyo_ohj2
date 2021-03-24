@@ -1,8 +1,10 @@
 package fxTreenipaivakirja;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
+import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
@@ -12,13 +14,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import treenipaivakirja.Harjoituskerta;
+import treenipaivakirja.Laji;
+import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
 
 /**
  * Kysytään harjoituskerran tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 20.3.2021
+ * @version 24.3.2021
  *
  */
 public class HarjoitusDialogController implements ModalControllerInterface<Harjoituskerta>, Initializable  {
@@ -55,7 +59,8 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
 // ========================================================    
     private Harjoituskerta harjoitusKohdalla;
     private TextField edits[];
-    private Treenipaivakirja treenipaivakirja;
+    private static Treenipaivakirja treenipaivakirja;
+    private static ComboBoxChooser<Laji> lajiChooser;
    
 
     /**
@@ -80,6 +85,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
             final int k = ++i;
             edit.setOnKeyReleased( e -> kasitteleMuutosHarjoitukseen(k, (TextField)(e.getSource())));
         }
+       
     }
     
     
@@ -142,7 +148,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
             naytaVirhe(virhe);
         }
     }
-    
+
     
     /**
      * Näytetään harjoituskerran tiedot TextField komponentteihin.
@@ -156,6 +162,27 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
         edits[2].setText(har.getMatka());
         edits[3].setText(har.getKuormittavuus());
         edits[4].setText(har.getKommentti());
+    }
+    
+      
+    /**
+     * @param lnro lajin numero
+     */
+    public static void vieLaji(int lnro) {
+        int index = 0; 
+        Collection<Laji> lajit; 
+        try { 
+            lajit = treenipaivakirja.etsiLaji("", 1); 
+            int i = 0; 
+            for (Laji laji:lajit) { 
+                    if (laji.getTunnusNro() == lnro) index = i; 
+                    lajiChooser.add(laji); 
+                    i++; 
+                } 
+            } catch (SailoException ex) { 
+                Dialogs.showMessageDialog("Lajin hakemisessa ongelmia! " + ex.getMessage()); 
+            }  
+        lajiChooser.getSelectionModel().select(index); 
     }
     
     
@@ -173,6 +200,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
                 "Treenipäiväkirja",
              modalityStage, oletus, ctrl->ctrl.setPaivakirja(kirja)
               );
+   
    }
     
     

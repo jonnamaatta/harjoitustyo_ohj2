@@ -12,7 +12,7 @@ import java.util.*;
  * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin.
  *
  * @author Jonna Määttä
- * @version 20.3.2021
+ * @version 24.3.2021
  * 
  */
 public class Lajit implements Iterable<Laji> {
@@ -50,6 +50,47 @@ public class Lajit implements Iterable<Laji> {
         alkiot.add(l);
         muutettu = true;
     }
+    
+    
+    /**
+     * Korvaa harjoituskerran tietorakenteessa. Ottaa harjoituskerran omistukseensa.
+     * Etsitään samalla tunnusnumerolla oleva harjoituskerta.  Jos ei löydy,
+     * niin lisätään uutena harjoituskertana.
+     * @param laji lisättävän lajin viitee
+     * @throws SailoException jos tietorakenne on jo täynnä
+     * <pre name="test">
+     * #THROWS SailoException,CloneNotSupportedException
+     * #PACKAGEIMPORT
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta harjoitus1 = new Harjoituskerta(), harjoitus2 = new Harjoituskerta();
+     * harjoitus1.rekisteroi(); harjoitus2.rekisteroi();
+     * harjoitukset.getLkm() === 0;
+     * harjoitukset.korvaaTaiLisaa(harjoitus1); harjoitukset.getLkm() === 1;
+     * harjoitukset.korvaaTaiLisaa(harjoitus2); harjoitukset.getLkm() === 2;
+     * Harjoituskerta harjoitus3 = harjoitus1.clone();
+     * harjoitus3.setKuormittavuus("3");
+     * Iterator<Harjoituskerta> it = harjoitukset.iterator();
+     * it.next() == harjoitus1 === true;
+     * harjoitukset.korvaaTaiLisaa(harjoitus3); harjoitukset.getLkm() === 2;
+     * it = harjoitukset.iterator();
+     * Harjoituskerta j0 = it.next();
+     * j0 === harjoitus3;
+     * j0 == harjoitus3 === true;
+     * j0 == harjoitus1 === false;
+     * </pre>
+     */
+    public void korvaaTaiLisaaLaji(Laji laji) throws SailoException {
+        int id = laji.getTunnusNro();
+        for (int i = 0; i < alkiot.size() ; i++) {
+            if ( alkiot.get(i).getTunnusNro() == id ) {
+                alkiot.set(i, laji);
+                muutettu = true;
+                return;
+            }
+        }
+        lisaa(laji);
+    }
+
 
 
     /**

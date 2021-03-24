@@ -9,7 +9,7 @@ import java.util.List;
  * ovat vain "välittäjämetodeja" harjoituskertoihin.
  *
  * @author Jonna Määttä
- * @version 20.3.2021
+ * @version 24.3.2021
  * 
  */
 public class Treenipaivakirja {
@@ -268,6 +268,18 @@ public class Treenipaivakirja {
      */ 
     public void korvaaTaiLisaa(Harjoituskerta harjoitus) throws SailoException { 
         harjoitukset.korvaaTaiLisaa(harjoitus); 
+    } 
+    
+    
+    /** 
+     * Korvaa lajin tietorakenteessa. Ottaa lajin omistukseensa. 
+     * Etsitään samalla tunnusnumerolla oleva laji. Jos ei löydy, 
+     * niin lisätään uutena lajina.
+     * @param laji lisättävän lajin viite. Huom tietorakenne muuttuu omistajaksi 
+     * @throws SailoException jos tietorakenne on jo täynnä 
+     */ 
+    public void korvaaTaiLisaaLaji(Laji laji) throws SailoException { 
+        lajit.korvaaTaiLisaaLaji(laji); 
     } 
 
 

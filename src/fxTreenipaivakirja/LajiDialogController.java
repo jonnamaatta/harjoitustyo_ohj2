@@ -11,13 +11,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
+import treenipaivakirja.Treenipaivakirja;
 
 /**
  * Kysytään lajin tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 20.3.2021
+ * @version 24.3.2021
  *
  */
 public class LajiDialogController implements ModalControllerInterface<Laji>,Initializable  {
@@ -31,19 +33,26 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
         alusta();  
     }
     
-    
     @FXML private void handleOK() {
+        if ( lajiKohdalla != null && lajiKohdalla.getNimi().trim().equals("") ) {
+            naytaVirhe("Nimi ei saa olla tyhjä.");
+            return;
+        }
         ModalController.closeStage(labelVirhe);
     }
 
     
     @FXML private void handleCancel() {
+        lajiKohdalla = null;
         ModalController.closeStage(labelVirhe);
     }
+    
 
 // ========================================================    
     private Laji lajiKohdalla;
     private TextField edits[];
+    private Treenipaivakirja treenipaivakirja;
+    private int kentta = 0;
    
 
     /**
@@ -144,15 +153,22 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
      * TODO: korjattava toimimaan
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä dataan näytetään oletuksena
+     * @param kentta kentta
      * @return null jos painetaan Cancel, muuten täytetty tietue
      */
-    public static Laji kysyLaji(Stage modalityStage, Laji oletus) {
+    public static Laji kysyLaji(Stage modalityStage, Laji oletus, int kentta) {
         return ModalController.<Laji, LajiDialogController>showModal(
                     LajiDialogController.class.getResource("LajiDialogView.fxml"),
                     "Treenipäiväkirja",
-                    modalityStage, oletus, null 
+                    modalityStage, oletus,  ctrl -> ctrl.setKentta(kentta) 
                 );
     }
 
+
+    private void setKentta(int kentta) {
+        this.kentta = kentta;
+    }
+
+         
 
 }

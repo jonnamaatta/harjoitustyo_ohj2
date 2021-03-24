@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<BorderPane prefHeight="130.0" prefWidth="216.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" >
+<BorderPane prefHeight="130.0" prefWidth="216.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxTreenipaivakirja.LajiDialogController">
    <center>
       <GridPane prefHeight="100.0" prefWidth="194.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -22,6 +21,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="laji">
@@ -29,7 +29,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </Label>
-            <TextField GridPane.columnIndex="1">
+            <TextField fx:id="editNimi" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
@@ -45,14 +45,14 @@
          <items>
             <BorderPane prefHeight="33.0" prefWidth="202.0">
                <right>
-                  <Button mnemonicParsing="false" text="Cancel" BorderPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </BorderPane.margin>
                   </Button>
                </right>
                <center>
-                  <Button mnemonicParsing="false" text="OK" BorderPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#handleOK" text="OK" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </BorderPane.margin>
@@ -62,4 +62,7 @@
          </items>
       </SplitPane>
    </bottom>
+   <top>
+      <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="248.0" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>

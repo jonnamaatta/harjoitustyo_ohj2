@@ -8,7 +8,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 20.3.2021
+* @version 24.3.2021
 * 
 */
 public class Harjoituskerta implements Cloneable {
