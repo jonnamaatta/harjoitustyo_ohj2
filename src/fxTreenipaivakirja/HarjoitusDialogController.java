@@ -11,7 +11,9 @@ import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
@@ -22,7 +24,7 @@ import treenipaivakirja.Treenipaivakirja;
  * Kysytään harjoituskerran tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 24.3.2021
+ * @version 26.3.2021
  *
  */
 public class HarjoitusDialogController implements ModalControllerInterface<Harjoituskerta>, Initializable  {
@@ -33,6 +35,11 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     @FXML private TextField editKuormittavuus;    
     @FXML private TextField editKommentti;    
     @FXML private Label     labelVirhe;
+    @FXML private ComboBoxChooser<Laji> lajiChooser;
+    @FXML private ScrollPane panelHarjoitus;
+    @FXML private GridPane gridHarjoituskerta;
+    @FXML private TextField editLaji;
+
     
 
     @Override
@@ -59,10 +66,11 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
 // ========================================================    
     private Harjoituskerta harjoitusKohdalla;
     private TextField edits[];
-    private static Treenipaivakirja treenipaivakirja;
-    private static ComboBoxChooser<Laji> lajiChooser;
-   
+    private Treenipaivakirja treenipaivakirja;
+    private static Harjoituskerta apuHarjoitus = new Harjoituskerta(); // Harjoituskerta jolta voidaan kysellä tietoja.
+    private int kentta = 0;
 
+    
     /**
      * Tyhjentää tekstikentät.
      * @param edits taulukko, jossa tyhjennettäviä tekstikenttiä
@@ -166,23 +174,12 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
       
     /**
-     * @param lnro lajin numero
+     * Viedään lajit ComboBoxChooseriin
      */
-    public static void vieLaji(int lnro) {
-        int index = 0; 
-        Collection<Laji> lajit; 
-        try { 
-            lajit = treenipaivakirja.etsiLaji("", 1); 
-            int i = 0; 
-            for (Laji laji:lajit) { 
-                    if (laji.getTunnusNro() == lnro) index = i; 
-                    lajiChooser.add(laji); 
-                    i++; 
-                } 
-            } catch (SailoException ex) { 
-                Dialogs.showMessageDialog("Lajin hakemisessa ongelmia! " + ex.getMessage()); 
-            }  
-        lajiChooser.getSelectionModel().select(index); 
+    public void vieLaji() {
+        for (Laji laji:treenipaivakirja.etsiLaji("", 1)) { 
+            lajiChooser.add(laji.getNimi(),laji); 
+        } 
     }
     
     
@@ -206,6 +203,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     private void setPaivakirja(Treenipaivakirja kirja) {
         treenipaivakirja = kirja;
+        vieLaji();
     }
 
 

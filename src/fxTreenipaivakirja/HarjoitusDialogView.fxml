@@ -4,106 +4,124 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane stylesheets="@treenipaivakirja.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxTreenipaivakirja.HarjoitusDialogController">
    <center>
-      <VBox prefHeight="231.0" prefWidth="363.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox>
+      <ScrollPane fx:id="panelHarjoituskerta" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="gridHarjoituskerta">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="päivämäärä">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="editPvm" prefWidth="200.0" text="11.1.21">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <VBox prefHeight="231.0" prefWidth="363.0">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="päivämäärä">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="editPvm" prefWidth="200.0" text="11.1.21">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="laji">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBoxChooser fx:id="lajiChooser" prefHeight="25.0" prefWidth="200.0" promptText="juoksu" style="-fx-background-color: #fff; -fx-border-color: #cccccc;">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </ComboBoxChooser>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="kesto (min)">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="editKesto" prefWidth="200.0" text="60:32">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="matka (km)">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="editMatka" prefWidth="200.0" text="9.7">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="kuormittavuus (1-10)">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="editKuormittavuus" prefWidth="200.0" text="6">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="kommentti">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="editKommentti" prefWidth="200.0">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <Label fx:id="labelVirhe" prefHeight="51.0" prefWidth="365.0" />
+                     </children>
+                  </VBox>
                </children>
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </HBox>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="laji">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ComboBoxChooser fx:id="lajiChooser" prefHeight="25.0" prefWidth="200.0" promptText="juoksu" style="-fx-background-color: #fff; -fx-border-color: #cccccc;">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </ComboBoxChooser>
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="kesto (min)">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="editKesto" prefWidth="200.0" text="60:32">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="matka (km)">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="editMatka" prefWidth="200.0" text="9.7">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="kuormittavuus (1-10)">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="editKuormittavuus" prefWidth="200.0" text="6">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefWidth="120.0" text="kommentti">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="editKommentti" prefWidth="200.0">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <Label fx:id="labelVirhe" prefHeight="51.0" prefWidth="365.0" />
-         </children>
-      </VBox>
+            </GridPane>
+         </content>
+      </ScrollPane>
    </center>
    <bottom>
       <SplitPane BorderPane.alignment="CENTER">

@@ -87,7 +87,8 @@
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="200.0" prefWidth="200.0" text="Hakuehto" />
                               <ComboBoxChooser fx:id="cbKentat" maxWidth="190.0" rivit="päivämäärä&#10;laji&#10;kesto&#10;matka&#10;kuormittavuus&#10;kommentti&#10;" />
-                              <TextField maxWidth="200.0" />
+                              <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="190.0" />
+                              <TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto" />
                               <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="74.0" prefWidth="190.0" text="Harjoituskerrat" />
                            </children>
                         </VBox>
@@ -108,7 +109,7 @@
                <center>
                   <ScrollPane fx:id="panelHarjoituskerta" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <content>
-                        <GridPane hgap="10.0">
+                        <GridPane fx:id="gridHarjoituskerta" hgap="10.0">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" />
                             <ColumnConstraints hgrow="ALWAYS" />
@@ -132,7 +133,7 @@
                               <Label text="kuormittavuus (1-10)" GridPane.rowIndex="4" />
                               <Label text="kommentti" GridPane.rowIndex="5" />
                               <TextField fx:id="editPvm" editable="false" text="11.1.21" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                              <TextField text="juoksu" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <TextField fx:id="editLaji" text="juoksu" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                               <TextField fx:id="editKesto" editable="false" text="60:32" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
                               <TextField fx:id="editMatka" editable="false" text="9.7" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                               <TextField fx:id="editKuormittavuus" editable="false" text="6" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />

@@ -137,9 +137,8 @@ public class Treenipaivakirja {
      * @param hakuehto hakuehto  
      * @param k etsittävän kentän indeksi  
      * @return tietorakenteen löytyneistä lajeista
-     * @throws SailoException Jos jotakin menee väärin
      */ 
-    public Collection<Laji> etsiLaji(String hakuehto, int k) throws SailoException { 
+    public Collection<Laji> etsiLaji(String hakuehto, int k) { 
         return lajit.etsi(hakuehto, k); 
     } 
     

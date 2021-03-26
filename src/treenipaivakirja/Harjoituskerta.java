@@ -33,6 +33,25 @@ public class Harjoituskerta implements Cloneable {
     
     
     /**
+     * Palauttaa harjoituskerran kenttien lukumäärän
+     * @return kenttien lukumäärä
+     */
+    public int getKenttia() {
+        return 6;
+    }
+
+
+    /**
+     * Eka kenttä joka on mielekäs kysyttäväksi
+     * @return ekan kentän indeksi
+     */
+    public int ekaKentta() {
+        return 1;
+    }
+
+
+    
+    /**
      * Alustetaan tietyn harjoituskerran laji.
      * @param lajiNro lajin viitenumero 
      */
@@ -51,6 +70,16 @@ public class Harjoituskerta implements Cloneable {
        if ( tunnusNro >= seuraavaNro ) seuraavaNro = tunnusNro + 1;
    }
    
+   
+   /**
+    * Asettaa lajinumeron
+    * @param i asetettavanumero
+    * @return virheilmoitus, null jos ok
+    */
+   public String setLajinro(int i) {
+       this.lajiNro = i;
+       return null;
+   }
    
    /**
     * Asettaa harjoituskerralle päivämäärän.
@@ -312,7 +341,6 @@ public class Harjoituskerta implements Cloneable {
         uusi = (Harjoituskerta) super.clone();
         return uusi;
     }
-    
     
        
     /**

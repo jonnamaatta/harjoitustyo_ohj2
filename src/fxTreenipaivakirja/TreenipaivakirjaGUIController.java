@@ -13,8 +13,12 @@ import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
 
 import java.util.Collection;
-import java.util.List; 
+import java.util.List;
+import java.awt.Desktop;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -26,7 +30,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 24.3.2021
+ * @version 26.3.2021
  * 
  */
 public class TreenipaivakirjaGUIController implements Initializable {
@@ -156,7 +160,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään "Apua"-osion näyttäminen.
      */
     @FXML private void handleApua() {
-        Dialogs.showMessageDialog("Ei osata vielä auttaa!");
+        avustus();
     }
       
    
@@ -283,17 +287,15 @@ public class TreenipaivakirjaGUIController implements Initializable {
          
           int index = 0; 
           Collection<Laji> lajit; 
-          try { 
+
               lajit = treenipaivakirja.etsiLaji("", 1); 
               int i = 0; 
               for (Laji laji:lajit) { 
                   if (laji.getTunnusNro() == lnro) index = i; 
-                  tableLajit.add(laji.getNimi()); 
+                  tableLajit.add(laji, laji.getNimi()); 
                   i++; 
-              } 
-          } catch (SailoException ex) { 
-              Dialogs.showMessageDialog("Lajin hakemisessa ongelmia! " + ex.getMessage()); 
-          }        
+              }
+                
           tableLajit.getSelectionModel().select(index); // tästä tulee muutosviesti joka näyttää lajin
       }
       
@@ -375,7 +377,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
             treenipaivakirja.lisaa(uusi);
             haeLaji(uusi.getTunnusNro()); 
             tableLajit.selectRow(1000);  // järjestetään viimeinen rivi valituksi
-            //HarjoitusDialogController.vieLaji(uusi.getTunnusNro());
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Lisääminen epäonnistui: " + e.getMessage());
         }
@@ -400,6 +401,22 @@ public class TreenipaivakirjaGUIController implements Initializable {
         } catch (CloneNotSupportedException  e) { /* clone on tehty */  
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Ongelmia lisäämisessä: " + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Näytetään ohjelman suunnitelma erillisessä selaimessa.
+     */
+    private void avustus() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2020k/ht/jtmaatta");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
         }
     }
     
