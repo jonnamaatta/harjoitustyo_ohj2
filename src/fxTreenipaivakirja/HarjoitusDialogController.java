@@ -67,6 +67,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
 // ========================================================    
     private Harjoituskerta harjoitusKohdalla;
     private TextField edits[];
+    private Laji laji = new Laji();
     private Treenipaivakirja treenipaivakirja;
     private static Harjoituskerta apuHarjoitus = new Harjoituskerta(); // Harjoituskerta jolta voidaan kysellä tietoja.
     private int kentta = 0;
@@ -88,7 +89,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
      * kentän numeron parametrina.
      */
     protected void alusta() {
-        edits = new TextField[]{editPvm, editKesto, editMatka, editKuormittavuus, editKommentti};
+        edits = new TextField[]{editPvm, editLaji, editKesto, editMatka, editKuormittavuus, editKommentti};
         int i = 0;
         for (TextField edit : edits) {
             final int k = ++i;
@@ -99,11 +100,9 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     
     @Override
-    // TODO: selvitä miksi ei toimi???
     public void setDefault(Harjoituskerta oletus) {
        harjoitusKohdalla = oletus;
-     //  Laji l = treenipaivakirja.annaLaji(harjoitusKohdalla.getLajiNro());
-     //  naytaHarjoitus(edits, harjoitusKohdalla, l);
+       naytaHarjoitus(edits, harjoitusKohdalla, laji);
     }
 
     
@@ -136,7 +135,6 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     /**
      * Käsitellään harjoitukseen tullut muutos.
      * @param edit muuttunut kenttä
-     * TODO: case 2 mistä numero otetaan???
      */
     private void kasitteleMuutosHarjoitukseen(int k, TextField edit) {
         if (harjoitusKohdalla == null) return;
