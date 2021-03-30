@@ -19,12 +19,13 @@ import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
 import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
+import treenipaivakirja.Lajit;
 
 /**
  * Kysytään harjoituskerran tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 26.3.2021
+ * @version 30.3.2021
  *
  */
 public class HarjoitusDialogController implements ModalControllerInterface<Harjoituskerta>, Initializable  {
@@ -98,9 +99,11 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
     
     @Override
+    // TODO: selvitä miksi ei toimi???
     public void setDefault(Harjoituskerta oletus) {
-        harjoitusKohdalla = oletus;
-        naytaHarjoitus(edits, harjoitusKohdalla);
+       harjoitusKohdalla = oletus;
+     //  Laji l = treenipaivakirja.annaLaji(harjoitusKohdalla.getLajiNro());
+     //  naytaHarjoitus(edits, harjoitusKohdalla, l);
     }
 
     
@@ -133,17 +136,20 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     /**
      * Käsitellään harjoitukseen tullut muutos.
      * @param edit muuttunut kenttä
+     * TODO: case 2 mistä numero otetaan???
      */
     private void kasitteleMuutosHarjoitukseen(int k, TextField edit) {
         if (harjoitusKohdalla == null) return;
         String s = edit.getText();
+        Laji l = lajiChooser.getSelectedObject();
         String virhe = null;
         switch (k) {
            case 1 : virhe = harjoitusKohdalla.setPvm(s); break;
-           case 2 : virhe = harjoitusKohdalla.setKesto(s); break;
-           case 3 : virhe = harjoitusKohdalla.setMatka(s); break;
-           case 4 : virhe = harjoitusKohdalla.setKuormittavuus(s); break;
-           case 5 : virhe = harjoitusKohdalla.setKommentti(s); break;
+           case 2 : virhe = harjoitusKohdalla.setLajiNro(l.getTunnusNro()); break;
+           case 3 : virhe = harjoitusKohdalla.setKesto(s); break;
+           case 4 : virhe = harjoitusKohdalla.setMatka(s); break;
+           case 5 : virhe = harjoitusKohdalla.setKuormittavuus(s); break;
+           case 6 : virhe = harjoitusKohdalla.setKommentti(s); break;
            default:
         }
         if (virhe == null) {
@@ -163,13 +169,14 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
      * @param edits taulukko jossa tekstikenttiä
      * @param har näytettävä harjoitus
      */
-    public static void naytaHarjoitus(TextField[] edits, Harjoituskerta har) {
+    public static void naytaHarjoitus(TextField[] edits, Harjoituskerta har, Laji l) {
         if (har == null) return;
         edits[0].setText(har.getPvm());
-        edits[1].setText(har.getKesto());
-        edits[2].setText(har.getMatka());
-        edits[3].setText(har.getKuormittavuus());
-        edits[4].setText(har.getKommentti());
+        edits[1].setText(l.getNimi());
+        edits[2].setText(har.getKesto());
+        edits[3].setText(har.getMatka());
+        edits[4].setText(har.getKuormittavuus());
+        edits[5].setText(har.getKommentti());
     }
     
       

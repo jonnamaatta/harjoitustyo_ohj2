@@ -19,7 +19,7 @@ import treenipaivakirja.Treenipaivakirja;
  * Kysytään lajin tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 24.3.2021
+ * @version 30.3.2021
  *
  */
 public class LajiDialogController implements ModalControllerInterface<Laji>,Initializable  {

@@ -76,10 +76,11 @@ public class Harjoituskerta implements Cloneable {
     * @param i asetettavanumero
     * @return virheilmoitus, null jos ok
     */
-   public String setLajinro(int i) {
+   public String setLajiNro(int i) {
        this.lajiNro = i;
        return null;
    }
+   
    
    /**
     * Asettaa harjoituskerralle päivämäärän.
