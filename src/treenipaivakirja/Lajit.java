@@ -164,17 +164,8 @@ public class Lajit implements Iterable<Laji> {
     }
     
     
-    /** Palauttaa lajin indeksi
-     * @param l laji jonka indeksi halutaan
-     * @return indeksi
-     */
-    public int annaIndeksi(Laji l) {
-       return alkiot.indexOf(l);
-    }
-    
-    
     /**
-     * Palauttaa lajin tunnusnro perusteella
+     * Palauttaa lajin tunnusnro perusteella, muuten palauttaa ekan mahollisen
      * @param tunnusNro
      * @return laji
      */
@@ -184,8 +175,12 @@ public class Lajit implements Iterable<Laji> {
                 return l;
             }
         }  
-            return null;  
+        for (int i = 0; i < alkiot.size(); i++) {
+            return alkiot.get(i);
+        }
+        return null;
     }
+    
     
     /**
      * Testiohjelma lajeille.
@@ -331,7 +326,7 @@ public class Lajit implements Iterable<Laji> {
      *   Laji laji4 = new Laji(); laji4.parse("4|kuntosali"); 
      *   Laji laji5 = new Laji(); laji5.parse("5|tennis"); 
      *   lajit.lisaa(laji1); lajit.lisaa(laji2); lajit.lisaa(laji3); lajit.lisaa(laji4); lajit.lisaa(laji5);
-     *   // TODO: toistaiseksi palauttaa kaikki harjoituskerrat.
+     *   // TODO: toistaiseksi palauttaa kaikki lajit.
      * </pre> 
      */ 
     @SuppressWarnings("unused")

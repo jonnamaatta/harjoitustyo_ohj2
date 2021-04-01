@@ -8,7 +8,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 24.3.2021
+* @version 1.4.2021
 * 
 */
 public class Harjoituskerta implements Cloneable {
@@ -86,12 +86,13 @@ public class Harjoituskerta implements Cloneable {
     * Asettaa harjoituskerralle päivämäärän.
     * @param s laitettava pvm
     * @return virheilmotus, null jos ok
+    * TODO: kunnollinen päivämäärän oikeellisuus, ei regex
     */
    public String setPvm(String s) {
+       if(!s.matches("[0-9]{1,2}(\\.)([0-9]|1[012])(\\.)[0-9]{2}")) return "Päivämäärän on oltava muotoa d.m.yy";
        this.pvm = s;
        return null;
    }
-
    
   /**
    * Asettaa harjoituskerralle keston.
@@ -99,6 +100,7 @@ public class Harjoituskerta implements Cloneable {
    * @return virheilmoitus, null jos ok
    * */
    public String setKesto(String s) {
+       if (!s.matches("[0-9][0-9]:[0-9][0-9]")) return "Keston oltava muodossa 00:00";
        this.kesto = s;
        return null;
    }
@@ -110,16 +112,19 @@ public class Harjoituskerta implements Cloneable {
    * @return virheilmoitus, null jos ok
    * */
    public String setMatka(String s) {
+       if (!s.matches("^\\d*\\.\\d+$")) return "Matkan oltava desimaaliluku";
        this.matka = s;
        return null;
    }
     
+   
   /**
    * Asettaa harjoituskerralle kuormittavuuden.
    * @param s laitettava kuormittavuus
    * @return virheilmoitus, null jos ok
    * */
    public String setKuormittavuus(String s) {
+       if (!s.matches("[1-9]|10*")) return "Kuormittavuuden on oltava luku väliltä 1-10";
        this.kuormittavuus = s;
        return null;
    }
@@ -364,25 +369,7 @@ public class Harjoituskerta implements Cloneable {
     }
 
 
-    /** Palauttaa k:tta harjoituskerran kenttää vastaavan kysymyksen
-     * @param k kuinka monennen kentän kysymys palautetaan (0-alkuinen)
-     * @return k:netta kenttää vastaava kysymys
-     */
-    public String getKysymys(int k) {
-        switch ( k ) {
-        case 0: return "Tunnus nro";
-        case 1: return "päivämäärä";
-        case 2: return "laji";
-        case 3: return "kesto";
-        case 4: return "matka";
-        case 5: return "kuormittavuus";
-        case 6: return "kommentti";
-        default: return "...";
-        }
-    }
 
-    
-    
     /**
      * Antaa k:n kentän sisällön merkkijonona
      * @param k monenenko kentän sisältö palautetaan
@@ -392,7 +379,7 @@ public class Harjoituskerta implements Cloneable {
         switch ( k ) {
         case 0: return "" + tunnusNro;
         case 1: return "" + pvm;
-        case 2: return "";
+        case 2: return "" + String.valueOf(lajiNro);
         case 3: return "" + kesto;
         case 4: return "" + matka;
         case 5: return "" + kuormittavuus;
@@ -400,43 +387,5 @@ public class Harjoituskerta implements Cloneable {
         default: return "...";
         }
     }
-    
-    
-    /**
-     * Asettaa k:n kentän arvoksi parametrina tuodun merkkijonon arvon
-     * @param k kenttä
-     * @param jono jono joka asetetaan kentän arvoksi
-     * @return null jos onnistuu
-     */
-    public String aseta(int k, String jono) {
-        String tjono = jono.trim();
-        StringBuffer sb = new StringBuffer(tjono);
-        switch ( k ) {
-        case 0:
-            setTunnusNro(Mjonot.erota(sb, '§', getTunnusNro()));
-            return null;
-        case 1:
-            pvm = tjono;
-            return null;
-        case 2:
-            lajiNro = Integer.valueOf(tjono);
-            return null;
-        case 3:
-            kesto = tjono;
-            return null;
-        case 4:
-            matka = tjono;
-            return null;
-        case 5:
-            kuormittavuus = tjono;
-            return null;
-        case 6:
-            kommentti = tjono;
-            return null;
-        default:
-            return "...";
-        }
-    }
-    
-    
+
 }

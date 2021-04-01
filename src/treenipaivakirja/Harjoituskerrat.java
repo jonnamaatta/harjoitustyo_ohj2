@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import fi.jyu.mit.ohj2.WildChars;
 import treenipaivakirja.Lajit.LajitIterator;
 
 /**
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
  *
  * @author Jonna Määttä
- * @version 24.3.2021
+ * @version 1.4.2021
  * 
  */
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {
@@ -380,10 +381,15 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
      */ 
     @SuppressWarnings("unused")
     public Collection<Harjoituskerta> etsi(String hakuehto, int k) { 
+        String ehto = "*"; 
+        if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
+        int hk = k; 
+        if ( hk < 0 ) hk = 1;
         Collection<Harjoituskerta> loytyneet = new ArrayList<Harjoituskerta>(); 
-        for (Harjoituskerta h : this) { 
-            loytyneet.add(h);  
+        for (Harjoituskerta har : this) { 
+            if (WildChars.onkoSamat(har.anna(hk), ehto)) loytyneet.add(har);   
         } 
+        //  TODO: lajittelua varten vertailija  
         return loytyneet; 
     }
 

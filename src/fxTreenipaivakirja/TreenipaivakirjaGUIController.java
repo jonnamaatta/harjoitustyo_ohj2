@@ -58,12 +58,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään hakuehto.
      */
     @FXML private void handleHakuehto() {
-        String hakukentta = cbKentat.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
+        hae(0); 
     }
 
    
@@ -170,6 +165,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     private Treenipaivakirja treenipaivakirja;
     private Harjoituskerta   harjoitusKohdalla;
     private Laji             lajiKohdalla;
+    private Harjoituskerta   apuharjoitus = new Harjoituskerta();
     private String           tiednimi = "treenit";  
     private TextField        edits[];
     
@@ -262,12 +258,23 @@ public class TreenipaivakirjaGUIController implements Initializable {
        * @param hnro harjotuksen numero, joka aktivoidaan haun jälkeen
        */
       protected void hae(int hnro) {
+          
+          int harnro = hnro; // harnro harjoituksen numero, joka aktivoidaan haun jälkeen 
+          if ( harnro <= 0 ) { 
+              Harjoituskerta kohdalla = harjoitusKohdalla; 
+              if ( kohdalla != null ) harnro = kohdalla.getTunnusNro(); 
+          }
+          
+          int k = cbKentat.getSelectionModel().getSelectedIndex() + apuharjoitus.ekaKentta(); 
+          String ehto = hakuehto.getText(); 
+          if (ehto.indexOf('*') < 0) ehto = "*" + ehto + "*"; 
+          
           chooserHarjoitukset.clear(); 
 
           int index = 0; 
           Collection<Harjoituskerta> harjoitukset; 
           try { 
-              harjoitukset = treenipaivakirja.etsiHarjoitus("", 1); 
+              harjoitukset = treenipaivakirja.etsiHarjoitus(ehto, k); 
               int i = 0; 
               for (Harjoituskerta harjoitus:harjoitukset) { 
                   if (harjoitus.getTunnusNro() == hnro) index = i; 
@@ -294,7 +301,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
               int i = 0; 
               for (Laji laji:lajit) { 
                   if (laji.getTunnusNro() == lnro) index = i; 
-                  tableLajit.add(laji, laji.getNimi()); 
+                  tableLajit.add(laji, laji.getTunnusNro() + " " + laji.getNimi()); 
                   i++; 
               }
                 

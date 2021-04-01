@@ -101,7 +101,6 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     @Override
     public void setDefault(Harjoituskerta oletus) {
        harjoitusKohdalla = oletus;
-       laji.rekisteroi();
        naytaHarjoitus(edits, harjoitusKohdalla, laji);
     }
 
@@ -142,10 +141,11 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
         String virhe = null;
         switch (k) {
            case 1 : virhe = harjoitusKohdalla.setPvm(s); break;
-           case 2 : virhe = harjoitusKohdalla.setKesto(s); break;
-           case 3 : virhe = harjoitusKohdalla.setMatka(s); break;
-           case 4 : virhe = harjoitusKohdalla.setKuormittavuus(s); break;
-           case 5 : virhe = harjoitusKohdalla.setKommentti(s); break;
+           case 2 : break;
+           case 3 : virhe = harjoitusKohdalla.setKesto(s); break;
+           case 4 : virhe = harjoitusKohdalla.setMatka(s); break;
+           case 5 : virhe = harjoitusKohdalla.setKuormittavuus(s); break;
+           case 6 : virhe = harjoitusKohdalla.setKommentti(s); break;
            default:
         }
         if (virhe == null) {

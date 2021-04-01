@@ -52,7 +52,7 @@
                                     <Insets left="10.0" right="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <ComboBoxChooser fx:id="lajiChooser" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #cccccc;">
+                              <ComboBoxChooser fx:id="lajiChooser" prefHeight="25.0" prefWidth="200.0" promptText="valitse laji" style="-fx-background-color: #fff; -fx-border-color: #cccccc;">
                                  <HBox.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </HBox.margin>
