@@ -12,7 +12,7 @@ import java.util.*;
  * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin.
  *
  * @author Jonna Määttä
- * @version 24.3.2021
+ * @version 1.4.2021
  * 
  */
 public class Lajit implements Iterable<Laji> {
@@ -92,7 +92,6 @@ public class Lajit implements Iterable<Laji> {
     }
 
 
-
     /**
      * Lukee lajit tiedostosta.  
      * TODO Kesken.
@@ -157,25 +156,36 @@ public class Lajit implements Iterable<Laji> {
      * @return alkio
      * @throws IndexOutOfBoundsException poikkeus
      */
-    public Laji annaLaji(int i) throws IndexOutOfBoundsException {
-        if ((i < 0) || (i >= alkiot.size())) {
-            throw new IndexOutOfBoundsException("Laiton indeksi");
-        }
-        
-        return alkiot.get(i); 
-    }
-
-
-    /**
-     * Palauttaa viitteen i:teen lajiin.
-     * @param i monennenko lajin viite halutaan
-     * @return viite lajiin, jonka indeksi on i
-     * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella  
-     */
     public Laji anna(int i) throws IndexOutOfBoundsException {
-        return alkiot.get(i);
+         if ((i < 0) || (i >= alkiot.size())) {
+             throw new IndexOutOfBoundsException("Laiton indeksi");
+         }
+         return alkiot.get(i);
     }
     
+    
+    /** Palauttaa lajin indeksi
+     * @param l laji jonka indeksi halutaan
+     * @return indeksi
+     */
+    public int annaIndeksi(Laji l) {
+       return alkiot.indexOf(l);
+    }
+    
+    
+    /**
+     * Palauttaa lajin tunnusnro perusteella
+     * @param tunnusNro
+     * @return laji
+     */
+    public Laji annaLajiTn(int tunnusNro) {
+        for (Laji l : alkiot) {
+            if (l.getTunnusNro() == tunnusNro) {
+                return l;
+            }
+        }  
+            return null;  
+    }
     
     /**
      * Testiohjelma lajeille.

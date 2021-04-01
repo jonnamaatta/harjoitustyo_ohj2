@@ -37,7 +37,7 @@ public class Harjoituskerta implements Cloneable {
      * @return kenttien lukumäärä
      */
     public int getKenttia() {
-        return 6;
+        return 7;
     }
 
 
@@ -361,7 +361,82 @@ public class Harjoituskerta implements Cloneable {
         
         juoksu2.vastaaJuoksu(0);
         juoksu2.tulosta(System.out);
-        }   
+    }
+
+
+    /** Palauttaa k:tta harjoituskerran kenttää vastaavan kysymyksen
+     * @param k kuinka monennen kentän kysymys palautetaan (0-alkuinen)
+     * @return k:netta kenttää vastaava kysymys
+     */
+    public String getKysymys(int k) {
+        switch ( k ) {
+        case 0: return "Tunnus nro";
+        case 1: return "päivämäärä";
+        case 2: return "laji";
+        case 3: return "kesto";
+        case 4: return "matka";
+        case 5: return "kuormittavuus";
+        case 6: return "kommentti";
+        default: return "...";
+        }
+    }
+
+    
+    
+    /**
+     * Antaa k:n kentän sisällön merkkijonona
+     * @param k monenenko kentän sisältö palautetaan
+     * @return kentän sisältö merkkijonona
+     */
+    public String anna(int k) {
+        switch ( k ) {
+        case 0: return "" + tunnusNro;
+        case 1: return "" + pvm;
+        case 2: return "";
+        case 3: return "" + kesto;
+        case 4: return "" + matka;
+        case 5: return "" + kuormittavuus;
+        case 6: return "" + kommentti;
+        default: return "...";
+        }
+    }
+    
+    
+    /**
+     * Asettaa k:n kentän arvoksi parametrina tuodun merkkijonon arvon
+     * @param k kenttä
+     * @param jono jono joka asetetaan kentän arvoksi
+     * @return null jos onnistuu
+     */
+    public String aseta(int k, String jono) {
+        String tjono = jono.trim();
+        StringBuffer sb = new StringBuffer(tjono);
+        switch ( k ) {
+        case 0:
+            setTunnusNro(Mjonot.erota(sb, '§', getTunnusNro()));
+            return null;
+        case 1:
+            pvm = tjono;
+            return null;
+        case 2:
+            lajiNro = Integer.valueOf(tjono);
+            return null;
+        case 3:
+            kesto = tjono;
+            return null;
+        case 4:
+            matka = tjono;
+            return null;
+        case 5:
+            kuormittavuus = tjono;
+            return null;
+        case 6:
+            kommentti = tjono;
+            return null;
+        default:
+            return "...";
+        }
+    }
     
     
 }

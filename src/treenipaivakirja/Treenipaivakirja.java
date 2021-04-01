@@ -9,7 +9,7 @@ import java.util.List;
  * ovat vain "välittäjämetodeja" harjoituskertoihin.
  *
  * @author Jonna Määttä
- * @version 24.3.2021
+ * @version 1.4.2021
  * 
  */
 public class Treenipaivakirja {
@@ -220,10 +220,17 @@ public class Treenipaivakirja {
      * @param i lajin indeksi
      * @return laji
      */
-    public Laji annaLaji(int i) {
-        return lajit.annaLaji(i);
+    public Laji anna(int i) {
+        return lajit.anna(i);
     }
-
+    
+    /**
+     * Palauttaa lajin lajinumeron perusteella
+     */
+    public Laji annaLajiTn(int lajiNro) {
+        return lajit.annaLajiTn(lajiNro);
+    }
+    
 
     /**
      * Tallettaa treenipäiväkirjan tiedot tiedostoon.
@@ -313,7 +320,7 @@ public class Treenipaivakirja {
                 Harjoituskerta esim = treenipaivakirja.annaHarjoituskerta(i);
                 System.out.println("Harjoituskerta paikassa: " + i);
                 
-                Laji l = treenipaivakirja.lajit.annaLaji(esim.getLajiNro());
+                Laji l = treenipaivakirja.lajit.anna(esim.getLajiNro());
                 System.out.println(l);
                 esim.tulosta(System.out);
                             }

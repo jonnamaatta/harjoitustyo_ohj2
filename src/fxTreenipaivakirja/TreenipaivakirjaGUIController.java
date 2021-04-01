@@ -30,8 +30,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 30.3.2021
- * TODO: HARJOITUKSEN LAJIN MUOKKAUS TOIMIMAAN
+ * @version 1.4.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -248,10 +247,11 @@ public class TreenipaivakirjaGUIController implements Initializable {
       
       /**
        * Näyttää listasta valitun harjoituskeran tiedot tekstikenttiin. 
+       * TODO: getlajiNro + 1 ???
        */
       protected void naytaHarjoituskerta() {
           harjoitusKohdalla = chooserHarjoitukset.getSelectedObject();
-          Laji l = treenipaivakirja.annaLaji(harjoitusKohdalla.getLajiNro());
+          Laji l = treenipaivakirja.annaLajiTn(harjoitusKohdalla.getLajiNro());
           if (harjoitusKohdalla == null) return;
           HarjoitusDialogController.naytaHarjoitus(edits, harjoitusKohdalla, l);
           }

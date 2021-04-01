@@ -3,6 +3,7 @@ package fxTreenipaivakirja;
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
@@ -25,7 +26,7 @@ import treenipaivakirja.Lajit;
  * Kysytään harjoituskerran tiedot luomalla sille uusi dialogi
  * 
  * @author Jonna Määttä
- * @version 30.3.2021
+ * @version 1.4.2021
  *
  */
 public class HarjoitusDialogController implements ModalControllerInterface<Harjoituskerta>, Initializable  {
@@ -69,8 +70,6 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     private TextField edits[];
     private Laji laji = new Laji();
     private Treenipaivakirja treenipaivakirja;
-    private static Harjoituskerta apuHarjoitus = new Harjoituskerta(); // Harjoituskerta jolta voidaan kysellä tietoja.
-    private int kentta = 0;
 
     
     /**
@@ -95,13 +94,14 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
             final int k = ++i;
             edit.setOnKeyReleased( e -> kasitteleMuutosHarjoitukseen(k, (TextField)(e.getSource())));
         }
-       
+        lajiChooser.addSelectionListener(e -> kasitteleMuutosHarjoitukseen((Laji)lajiChooser.getSelectedObject()));
     }
     
     
     @Override
     public void setDefault(Harjoituskerta oletus) {
        harjoitusKohdalla = oletus;
+       laji.rekisteroi();
        naytaHarjoitus(edits, harjoitusKohdalla, laji);
     }
 
@@ -139,15 +139,13 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     private void kasitteleMuutosHarjoitukseen(int k, TextField edit) {
         if (harjoitusKohdalla == null) return;
         String s = edit.getText();
-        Laji l = lajiChooser.getSelectedObject();
         String virhe = null;
         switch (k) {
            case 1 : virhe = harjoitusKohdalla.setPvm(s); break;
-           case 2 : virhe = harjoitusKohdalla.setLajiNro(l.getTunnusNro()); break;
-           case 3 : virhe = harjoitusKohdalla.setKesto(s); break;
-           case 4 : virhe = harjoitusKohdalla.setMatka(s); break;
-           case 5 : virhe = harjoitusKohdalla.setKuormittavuus(s); break;
-           case 6 : virhe = harjoitusKohdalla.setKommentti(s); break;
+           case 2 : virhe = harjoitusKohdalla.setKesto(s); break;
+           case 3 : virhe = harjoitusKohdalla.setMatka(s); break;
+           case 4 : virhe = harjoitusKohdalla.setKuormittavuus(s); break;
+           case 5 : virhe = harjoitusKohdalla.setKommentti(s); break;
            default:
         }
         if (virhe == null) {
@@ -161,6 +159,15 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
         }
     }
 
+    
+    /**
+     * Käsitellään harjoitukseen tullut muutos.
+     * @param edit muuttunut kenttä
+     */
+    private void kasitteleMuutosHarjoitukseen(Laji l) {
+         harjoitusKohdalla.setLajiNro(l.getTunnusNro()); 
+    }
+    
     
     /**
      * Näytetään harjoituskerran tiedot TextField komponentteihin.
