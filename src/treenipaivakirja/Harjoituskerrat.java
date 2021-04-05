@@ -228,7 +228,60 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
         lisaa(harjoitus);
     }
 
+    
+    /** 
+     * Poistaa harjoituskerran jolla on valittu tunnusnumero  
+     * @param id poistettavan harjoituskerran tunnusnumero 
+     * @return 1 jos poistettiin, 0 jos ei löydy 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat(); 
+     * Harjoituskerta tiistai1 = new Harjoituskerta(), tiistai2 = new Harjoituskerta(), tiistai3 = new Harjoituskerta(); 
+     * tiistai1.rekisteroi(); tiistai2.rekisteroi(); tiistai3.rekisteroi(); 
+     * int id1 = tiistai1.getTunnusNro(); 
+     * harjoitukset.lisaa(tiistai1); harjoitukset.lisaa(tiistai2); harjoitukset.lisaa(tiistai3); 
+     * harjoitukset.poista(id1+1) === 1; 
+     * harjoitukset.etsiId(id1+1) === null; harjoitukset.getLkm() === 2; 
+     * harjoitukset.poista(id1) === 1; harjoitukset.getLkm() === 1; 
+     * harjoitukset.poista(id1+3) === 0; harjoitukset.getLkm() === 1; 
+     * </pre> 
+     *  
+     */ 
+    public int poista(int id) { 
+        int ind = etsiId(id); 
+        if (ind < 0) return 0; 
+        lkm--; 
+        for (int i = ind; i < lkm; i++) 
+            alkiot[i] = alkiot[i + 1]; 
+        alkiot[lkm] = null; 
+        muutettu = true; 
+        return 1; 
+    } 
+    
+    
+    /** 
+     * Etsii harjoituskerran id:n perusteella 
+     * @param id tunnusnumero, jonka mukaan etsitään 
+     * @return löytyneen harjoituskerran indeksi tai -1 jos ei löydy 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat(); 
+     * Harjoituskerta har1 = new Harjoituskerta(), har2 = new Harjoituskerta(), har3 = new Harjoituskerta(); 
+     * har1.rekisteroi(); har2.rekisteroi(); har3.rekisteroi(); 
+     * int id1 = har1.getTunnusNro(); 
+     * harjoitukset.lisaa(har1); harjoitukset.lisaa(har2); harjoitukset.lisaa(har3); 
+     * harjoitukset.etsiId(id1+1) === 1; 
+     * harjoitukset.etsiId(id1+2) === 2; 
+     * </pre> 
+     */ 
+    public int etsiId(int id) { 
+        for (int i = 0; i < lkm; i++) 
+            if (id == alkiot[i].getTunnusNro()) return i; 
+        return -1; 
+    } 
 
+    
     /**
      * Testiohjelma harjoituskerroille.
      * @param args ei käytössä

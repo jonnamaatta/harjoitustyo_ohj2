@@ -30,7 +30,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 1.4.2021
+ * @version 5.4.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -82,7 +82,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään harjoituskerran poistaminen.
      */
     @FXML private void handlePoistaHarjoituskerta() {
-        Dialogs.showMessageDialog("Ei osata vielä poistaa harjoituskertaa!");
+        poistaHarjoituskerta();
     }
     
     
@@ -106,7 +106,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään lajin poistaminen.
      */
     @FXML private void handlePoistaLaji() {
-        Dialogs.showMessageDialog("Ei osata vielä!");
+        poistaLaji();
     }
     
     
@@ -243,7 +243,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
       
       /**
        * Näyttää listasta valitun harjoituskeran tiedot tekstikenttiin. 
-       * TODO: getlajiNro + 1 ???
        */
       protected void naytaHarjoituskerta() {
           harjoitusKohdalla = chooserHarjoitukset.getSelectedObject();
@@ -252,6 +251,18 @@ public class TreenipaivakirjaGUIController implements Initializable {
           HarjoitusDialogController.naytaHarjoitus(edits, harjoitusKohdalla, l);
           }
       
+      
+      /**
+       * Näyttää lajit taulukkoon
+       */
+      private void naytaLajit() {
+          tableLajit.clear();
+          Collection<Laji> lajit = treenipaivakirja.etsiLaji("", 0);
+          if ( lajit.size() == 0 ) return;
+          haeLaji(0);
+      }
+      
+
  
       /**
        * Hakee harjoituskerran tiedot listaan.
@@ -328,6 +339,21 @@ public class TreenipaivakirjaGUIController implements Initializable {
 
       
       /**
+       * Harjoituskerran poistaminen.
+       */
+      private void poistaHarjoituskerta() {
+          Harjoituskerta har = harjoitusKohdalla;
+          if ( har == null ) return;
+          if ( !Dialogs.showQuestionDialog("Poisto", "Poistetaanko harjoituskerta: " + har.getPvm() +"?", "Kyllä", "Ei") )
+              return;
+          treenipaivakirja.poista(har);
+          int index = chooserHarjoitukset.getSelectedIndex();
+          hae(0);
+          chooserHarjoitukset.setSelectedIndex(index);
+      }
+           
+      
+      /**
        * Tulostaa harjoituskerran tiedot.
        * @param os tietovirta johon tulostetaan
        * @param harjoitus tulostettava harjoituskerta
@@ -389,7 +415,23 @@ public class TreenipaivakirjaGUIController implements Initializable {
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Lisääminen epäonnistui: " + e.getMessage());
         }
-        
+    }
+    
+    
+    /**
+     * Lajin poistaminen.
+     */
+    private void poistaLaji() {
+            int rivi = tableLajit.getRowNr();
+            if ( rivi < 0 ) return;
+            Laji laji = tableLajit.getObject();
+            if ( laji == null ) return;
+            treenipaivakirja.poistaLaji(laji);
+            naytaLajit();
+            int harrastuksia = tableLajit.getItems().size(); 
+            if ( rivi >= harrastuksia ) rivi = harrastuksia -1;
+            tableLajit.getFocusModel().focus(rivi);
+            tableLajit.getSelectionModel().select(rivi);
     }
     
     

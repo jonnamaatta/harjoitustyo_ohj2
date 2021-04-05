@@ -12,7 +12,7 @@ import java.util.*;
  * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin.
  *
  * @author Jonna Määttä
- * @version 1.4.2021
+ * @version 5.4.2021
  * 
  */
 public class Lajit implements Iterable<Laji> {
@@ -166,7 +166,7 @@ public class Lajit implements Iterable<Laji> {
     
     /**
      * Palauttaa lajin tunnusnro perusteella, muuten palauttaa ekan mahollisen
-     * @param tunnusNro
+     * @param tunnusNro lajin tunnusnumero
      * @return laji
      */
     public Laji annaLajiTn(int tunnusNro) {
@@ -175,10 +175,42 @@ public class Lajit implements Iterable<Laji> {
                 return l;
             }
         }  
-        for (int i = 0; i < alkiot.size(); i++) {
+        for (int i = 0; i < alkiot.size();) {
             return alkiot.get(i);
         }
         return null;
+    }
+    
+    
+    /**
+     * Poistaa valitun lajin
+     * @param laji poistettava laji
+     * @return tosi jos löytyi poistettava tietue 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Lajit lajit = new Lajit();
+     *  Laji juoksu11 = new Laji(); juoksu11.vastaaJuoksu(); 
+     *  Laji juoksu12 = new Laji(); juoksu12.vastaaJuoksu(); 
+     *  Laji juoksu21 = new Laji(); juoksu21.vastaaJuoksu(); 
+     *  Laji juoksu22 = new Laji(); juoksu22.vastaaJuoksu(); 
+     *  Laji juoksu23 = new Laji(); juoksu23.vastaaJuoksu();
+     *  treenipaivakirja.lisaa(juoksu11);
+     *  treenipaivakirja.lisaa(juoksu12);     
+     *  treenipaivakirja.lisaa(juoksu21); 
+     *  treenipaivakirja.lisaa(juoksu22);
+     *  treenipaivakirja.poista(juoksu23) === false ; lajit.getLkm() === 4;
+     *  lajit.poista(juoksu11) === true;   lajit.getLkm() === 3;
+     *  List<Laji> l = lajit.annaLajiTn(1);
+     *  l.size() === 1; 
+     *  l.get(0) === juoksu12;
+     * </pre>
+     */
+    public boolean poista(Laji laji) {
+        boolean ret = alkiot.remove(laji);
+        if (ret) muutettu = true;
+        return ret;
     }
     
     

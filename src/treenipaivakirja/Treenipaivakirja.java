@@ -9,7 +9,7 @@ import java.util.List;
  * ovat vain "välittäjämetodeja" harjoituskertoihin.
  *
  * @author Jonna Määttä
- * @version 1.4.2021
+ * @version 5.4.2021
  * 
  */
 public class Treenipaivakirja {
@@ -226,6 +226,8 @@ public class Treenipaivakirja {
     
     /**
      * Palauttaa lajin lajinumeron perusteella
+     * @param lajiNro lajin lajinumero
+     * @return lajinumero tunnusnumeron perusteella
      */
     public Laji annaLajiTn(int lajiNro) {
         return lajit.annaLajiTn(lajiNro);
@@ -286,6 +288,42 @@ public class Treenipaivakirja {
      */ 
     public void korvaaTaiLisaaLaji(Laji laji) throws SailoException { 
         lajit.korvaaTaiLisaaLaji(laji); 
+    } 
+    
+    
+    /**
+     * Poistaa harjoituskerran tiedot
+     * @param har harjoituskerta joka poistetaan
+     * @return montako harjoituskertaa poistettiin
+     * @example
+     * <pre name="test">
+     * #THROWS Exception
+     *   treenipaivakirja.etsi("*",0).size() === 2;
+     *   treenipaivakirja.annaHarjoituskerrat(tiistai1).size() === 2;
+     *   treenipaivakirja.poista(tiistai1) === 1;
+     *   treenipaivakirja.etsi("*",0).size() === 1;
+     *   treenipaivakirja.annaHarjoituskerrat(tiistai1).size() === 0;
+     *   treenipaivakirja.annaHarjoituskerrat(tiistai2).size() === 3;
+     * </pre>
+     */
+    public int poista(Harjoituskerta har) {
+        if ( har == null ) return 0;
+        int ret = harjoitukset.poista(har.getTunnusNro()); 
+        return ret; 
+    }
+    
+    /** 
+     * Poistaa tämän lajin 
+     * @param laji poistettava laji
+     * @example
+     * <pre name="test">
+     * #THROWS Exception
+     *   treenipaivakirja.annaLajit(juoksu11).size() === 2;
+     *   treenipaivakirja.poistaHarrastus(pitsi11);
+     *   treenipaivakirja.annaHarrastukset(juoksu12).size() === 1;
+     */ 
+    public void poistaLaji(Laji laji) { 
+        lajit.poista(laji); 
     } 
 
 

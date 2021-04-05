@@ -100,7 +100,7 @@ public class Harjoituskerta implements Cloneable {
    * @return virheilmoitus, null jos ok
    * */
    public String setKesto(String s) {
-       if (!s.matches("[0-9][0-9]:[0-9][0-9]")) return "Keston oltava muodossa 00:00";
+       if (!s.matches("[0-9]*:[0-9][0-9]")) return "Keston oltava muodossa 00:00";
        this.kesto = s;
        return null;
    }

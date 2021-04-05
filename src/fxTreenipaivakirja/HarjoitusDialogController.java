@@ -94,7 +94,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
             final int k = ++i;
             edit.setOnKeyReleased( e -> kasitteleMuutosHarjoitukseen(k, (TextField)(e.getSource())));
         }
-        lajiChooser.addSelectionListener(e -> kasitteleMuutosHarjoitukseen((Laji)lajiChooser.getSelectedObject()));
+        lajiChooser.addSelectionListener(e -> kasitteleMuutosHarjoitukseen(lajiChooser.getSelectedObject()));
     }
     
     
@@ -173,6 +173,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
      * Näytetään harjoituskerran tiedot TextField komponentteihin.
      * @param edits taulukko jossa tekstikenttiä
      * @param har näytettävä harjoitus
+     * @param l laitettava laji
      */
     public static void naytaHarjoitus(TextField[] edits, Harjoituskerta har, Laji l) {
         if (har == null) return;
