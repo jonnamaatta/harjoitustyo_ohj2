@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -438,11 +439,11 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
         if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
         int hk = k; 
         if ( hk < 0 ) hk = 1;
-        Collection<Harjoituskerta> loytyneet = new ArrayList<Harjoituskerta>(); 
+        List<Harjoituskerta> loytyneet = new ArrayList<Harjoituskerta>(); 
         for (Harjoituskerta har : this) { 
             if (WildChars.onkoSamat(har.anna(hk), ehto)) loytyneet.add(har);   
         } 
-        //  TODO: lajittelua varten vertailija  
+        Collections.sort(loytyneet, Collections.reverseOrder());
         return loytyneet; 
     }
 

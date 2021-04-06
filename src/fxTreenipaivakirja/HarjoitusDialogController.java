@@ -31,16 +31,16 @@ import treenipaivakirja.Lajit;
  */
 public class HarjoitusDialogController implements ModalControllerInterface<Harjoituskerta>, Initializable  {
 
-    @FXML private TextField editPvm;
-    @FXML private TextField editKesto;
-    @FXML private TextField editMatka;
-    @FXML private TextField editKuormittavuus;    
-    @FXML private TextField editKommentti;    
-    @FXML private Label     labelVirhe;
+    @FXML private TextField             editPvm;
+    @FXML private TextField             editKesto;
+    @FXML private TextField             editMatka;
+    @FXML private TextField             editKuormittavuus;    
+    @FXML private TextField             editKommentti;    
+    @FXML private Label                 labelVirhe;
     @FXML private ComboBoxChooser<Laji> lajiChooser;
-    @FXML private ScrollPane panelHarjoitus;
-    @FXML private GridPane gridHarjoituskerta;
-    @FXML private TextField editLaji;
+    @FXML private ScrollPane            panelHarjoitus;
+    @FXML private GridPane              gridHarjoituskerta;
+    @FXML private TextField             editLaji;
 
     
 

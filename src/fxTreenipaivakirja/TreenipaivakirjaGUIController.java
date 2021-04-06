@@ -166,7 +166,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     private Treenipaivakirja treenipaivakirja;
     private Harjoituskerta   harjoitusKohdalla;
-    private Laji             lajiKohdalla;
     private Harjoituskerta   apuharjoitus = new Harjoituskerta();
     private String           tiednimi = "treenit";  
     private TextField        edits[];
@@ -391,7 +390,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     /**
      * Uuden lajin lisääminen.
-     * TODO: Muokkaa sellaiseksi, että avaa dialogin
      */
     private void uusiLaji() {
         try {
@@ -496,7 +494,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Tilastojen näyttäminen.
      */
     private void tilastoja() {
-        ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("TilastotView.fxml"),"Tilastojen näyttäminen", null, "");
+        TilastotController.laske(null, treenipaivakirja);
     }
 
     

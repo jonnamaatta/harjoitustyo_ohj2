@@ -11,7 +11,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 * @version 6.4.2021
 * 
 */
-public class Harjoituskerta implements Cloneable {
+public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     
     private int        tunnusNro;
     private String     pvm            = "";
@@ -394,6 +394,12 @@ public class Harjoituskerta implements Cloneable {
         case 6: return "" + kommentti;
         default: return "...";
         }
+    }
+
+
+    @Override
+    public int compareTo(Harjoituskerta harjoituskerta) {
+        return String.valueOf(tunnusNro).compareTo(String.valueOf(harjoituskerta.tunnusNro));
     }
 
 }
