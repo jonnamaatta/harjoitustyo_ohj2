@@ -20,7 +20,7 @@ import treenipaivakirja.Lajit.LajitIterator;
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
  *
  * @author Jonna Määttä
- * @version 1.4.2021
+ * @version 5.4.2021
  * 
  */
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {

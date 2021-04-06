@@ -7,12 +7,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="fxTreenipaivakirja.TulostusController">
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
-            <TextArea prefHeight="510.0" prefWidth="405.0" text="Valitut harjoituskerrat&#10;--------------------------------------------------------&#10;id                     : 4&#10;päivämäärä             : 21.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 30:55&#10;matka (km)             : 4.5&#10;kuormittavuus (1-10)   : 5&#10;kommentti              : kevyttä tahtia&#10;--------------------------------------------------------&#10;id                     : 5&#10;päivämäärä             : 18.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 50:23&#10;matka (km)             : 8.1&#10;kuormittavuus (1-10)   : 7&#10;kommentti              : &#10;--------------------------------------------------------&#10;id                     : 7&#10;päivämäärä             : 10.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 54:32&#10;matka (km)             : 7.9&#10;kuormittavuus (1-10)   : 6&#10;kommentti              : &#10;--------------------------------------------------------&#10;id                     : 8&#10;päivämäärä             : 7.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 44:32&#10;matka (km)             : 7.0&#10;kuormittavuus (1-10)   : 8&#10;kommentti              :">
+            <TextArea fx:id="tulostusAlue" prefHeight="510.0" prefWidth="405.0" text="Valitut harjoituskerrat&#10;--------------------------------------------------------&#10;id                     : 4&#10;päivämäärä             : 21.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 30:55&#10;matka (km)             : 4.5&#10;kuormittavuus (1-10)   : 5&#10;kommentti              : kevyttä tahtia&#10;--------------------------------------------------------&#10;id                     : 5&#10;päivämäärä             : 18.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 50:23&#10;matka (km)             : 8.1&#10;kuormittavuus (1-10)   : 7&#10;kommentti              : &#10;--------------------------------------------------------&#10;id                     : 7&#10;päivämäärä             : 10.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 54:32&#10;matka (km)             : 7.9&#10;kuormittavuus (1-10)   : 6&#10;kommentti              : &#10;--------------------------------------------------------&#10;id                     : 8&#10;päivämäärä             : 7.12.20&#10;laji                   : juoksu&#10;kesto (min)            : 44:32&#10;matka (km)             : 7.0&#10;kuormittavuus (1-10)   : 8&#10;kommentti              :">
                <font>
                   <Font name="Consolas" size="12.0" />
                </font>
@@ -23,14 +22,14 @@
    <bottom>
       <BorderPane prefHeight="40.0" prefWidth="404.0" BorderPane.alignment="CENTER">
          <center>
-            <Button mnemonicParsing="false" text="Tulosta" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="150.0" />
                </BorderPane.margin>
             </Button>
          </center>
          <right>
-            <Button mnemonicParsing="false" text="OK" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#handleOK" text="OK" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="50.0" />
                </BorderPane.margin>

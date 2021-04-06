@@ -8,7 +8,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 1.4.2021
+* @version 6.4.2021
 * 
 */
 public class Harjoituskerta implements Cloneable {
@@ -287,13 +287,21 @@ public class Harjoituskerta implements Cloneable {
     * Tulostetaan harjoituskerta.
     * @param out tietovirta johon tulostetaan
     */
-    public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", tunnusNro, 3) + "  " + pvm);
-        out.println(kesto + " "
-                 + matka + " "
-                 + kuormittavuus + " ");
-        out.println(kommentti);
+    public void tulostaOtsikko(PrintStream out) {
+        out.println(String.format("%03d", tunnusNro, 3) + " " + pvm);
         }
+    
+    
+    /**
+     * Tulostetaan harjoituskerta.
+     * @param out tietovirta johon tulostetaan
+     */
+     public void tulostaSisalto(PrintStream out) {
+         out.println(kesto + " "
+                  + matka + " "
+                  + kuormittavuus + " ");
+         out.println(kommentti);
+         }
     
     
     /**

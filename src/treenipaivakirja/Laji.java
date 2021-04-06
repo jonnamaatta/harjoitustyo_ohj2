@@ -10,7 +10,7 @@ import static treenipaivakirja.Harjoituskerta.rand;
  * Laji joka osaa mm. itse huolehtia tunnus_nro:staan.
  * 
  * @author Jonna Määttä
- * @version 1.4.2021
+ * @version 6.4.2021
  * 
  */
 public class Laji implements Cloneable {

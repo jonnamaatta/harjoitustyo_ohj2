@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
+import treenipaivakirja.Lajit;
 import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
 
@@ -30,7 +31,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 5.4.2021
+ * @version 6.4.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -147,7 +148,8 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään harjoituskertojen tulostaminen.
      */
     @FXML private void handleTulosta() {
-        Dialogs.showMessageDialog("Ei osata vielä tulostaa!");
+        TulostusController tulostusCtrl = TulostusController.tulosta(null); 
+        tulostaValitut(tulostusCtrl.getTextArea()); 
     }
     
     
@@ -351,19 +353,26 @@ public class TreenipaivakirjaGUIController implements Initializable {
           hae(0);
           chooserHarjoitukset.setSelectedIndex(index);
       }
-           
+      
       
       /**
-       * Tulostaa harjoituskerran tiedot.
-       * @param os tietovirta johon tulostetaan
-       * @param harjoitus tulostettava harjoituskerta
+       * Harjoituskerran muokkaus.
        */
-      public void tulosta(PrintStream os, final Harjoituskerta harjoitus) {
-          os.println("----------------------------------------------");
-          harjoitus.tulosta(os);
-          os.println("----------------------------------------------");
+      private void muokkaaHarjoitusta() {
+          if ( harjoitusKohdalla == null ) return; 
+          try { 
+             Harjoituskerta uusi;
+             uusi = HarjoitusDialogController.kysyHarjoitus(null, harjoitusKohdalla.clone(), treenipaivakirja); 
+             if ( uusi == null ) return; 
+             treenipaivakirja.korvaaTaiLisaa(uusi); 
+             hae(uusi.getTunnusNro()); 
+         } catch (CloneNotSupportedException e) { 
+           //
+         } catch (SailoException e) { 
+             Dialogs.showMessageDialog(e.getMessage()); 
+         } 
       }
-     
+            
       
      /**
       * Näytetään virhe.
@@ -379,25 +388,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
         labelVirhe.getStyleClass().add("virhe");
     }  
   
-    
-    /**
-     * Harjoituskerran muokkaus.
-     */
-    private void muokkaaHarjoitusta() {
-        if ( harjoitusKohdalla == null ) return; 
-        try { 
-           Harjoituskerta uusi;
-           uusi = HarjoitusDialogController.kysyHarjoitus(null, harjoitusKohdalla.clone(), treenipaivakirja); 
-           if ( uusi == null ) return; 
-           treenipaivakirja.korvaaTaiLisaa(uusi); 
-           hae(uusi.getTunnusNro()); 
-       } catch (CloneNotSupportedException e) { 
-         //
-       } catch (SailoException e) { 
-           Dialogs.showMessageDialog(e.getMessage()); 
-       } 
-    }
-    
     
     /**
      * Uuden lajin lisääminen.
@@ -471,6 +461,36 @@ public class TreenipaivakirjaGUIController implements Initializable {
         }
     }
     
+    
+    /**
+     * Tulostaa harjoituskerran tiedot
+     * @param os tietovirta johon tulostetaan
+     * @param har tulostettava harjoituskerta
+     * @param l tulostettava laji
+     */
+    public void tulosta(PrintStream os, final Harjoituskerta har, final Laji l) {
+        os.println("----------------------------------------------");
+        har.tulostaOtsikko(os);
+        l.tulosta(os);
+        har.tulostaSisalto(os);
+    }
+    
+    
+    /**
+     * Tulostaa listassa olevat harjoituskerrat tekstialueeseen
+     * @param text alue johon tulostetaan
+     */
+    public void tulostaValitut(TextArea text) {
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
+            os.println("Tulostetaan kaikki harjoituskerrat");
+            for (Harjoituskerta har: chooserHarjoitukset.getObjects()) { 
+                Laji l = treenipaivakirja.annaLajiTn(har.getLajiNro());
+                tulosta(os, har, l);
+                os.println("\n");
+            }
+        }
+    }
+        
     
     /**
      * Tilastojen näyttäminen.
