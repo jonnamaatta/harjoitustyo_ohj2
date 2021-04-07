@@ -21,7 +21,7 @@ import treenipaivakirja.Lajit.LajitIterator;
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
  *
  * @author Jonna Määttä
- * @version 5.4.2021
+ * @version 7.4.2021
  * 
  */
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {
@@ -151,6 +151,94 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
         return lkm;
     }
     
+    
+    /** Hakee suosituimman lajin
+     * @return suosituin laji
+     */
+    public int haeSuosituinLaji() {
+        List<Integer> lajinumerot = new ArrayList<Integer>();
+        for (Harjoituskerta har : alkiot) {
+            if (har == null) continue;
+            lajinumerot.add(har.getLajiNro());
+        }
+        
+        Collections.sort(lajinumerot);
+
+        int suosituin = Integer.MIN_VALUE;
+        int max_maara = 1; 
+        int maara = 1;
+        
+        for (int i = 1; i < lajinumerot.size() ; i++) {
+            if(lajinumerot.get(i) == lajinumerot.get(i-1))
+                maara++;
+            else{
+                if(maara > max_maara){
+                    max_maara = maara;
+                    suosituin = lajinumerot.get(i-1);
+                } 
+                maara = 1;
+            }
+        }
+        return suosituin;
+    }
+    
+    
+    /** Laskee keskimääräisen kuormittavuuden
+     * @return keskikuormittauuvs
+     */
+    public double laskeKeskiKuormittavuus() {
+        double summa = 0;
+        double maara = 0;
+        for (Harjoituskerta har : alkiot) {
+            if (har == null) continue;
+            String kuormittavuus = har.getKuormittavuus();
+            summa += Double.valueOf(kuormittavuus);
+            maara++;
+        }
+        double keskikuormittavuus = summa / maara;
+
+        return keskikuormittavuus;
+    }
+    
+    
+    /** Laskee keskimääräisen matkan
+     * @return keskimatka
+     */
+    public double laskeKeskimatka() {
+        double summa = 0;
+        double maara = 0;
+        for (Harjoituskerta har : alkiot) {
+            if (har == null) continue;
+            if (har.getMatka() == "") continue;
+            String matka = har.getMatka();
+            summa += Double.valueOf(matka);
+            maara++;
+        }
+        double keskimatka = summa / maara;
+        double roundedmatka = Math.round(keskimatka * 100.0) / 100.0;
+        return roundedmatka;
+    }
+
+    
+    /**
+     * Hakee pisimmän matkan
+     * @return pisin matka
+     */
+    public double haePisinmatka() {
+        
+        double pisin = Integer.MIN_VALUE;
+        
+        for (Harjoituskerta har : alkiot) {
+            if (har == null) continue;
+            if (har.getMatka() == "") continue;
+            double matkanpituus = Double.valueOf(har.getMatka());
+            if (matkanpituus > pisin) {
+                pisin = matkanpituus;
+            }
+        }
+        return pisin;
+    }
+   
     
     /**
      * Haetaan kaikki lajin harjoituskerrat.
@@ -310,7 +398,8 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             for (int i = 0; i < harjoitukset.getLkm(); i++) {
                 Harjoituskerta harjoitus = harjoitukset.anna(i);
                 System.out.println("Harjoituskerta nro: " + i);
-                harjoitus.tulosta(System.out);
+                harjoitus.tulostaOtsikko(System.out);
+                harjoitus.tulostaSisalto(System.out);
             }
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
@@ -446,6 +535,6 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
         Collections.sort(loytyneet, Collections.reverseOrder());
         return loytyneet; 
     }
-
+  
     
 }

@@ -20,7 +20,7 @@ import treenipaivakirja.Treenipaivakirja;
 /**
  * Tilastot hoitava luokka
  * @author Jonna Määttä
- * @version 6.4.2021
+ * @version 7.4.2021
  *
  */
 public class TilastotController implements ModalControllerInterface<Treenipaivakirja> {
@@ -31,7 +31,6 @@ public class TilastotController implements ModalControllerInterface<Treenipaivak
     @FXML private Label      tilastoja;
     
     private Treenipaivakirja treenipaivakirja;
- 
     
     @FXML private void handleOK() {
         ModalController.closeStage(tilastoja);
@@ -40,7 +39,6 @@ public class TilastotController implements ModalControllerInterface<Treenipaivak
     
     @Override
     public Treenipaivakirja getResult() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -48,15 +46,13 @@ public class TilastotController implements ModalControllerInterface<Treenipaivak
 
     @Override
     public void handleShown() {
-        // TODO Auto-generated method stub
-        
+        //
     }
 
 
     @Override
     public void setDefault(Treenipaivakirja oletus) {
-        // TODO Auto-generated method stub
-        
+        treenipaivakirja = oletus;
     }
     
     
@@ -74,13 +70,22 @@ public class TilastotController implements ModalControllerInterface<Treenipaivak
     
     
     /**
-     * TODO: lisää oikeiden tilastojen laskeminen
+     * Laskee tilastot ja asettaa ne kenttiin.
      */
     private void laske() {
-        textSuosituinlaji.setText("kävely");
-        textKeskikuormittavuus.setText("4.4");
-        textKeskimatka.setText("7.4");
-        textPisinmatka.setText("11.2");
+        int suosituinlaji = treenipaivakirja.haeSuosituinLaji();
+        Laji laji = treenipaivakirja.annaLajiTn(suosituinlaji);
+        String suosituimmannimi = laji.getNimi();
+        textSuosituinlaji.setText(suosituimmannimi);
+
+        double keskikuormittavuus = treenipaivakirja.laskeKeskikuormittavuus();
+        textKeskikuormittavuus.setText(String.valueOf(keskikuormittavuus));
+        
+        double keskimatka = treenipaivakirja.laskeKeskimatka();
+        textKeskimatka.setText(String.valueOf(keskimatka));
+        
+        double pisinmatka = treenipaivakirja.haePisinmatka();
+        textPisinmatka.setText(String.valueOf(pisinmatka));
     }
 
 

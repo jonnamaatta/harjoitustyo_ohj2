@@ -1,9 +1,7 @@
 package fxTreenipaivakirja;
 
 import java.net.URL;
-import java.util.Collection;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
@@ -18,9 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
-import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
-import treenipaivakirja.Lajit;
 
 /**
  * Kysytään harjoituskerran tiedot luomalla sille uusi dialogi
@@ -190,15 +186,14 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
      * Viedään lajit ComboBoxChooseriin
      */
     public void vieLaji() {
-        for (Laji laji:treenipaivakirja.etsiLaji("", 1)) { 
-            lajiChooser.add(laji.getNimi(),laji); 
+        for (Laji l : treenipaivakirja.etsiLaji("", 1)) { 
+            lajiChooser.add(l.getNimi(),l); 
         } 
     }
     
     
     /**
      * Luodaan harjoituskerran kysymisdialogi ja palautetaan sama tietue muutettuna tai null.
-     * TODO: korjattava toimimaan
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä dataan näytetään oletuksena
      * @param kirja treenipaivakirja

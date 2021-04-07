@@ -9,7 +9,7 @@ import java.util.List;
  * ovat vain "välittäjämetodeja" harjoituskertoihin.
  *
  * @author Jonna Määttä
- * @version 5.4.2021
+ * @version 7.4.2021
  * 
  */
 public class Treenipaivakirja {
@@ -325,8 +325,45 @@ public class Treenipaivakirja {
     public void poistaLaji(Laji laji) { 
         lajit.poista(laji); 
     } 
-
-
+    
+    
+    /**
+     * Hakee suosituimman lajin
+     * @return suosituin laji
+     */
+    public int haeSuosituinLaji() {
+        return harjoitukset.haeSuosituinLaji();
+    }
+    
+    
+    
+    /**
+     * Laskee keskimääräisen kuormittavuuden
+     * @return keskikuormittavuus
+     */
+    public double laskeKeskikuormittavuus() {
+        return harjoitukset.laskeKeskiKuormittavuus();
+    }
+    
+    
+    /**
+     * Laskee keskimääräisen matkan
+     * @return keskimatka
+     */
+    public double laskeKeskimatka() {
+        return harjoitukset.laskeKeskimatka();
+    } 
+    
+    
+   /**
+    * Hakee pisimmän matkan
+    * @return pisin matka
+    */
+    public double haePisinmatka() {
+        return harjoitukset.haePisinmatka();
+    }
+    
+    
     /**
      * Testiohjelma treenipäiväkirjasta.
      * @param args ei käytössä
@@ -360,7 +397,8 @@ public class Treenipaivakirja {
                 
                 Laji l = treenipaivakirja.lajit.anna(esim.getLajiNro());
                 System.out.println(l);
-                esim.tulosta(System.out);
+                esim.tulostaOtsikko(System.out);
+                esim.tulostaSisalto(System.out);
                             }
 
         } catch (SailoException ex) {

@@ -184,7 +184,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
       
       
     /**
-     * Paluttaa harjoituskerran kommentin.
+     * Paluttaa harjoituskerran matkan.
      * @return matka
      */
      public String getMatka() {
@@ -305,15 +305,6 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     
     
     /**
-    * Tulostetaan harjoituskerran tiedot.
-    * @param os tietovirta johon tulostetaan
-    */
-    public void tulosta(OutputStream os) {
-        tulosta(new PrintStream(os));
-    }
-
-
-    /**
     * Antaa harjoituskerralle seuraavan id:n.
     * @return harjoituskerran uusi tunnusNro
     * @example
@@ -365,15 +356,20 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
         Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
         juoksu1.rekisteroi();
         juoksu2.rekisteroi();
-        juoksu1.tulosta(System.out);
+        juoksu1.tulostaOtsikko(System.out);
+        juoksu1.tulostaSisalto(System.out);
+
         juoksu1.vastaaJuoksu(0);
-        juoksu1.tulosta(System.out);
+        juoksu1.tulostaOtsikko(System.out);
+        juoksu1.tulostaSisalto(System.out);
         
         juoksu2.vastaaJuoksu(0);
-        juoksu2.tulosta(System.out);
+        juoksu2.tulostaOtsikko(System.out);
+        juoksu2.tulostaSisalto(System.out);
         
         juoksu2.vastaaJuoksu(0);
-        juoksu2.tulosta(System.out);
+        juoksu2.tulostaOtsikko(System.out);
+        juoksu2.tulostaSisalto(System.out);
     }
 
 

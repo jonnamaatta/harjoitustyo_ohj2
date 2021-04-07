@@ -150,7 +150,6 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
     
     /**
      * Luodaan lajin kysymisdialogi ja palautetaan sama tietue muutettuna tai null.
-     * TODO: korjattava toimimaan
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä dataan näytetään oletuksena
      * @param kentta kentta
