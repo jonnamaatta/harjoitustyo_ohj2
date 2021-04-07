@@ -31,8 +31,8 @@ public class TreenipaivakirjaMain extends Application {
 			
 			Treenipaivakirja treenipaivakirja = new Treenipaivakirja();
 	            treenipaivakirjaCtrl.setTreenipaivakirja(treenipaivakirja);
-	            primaryStage.show();
 	            if ( !treenipaivakirjaCtrl.avaa() ) Platform.exit();
+	            primaryStage.show();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

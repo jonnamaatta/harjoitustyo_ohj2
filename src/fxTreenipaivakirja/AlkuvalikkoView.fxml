@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #e6eeff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="868.0" style="-fx-background-color: #e6eeff;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxTreenipaivakirja.AlkuvalikkoController">
    <bottom>
       <BorderPane prefHeight="45.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <center>
-            <Button mnemonicParsing="false" text="Avaa" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#handleOK" text="Avaa" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </bottom>
@@ -27,7 +27,7 @@
             </Label>
          </center>
          <bottom>
-            <Label prefHeight="27.0" prefWidth="163.0" text="Jonna Määttä" BorderPane.alignment="TOP_CENTER">
+            <Label fx:id="textAuthor" prefHeight="27.0" prefWidth="163.0" text="Jonna Määttä" BorderPane.alignment="TOP_CENTER">
                <font>
                   <Font name="Calibri" size="27.0" />
                </font>

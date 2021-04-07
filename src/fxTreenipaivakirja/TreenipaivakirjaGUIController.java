@@ -31,7 +31,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 6.4.2021
+ * @version 7.4.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -52,6 +52,11 @@ public class TreenipaivakirjaGUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         alusta();
+    }
+    
+    
+    @FXML private void handleAvaa() {
+        avaa();
     }
     
     
@@ -132,7 +137,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Käsitellään tietojen näyttäminen.
      */
     @FXML private void handleTietoja() {
-        Dialogs.showMessageDialog("Treenipäiväkirja");
+        ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("TietojaView.fxml"), "Treenipäiväkirja", null, "");
     }
     
     
@@ -205,10 +210,11 @@ public class TreenipaivakirjaGUIController implements Initializable {
 
 
       /**
-       * Kysytään tiedoston nimi ja luetaan se.
+       * Näyttää ohjelman alkuvalikon
        * @return true jos onnistui, false jos ei
        */
       public boolean avaa() {
+          ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("AlkuvalikkoView.fxml"), "Treenipäiväkirja", null, "");
           String uusinimi = tiednimi;
           if (uusinimi == null) return false;
           lueTiedosto(uusinimi);
