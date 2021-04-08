@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * @author Jonna Määttä
- * @version 11.3.2021
+ * @version 7.4.2021
  */
 public class TreenipaivakirjaMain extends Application {
 	@Override

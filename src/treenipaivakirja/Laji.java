@@ -4,8 +4,6 @@ import java.io.*;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
-import static treenipaivakirja.Harjoituskerta.rand;
-
 /**
  * Laji joka osaa mm. itse huolehtia tunnus_nro:staan.
  * 
@@ -42,7 +40,7 @@ public class Laji implements Cloneable {
      * Apumetodi, jolla saadaan täytettyä testiarvot lajille.
      */
     public void vastaaJuoksu() {
-        lajinNimi = "juoksu " + rand(1000,9999);
+        lajinNimi = "juoksu ";
     }
     
     

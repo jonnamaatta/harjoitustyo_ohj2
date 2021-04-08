@@ -242,16 +242,7 @@ public class Treenipaivakirja {
         harjoitukset.tallenna("treenit");
         // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
     }
-   
-    
-    /**
-     * @param laji haluttava laji
-     * @return lajin harjoituskerrat
-     */
-    public List<Harjoituskerta> annaHarjoituskerrat(Laji laji) {
-        return harjoitukset.annaHarjoituskerrat(laji.getTunnusNro());
-    }
-    
+ 
     
     /**
      * Asettaa tiedostojen perusnimet.
@@ -374,9 +365,9 @@ public class Treenipaivakirja {
         try {
             Harjoituskerta tiistai1 = new Harjoituskerta(), tiistai2 = new Harjoituskerta();
             tiistai1.rekisteroi();
-            tiistai1.vastaaJuoksu(0);
+            tiistai1.vastaaJuoksu();
             tiistai2.rekisteroi();
-            tiistai2.vastaaJuoksu(1);
+            tiistai2.vastaaJuoksu();
 
             treenipaivakirja.lisaa(tiistai1);
             treenipaivakirja.lisaa(tiistai2);

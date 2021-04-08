@@ -9,7 +9,7 @@ import fi.jyu.mit.ohj2.Mjonot;
 *
 * @author Jonna Määttä
 * @version 6.4.2021
-* 
+* TODO: kunnollinen päivämäärän oikeellisuus, ei regex
 */
 public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     
@@ -42,7 +42,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
 
 
     /**
-     * Eka kenttä joka on mielekäs kysyttäväksi
+     * Eka kenttä joka on mielekäs kysyttäväksi.
      * @return ekan kentän indeksi
      */
     public int ekaKentta() {
@@ -85,8 +85,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
    /**
     * Asettaa harjoituskerralle päivämäärän.
     * @param s laitettava pvm
-    * @return virheilmotus, null jos ok
-    * TODO: kunnollinen päivämäärän oikeellisuus, ei regex
+    * @return virheilmotus, null jos ok 
     */
    public String setPvm(String s) {
        if(!s.matches("[0-9]{1,2}(\\.)([0-9]|1[012])(\\.)[0-9]{2}")) return "Päivämäärän on oltava muotoa d.m.yy";
@@ -156,7 +155,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     * @example
     * <pre name="test">
     *   Harjoituskerta juoksu1 = new Harjoituskerta();
-    *   juoksu1.vastaaTestiarvot();
+    *   juoksu1.vastaaJuoksu();
     *   juoksu1.getPvm() =R= "7.12.20";
     * </pre>
     */
@@ -177,6 +176,12 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     /**
      * Palauttaa harjoituskerran keston.
      * @return kesto
+     * @example
+     * <pre name="test">
+     *   Harjoituskerta juoksu1 = new Harjoituskerta();
+     *   juoksu1.vastaaJuoksu();
+     *   juoksu1.getKesto() =R= "44:32";
+     * </pre>
      */
      public String getKesto() {
         return kesto;
@@ -184,8 +189,14 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
       
       
     /**
-     * Paluttaa harjoituskerran matkan.
+     * Palauttaa harjoituskerran matkan.
      * @return matka
+     * @example
+     * <pre name="test">
+     *   Harjoituskerta juoksu1 = new Harjoituskerta();
+     *   juoksu1.vastaaJuoksu();
+     *   juoksu1.getMatka() =R= "7.0";
+     * </pre>
      */
      public String getMatka() {
          return matka;
@@ -195,6 +206,12 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     /**
      * Palauttaa harjoituskerran kuormittavuuden.
      * @return kuormittavuus
+     * @example
+     * <pre name="test">
+     *   Harjoituskerta juoksu1 = new Harjoituskerta();
+     *   juoksu1.vastaaJuoksu();
+     *   juoksu1.getKuormittavuus() =R= "6";
+     * </pre>
      */
      public String getKuormittavuus() {
          return kuormittavuus;
@@ -204,6 +221,12 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     /**
      * Palauttaa harjoituskerran kommentin.
      * @return kommentti
+     * @example
+     * <pre name="test">
+     *   Harjoituskerta juoksu1 = new Harjoituskerta();
+     *   juoksu1.vastaaJuoksu();
+     *   juoksu1.getKommentti() =R= "Jaksoin juosta todella hyvin";
+     * </pre>
      */
      public String getKommentti() {
          return kommentti;
@@ -215,7 +238,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
      * <pre name="test">
      * Harjoituskerta har = new Harjoituskerta();
      * har.rekisteroi();
-     * har.vastaaJuoksu(1);
+     * har.vastaaJuoksu();
      * har.toString() === "1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin";
      * </pre>
      */
@@ -242,7 +265,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
      *   har.parse(""+(n+20));
      *   har.rekisteroi();
      *   har.getTunnusNro() === n+20+1;
-     *   har.toString()     === "" + (n+20+1) + "1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin";
+     *   har.toString()     === "" + (n+20+1) + "|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin";
      * </pre>
      */
     public void parse(String rivi) {
@@ -256,26 +279,13 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
         kommentti = Mjonot.erota(sb, '|', kommentti);    
     }
 
-
-    /**
-     * Arvotaan satunnainen kokonaisluku välille [ala, yla]
-     * @param ala arvonnan alaraja
-     * @param yla arvonnan ylaraja
-     * @return satunnainen luku väliltä [ala, yla]
-     */
-    public static int rand(int ala, int yla) {
-        double n = (yla-ala)*Math.random() + ala;
-        return (int)Math.round(n);
-    }
-
     
     /**
     * Apumetodi, jolla saadaan täytettyä testiarvot harjoituskerralle.
-     * @param nro indeksi
     */
-    public void vastaaJuoksu(int nro) {
-        pvm = "7.12.20 " + rand(1000,9999);
-        lajiNro = nro;
+    public void vastaaJuoksu() {
+        pvm = "7.12.20";
+        lajiNro = 1;
         kesto = "44:32";
         matka = "7.0";
         kuormittavuus = "6";
@@ -301,7 +311,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
                   + matka + " "
                   + kuormittavuus + " ");
          out.println(kommentti);
-         }
+     }
     
     
     /**
@@ -347,35 +357,9 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
         return uusi;
     }
     
-       
-    /**
-     * Testiohjelma harjoituskerralle.
-     * @param args ei käytössä
-     */
-    public static void main(String args[]) {
-        Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
-        juoksu1.rekisteroi();
-        juoksu2.rekisteroi();
-        juoksu1.tulostaOtsikko(System.out);
-        juoksu1.tulostaSisalto(System.out);
-
-        juoksu1.vastaaJuoksu(0);
-        juoksu1.tulostaOtsikko(System.out);
-        juoksu1.tulostaSisalto(System.out);
-        
-        juoksu2.vastaaJuoksu(0);
-        juoksu2.tulostaOtsikko(System.out);
-        juoksu2.tulostaSisalto(System.out);
-        
-        juoksu2.vastaaJuoksu(0);
-        juoksu2.tulostaOtsikko(System.out);
-        juoksu2.tulostaSisalto(System.out);
-    }
-
-
 
     /**
-     * Antaa k:n kentän sisällön merkkijonona
+     * Antaa k:n kentän sisällön merkkijonona.
      * @param k monenenko kentän sisältö palautetaan
      * @return kentän sisältö merkkijonona
      */
@@ -396,6 +380,31 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     @Override
     public int compareTo(Harjoituskerta harjoituskerta) {
         return String.valueOf(tunnusNro).compareTo(String.valueOf(harjoituskerta.tunnusNro));
+    }
+
+       
+    /**
+     * Testiohjelma harjoituskerralle.
+     * @param args ei käytössä
+     */
+    public static void main(String args[]) {
+        Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+        juoksu1.rekisteroi();
+        juoksu2.rekisteroi();
+        juoksu1.tulostaOtsikko(System.out);
+        juoksu1.tulostaSisalto(System.out);
+
+        juoksu1.vastaaJuoksu();
+        juoksu1.tulostaOtsikko(System.out);
+        juoksu1.tulostaSisalto(System.out);
+        
+        juoksu2.vastaaJuoksu();
+        juoksu2.tulostaOtsikko(System.out);
+        juoksu2.tulostaSisalto(System.out);
+        
+        juoksu2.vastaaJuoksu();
+        juoksu2.tulostaOtsikko(System.out);
+        juoksu2.tulostaSisalto(System.out);
     }
 
 }

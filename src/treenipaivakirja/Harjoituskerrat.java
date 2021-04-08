@@ -15,7 +15,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import fi.jyu.mit.ohj2.WildChars;
-import treenipaivakirja.Lajit.LajitIterator;
 
 /**
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
@@ -29,7 +28,9 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     private static final int MAX_HARJOITUKSIA   = 10;
     private int              lkm                = 0;
     private Harjoituskerta   alkiot[]; 
+    @SuppressWarnings("unused")
     private String           tiedostonNimi      = "";
+    @SuppressWarnings("unused")
     private String           tiedostonPerusNimi = "";
     private boolean          muutettu           = false;
 
@@ -53,9 +54,37 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
     /**
      * Lukee harjoituskerrat tiedostosta.  
-     * TODO KESKEN
      * @param hakemisto tiedoston hakemisto
      * @throws SailoException jos lukeminen epäonnistuu
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     * 
+     *  Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     *  Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+     *  juoksu1.vastaaJuoksu();
+     *  juoksu2.vastaaJuoksu();
+     *  String tiedNimi = "testitreenit/harjoitukset";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  File dir = new File(hakemisto);
+     *  dir.mkdir();
+     *  ftied.delete();
+     *  harjoitukset.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  harjoitukset.lisaa(juoksu1);
+     *  harjoitukset.lisaa(juoksu2);
+     *  harjoitukset.tallenna("testitreenit");
+     *  harjoitukset = new Harjoituskerrat();   // Poistetaan vanhat luomalla uusi
+     *  harjoitukset.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
+     *  Iterator<Harjoituskerta> i = harjoitukset.iterator();
+     *  i.next() === juoksu1;
+     *  i.next() === juoksu2;
+     *  i.hasNext() === false;
+     *  harjoitukset.lisaa(juoksu2);
+     *  harjoitukset.tallenna("testitreenit");
+     *  ftied.delete() === true;
+     *  dir.delete() === true;
+     * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
         String tiedNimi = hakemisto + "/harjoitukset.dat";
@@ -72,9 +101,8 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             muutettu = false;
         } catch (FileNotFoundException e) {
             throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);  
-        } // catch (IOException e) {
-        //    throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
-        }
+        } 
+    }
   
     
     /**
@@ -92,19 +120,16 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             }
         } catch (FileNotFoundException ex) {
             throw new SailoException("Tiedosto " + ftied.getAbsolutePath() + "ei aukea");
-        }
-        
+        } 
         muutettu = false;
     }
 
 
     /**
-     * Lisää uuden harjoituskerran tietorakenteeseen. Ottaa harjoituskerran omistukseensa.
-     * @param harjoitus lisättävän harjoituskerran viite. Huom tietorakenne muuttuu omistajaksi
-     * @throws SailoException jos tietorakenne on jo täynnä
+     * Lisää uuden harjoituskerran tietorakenteeseen, ja tekee uuden taulukon jos ei mahdu. Ottaa harjoituskerran omistukseensa.
+     * @param harjoitus lisättävän harjoituskerran viite. 
      * @example
      * <pre name="test">
-     * #THROWS SailoException 
      * Harjoituskerrat harjoitukset = new Harjoituskerrat();
      * Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
      * harjoitukset.getLkm() === 0;
@@ -114,15 +139,14 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
      * harjoitukset.anna(0) === juoksu1;
      * harjoitukset.anna(1) === juoksu2;
      * harjoitukset.anna(2) === juoksu1;
-     * harjoitukset.anna(1) === juoksu1 === false;
-     * harjoitukset.anna(1) === juoksu2 === true;
+     * harjoitukset.anna(1) == juoksu1 === false;
+     * harjoitukset.anna(1) == juoksu2 === true;
      * harjoitukset.anna(3) === juoksu1; #THROWS IndexOutOfBoundsException 
      * harjoitukset.lisaa(juoksu1); harjoitukset.getLkm() === 4;
      * harjoitukset.lisaa(juoksu1); harjoitukset.getLkm() === 5;
-     * harjoitukset.lisaa(juoksu1);  #THROWS SailoException
      * </pre>
      */
-    public void lisaa(Harjoituskerta harjoitus) throws SailoException {
+    public void lisaa(Harjoituskerta harjoitus) {
         if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20);
         alkiot[lkm] = harjoitus;
         lkm++;
@@ -144,7 +168,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
 
     /**
-     * Palauttaa harjoituuskertojen lukumäärän.
+     * Palauttaa harjoituskertojen lukumäärän.
      * @return harjoituskertojen lukumäärä
      */
     public int getLkm() {
@@ -154,6 +178,10 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     
     /** Hakee suosituimman lajin
      * @return suosituin laji
+     * @example
+     * <pre name="test">
+     * 
+     * </pre>
      */
     public int haeSuosituinLaji() {
         List<Integer> lajinumerot = new ArrayList<Integer>();
@@ -241,44 +269,6 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
    
     
     /**
-     * Haetaan kaikki lajin harjoituskerrat.
-     * @param tunnusnro lajin tunnusnumero jolle harjoituksia haetaan
-     * @return tietorakenne jossa viiteet löydettyihin harjoituskertoihin
-     * @example
-     * <pre name="test">
-     * #import java.util.*;
-     * 
-     *  Lajit lajit = new Lajit();
-     *  Laji juoksu21 = new Laji(2); lajit.lisaa(juoksu21);
-     *  Laji juoksu11 = new Laji(1); lajit.lisaa(juoksu11);
-     *  Laji juoksu22 = new Laji(2); lajit.lisaa(juoksu22);
-     *  Laji juoksu12 = new Laji(1); lajit.lisaa(juoksu12);
-     *  Laji juoksu23 = new Laji(2); lajit.lisaa(juoksu23);
-     *  Laji juoksu51 = new Laji(5); lajit.lisaa(juoksu51);
-     *  
-     *  List<Laji> loytyneet;
-     *  loytyneet = lajit.annaHarjoituskerrat(3);
-     *  loytyneet.size() === 0; 
-     *  loytyneet = lajit.annaHarjoituskerrat(1);
-     *  loytyneet.size() === 2; 
-     *  loytyneet.get(0) == juoksu11 === true;
-     *  loytyneet.get(1) == juoksu12 === true;
-     *  loytyneet = lajit.annaHarjoituskerrat(5);
-     *  loytyneet.size() === 1; 
-     *  loytyneet.get(0) == juoksu51 === true;
-     * </pre> 
-     */
-    public List<Harjoituskerta> annaHarjoituskerrat(int tunnusnro) {
-        List<Harjoituskerta> loydetyt = new ArrayList<Harjoituskerta>();
-        for (Harjoituskerta har : alkiot) {
-            if (har == null) continue;
-            if (har.getLajiNro() == tunnusnro) loydetyt.add(har);
-        }
-        return loydetyt;
-    }
-    
-    
-    /**
      * Korvaa harjoituskerran tietorakenteessa. Ottaa harjoituskerran omistukseensa.
      * Etsitään samalla tunnusnumerolla oleva harjoituskerta.  Jos ei löydy,
      * niin lisätään uutena harjoituskertana.
@@ -331,7 +321,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
      * int id1 = tiistai1.getTunnusNro(); 
      * harjoitukset.lisaa(tiistai1); harjoitukset.lisaa(tiistai2); harjoitukset.lisaa(tiistai3); 
      * harjoitukset.poista(id1+1) === 1; 
-     * harjoitukset.etsiId(id1+1) === null; harjoitukset.getLkm() === 2; 
+     * harjoitukset.etsiId(id1+1) === -1; harjoitukset.getLkm() === 2; 
      * harjoitukset.poista(id1) === 1; harjoitukset.getLkm() === 1; 
      * harjoitukset.poista(id1+3) === 0; harjoitukset.getLkm() === 1; 
      * </pre> 
@@ -387,24 +377,19 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
              
         Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
         juoksu1.rekisteroi();
-        juoksu1.vastaaJuoksu(0);
+        juoksu1.vastaaJuoksu();
         juoksu2.rekisteroi();
-        juoksu2.vastaaJuoksu(1);
+        juoksu2.vastaaJuoksu();
 
-        try {
-            harjoitukset.lisaa(juoksu1);
-            harjoitukset.lisaa(juoksu2);
+        harjoitukset.lisaa(juoksu1);
+        harjoitukset.lisaa(juoksu2);
 
-            for (int i = 0; i < harjoitukset.getLkm(); i++) {
-                Harjoituskerta harjoitus = harjoitukset.anna(i);
-                System.out.println("Harjoituskerta nro: " + i);
-                harjoitus.tulostaOtsikko(System.out);
-                harjoitus.tulostaSisalto(System.out);
-            }
-        } catch (SailoException ex) {
-            System.out.println(ex.getMessage());
+        for (int i = 0; i < harjoitukset.getLkm(); i++) {
+            Harjoituskerta harjoitus = harjoitukset.anna(i);
+            System.out.println("Harjoituskerta nro: " + i);
+            harjoitus.tulostaOtsikko(System.out);
+            harjoitus.tulostaSisalto(System.out);
         }    
-        
         try {
             harjoitukset.tallenna("treenit");
         } catch (SailoException e) {
@@ -483,7 +468,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
 
     /**
-     * Tuhoamista ei ole toteutettu
+     * Tuhoamista ei ole toteutettu 
      * @throws UnsupportedOperationException aina
      * @see java.util.Iterator#remove()
      */
@@ -519,10 +504,8 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
      *   Harjoituskerta har4 = new Harjoituskerta(); har4.parse("4|15.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
      *   Harjoituskerta har5 = new Harjoituskerta(); har5.parse("5|20.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
      *   harjoitukset.lisaa(har1); harjoitukset.lisaa(har2); harjoitukset.lisaa(har3); harjoitukset.lisaa(har4); harjoitukset.lisaa(har5);
-     *   // TODO: toistaiseksi palauttaa kaikki harjoituskerrat
      * </pre> 
      */ 
-    @SuppressWarnings("unused")
     public Collection<Harjoituskerta> etsi(String hakuehto, int k) { 
         String ehto = "*"; 
         if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
