@@ -33,7 +33,7 @@ public class AlkuvalikkoController implements ModalControllerInterface<String> {
 
     
     /**
-     * Mitä tehdään kun dialogi on näytetty
+     * Mitä tehdään kun dialogi on näytetty.
      */
     @Override
     public void handleShown() {
@@ -42,7 +42,7 @@ public class AlkuvalikkoController implements ModalControllerInterface<String> {
     
     
     /**
-     * Luodaan nimenkysymisdialogi ja palautetaan siihen kirjoitettu nimi tai null
+     * Luodaan nimenkysymisdialogi ja palautetaan siihen kirjoitettu nimi tai null.
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä nimeä näytetään oletuksena
      * @return null jos painetaan Cancel, muuten kirjoitettu nimi

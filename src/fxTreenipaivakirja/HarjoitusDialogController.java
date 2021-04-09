@@ -183,7 +183,7 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
     
       
     /**
-     * Viedään lajit ComboBoxChooseriin
+     * Viedään lajit ComboBoxChooseriin.
      */
     public void vieLaji() {
         for (Laji l : treenipaivakirja.etsiLaji("", 1)) { 
@@ -213,6 +213,5 @@ public class HarjoitusDialogController implements ModalControllerInterface<Harjo
         treenipaivakirja = kirja;
         vieLaji();
     }
-
 
 }

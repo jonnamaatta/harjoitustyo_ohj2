@@ -2,86 +2,83 @@ package treenipaivakirja;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 
 /**
- * Treenipäiväkirja-luokka, joka huolehtii harjoituskerroista. Pääosin kaikki metodit
+ * Treenipäiväkirja-luokka, joka huolehtii harjoituskerroista ja lajeista. Pääosin kaikki metodit
  * ovat vain "välittäjämetodeja" harjoituskertoihin.
  *
  * @author Jonna Määttä
- * @version 7.4.2021
+ * @version 9.4.2021
  * 
- */
+ * Testien alustus
+ * @example
+ * <pre name="testJAVA">
+ * #import treenipaivakirja.SailoException;
+ *  private Treenipaivakirja treeni;
+ *  private Harjoituskerta har1;
+ *  private Harjoituskerta har2;
+ *  private Laji l11;
+ *  private Laji l12;
+ *  private Laji l21; 
+ *  private Laji l22; 
+ *  private Laji l23;
+ *  
+ *  public void alustaTreenipaivakirja() {
+ *  treeni = new Treenipaivakirja();
+ *  har1 = new Harjoituskerta(); har1.vastaaJuoksu(); har1.rekisteroi();
+ *  har2 = new Harjoituskerta(); har2.vastaaJuoksu(); har2.rekisteroi();
+ *  l11 = new Laji(); l11.vastaaJuoksu();
+ *  l12 = new Laji(); l12.vastaaJuoksu();
+ *  l21 = new Laji(); l21.vastaaJuoksu(); 
+ *  l22 = new Laji(); l22.vastaaJuoksu(); 
+ *  l23 = new Laji(); l23.vastaaJuoksu();
+ *  try {
+ *      treeni.lisaa(har1);
+ *      treeni.lisaa(har2);
+ *      treeni.lisaa(l11);
+ *      treeni.lisaa(l12);
+ *      treeni.lisaa(l21);
+ *      treeni.lisaa(l22);
+ *      treeni.lisaa(l23);
+ *   } catch ( Exception e) {
+ *       System.err.println(e.getMessage());
+ *  }
+ *  }
+ * </pre>
+*/
 public class Treenipaivakirja {
     private Harjoituskerrat harjoitukset = new Harjoituskerrat();
     private Lajit           lajit        = new Lajit(); 
 
 
     /**
-     * Lukee treenipäiväkirjaan tiedot tiedostosta
-     * @param nimi jota käyteään lukemisessa
-     * @throws SailoException jos lukeminen epäonnistuu
-     * 
+     * Lukee treenipäiväkirjaan tiedot tiedostosta.
+     * @param nimi jota käytetään lukemisessa
+     * @throws SailoException jos lukeminen epäonnistuu 
      * @example
      * <pre name="test">
      * #THROWS SailoException 
+     * #THROWS IOException
      * #import java.io.*;
      * #import java.util.*;
      * 
-     *  Treenipaivakirja treeni = new Treenipaivakirja();
-     *  
-     *  Laji Laji1 = new Laji(); laji1.vastaaJuoksu(); laji1.rekisteroi();
-     *  Laji laji2 = new Laji(); laji2.vastaaJuoksu(); laji2.rekisteroi();
-     *  Harjoituskerta har21 = new Harjoituskerta(); har21.vastaaJuoksu(laji2.getTunnusNro());
-     *  Harjoituskerta har11 = new Harjoituskerta(); har11.vastaaJuoksu(laji1.getTunnusNro());
-     *  Harjoituskerta har22 = new Harjoituskerta(); har22.vastaaJuoksu(laji2.getTunnusNro()); 
-     *  Harjoituskerta har12 = new Harjoituskerta(); har12.vastaaJuoksu(laji1.getTunnusNro()); 
-     *  Harjoituskerta har23 = new Harjoituskerta(); har23.vastaaJuoksu(laji2.getTunnusNro());
-     *   
-     *  String hakemisto = "testitreenit";
-     *  File dir = new File(hakemisto);
-     *  File ftied  = new File(hakemisto+"/lajit.dat");
-     *  File fhtied = new File(hakemisto+"/harjoitukset.dat");
+     *  String tiedNimi = "testitreenit";
+     *  File dir = new File(tiedNimi);
+     *  File ftied = new File(tiedNimi+"/lajit.dat");
+     *  File fhtied  = new File(tiedNimi+"/harjoitukset.dat");
      *  dir.mkdir();  
      *  ftied.delete();
      *  fhtied.delete();
-     *  treenipaivakirja.lueTiedostosta(hakemisto); #THROWS SailoException
-     *  treenipaivakirja.lisaa(laji1);
-     *  treenipaivakirja.lisaa(laji2);
-     *  treenipaivakirja.lisaa(har21);
-     *  treenipaivakirja.lisaa(har11);
-     *  treenipaivakirja.lisaa(har22);
-     *  treenipaivakirja.lisaa(har12);
-     *  treenipaivakirja.lisaa(har23);
-     *  treenipaivakirja.tallenna();
-     *  treenipaivakirja = new Treenipaivakirja();
-     *  treenipaivakirja.lueTiedostosta(hakemisto);
-     *  Collection<Laji> kaikki = treenipaivakirja.etsi("",-1); 
-     *  Iterator<Laji> it = kaikki.iterator();
-     *  it.next() === laji1;
-     *  it.next() === laji2;
-     *  it.hasNext() === false;
-     *  List<Harjoituskerta> loytyneet = treenipaivakirja.annaHarjoituskerrat(laji1);
-     *  Iterator<Harjoituskerta> ih = loytyneet.iterator();
-     *  ih.next() === har11;
-     *  ih.next() === har12;
-     *  ih.hasNext() === false;
-     *  loytyneet = treenipaivakirja.annaHarjoituskerra(laji2);
-     *  ih = loytyneet.iterator();
-     *  ih.next() === har21;
-     *  ih.next() === har22;
-     *  ih.next() === har23;
-     *  ih.hasNext() === false;
-     *  treenipaivakirja.lisaa(laji2);
-     *  treenipaivakirja.lisaa(har23);
-     *  treenipaivakirja.tallenna();
-     *  ftied.delete()  === true;
-     *  fhtied.delete() === true;
-     *  File fbak = new File(hakemisto+"/lajit.bak");
-     *  File fhbak = new File(hakemisto+"/harjoitukset.bak");
-     *  fbak.delete() === true;
-     *  fhbak.delete() === true;
-     *  dir.delete() === true;
+     *  treeni = new Treenipaivakirja();
+     *  treeni.lueTiedostosta(tiedNimi); 
+     *  alustaTreenipaivakirja();
+     *  treeni.setTiedosto(tiedNimi);
+     *  treeni.tallenna();
+     *  treeni = new Treenipaivakirja();
+     *  treeni.lueTiedostosta(tiedNimi);
+     *  treeni.getLajit() === 5;
+     *  treeni.getHarjoitukset() === 2;
+     *  dir.delete();
      * </pre>
      */
     public void lueTiedostosta(String nimi) throws SailoException {
@@ -100,7 +97,7 @@ public class Treenipaivakirja {
     public void tallenna() throws SailoException {
         String virhe = "";
         try {
-            harjoitukset.tallenna("treenit");
+            harjoitukset.tallenna();
         } catch ( SailoException ex ) {
             virhe = ex.getMessage();
         }
@@ -112,7 +109,7 @@ public class Treenipaivakirja {
         }
         if ( !"".equals(virhe) ) throw new SailoException(virhe);
     }
-
+    
 
     /**
      * Palauttaa lajien määrän.
@@ -141,42 +138,33 @@ public class Treenipaivakirja {
     public Collection<Laji> etsiLaji(String hakuehto, int k) { 
         return lajit.etsi(hakuehto, k); 
     } 
+        
     
-
-
-    /**
-     * Poistaa harjoituskerroista ja lajeista ne joilla on nro. Kesken.
-     * @param nro viitenumero, jonka mukaan poistetaan
-     * @return montako harjoitusta poistettiin
-     */
-    public int poista(@SuppressWarnings("unused") int nro) {
-        return 0;
-    }
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien harjoituskertojen viitteet.
+     * @param hakuehto hakuehto  
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä harjoituskerroista
+     * @throws SailoException Jos jotakin menee väärin
+     */ 
+    public Collection<Harjoituskerta> etsiHarjoitus(String hakuehto, int k) throws SailoException { 
+        return harjoitukset.etsi(hakuehto, k); 
+    } 
 
 
     /**
      * Lisää treenipäiväkirjaan uuden harjoituskerran.
      * @param harjoitus lisättävä harjoituskerta
-     * @throws SailoException jos lisäystä ei voida tehdä
+     * @throws SailoException jos lisäystä ei voi tehdä
      * @example
      * <pre name="test">
-     * #THROWS SailoException
-     * Treenipaivakirja treeni = new Treenipaivakirja();
-     * Harjoituskerta tennis = new Harjoituskerta(), tennis2 = new Harjoituskerta();
-     * tennis1.rekisteroi(); tennis2.rekisteroi();
-     * treenipaivakirja.getHarjoitukset() === 0;
-     * treenipaivakirja.lisaa(tennis1); treenipaivakirja.getHarjoitukset() === 1;
-     * treenipaivakirja.lisaa(tennis2); treenipaivakirja.getHarjoitukset() === 2;
-     * treenipaivakirja.lisaa(tennis1); treenipaivakirja.getHarjoitukset() === 3;
-     * treenipaivakirja.getHarjoitukset() === 3;
-     * treenipaivakirja.annaHarjoituskerta(0) === tennis1;
-     * treenipaivakirja.annaHarjoituskerta(1) === tennis2;
-     * treenipaivakirja.annaHarjoituskerta(2) === tennis1;
-     * treenipaivakirja.annaHarjoituskerta(3) === tennis1; #THROWS IndexOutOfBoundsException 
-     * treenipaivakirja.lisaa(tennis1); treenipaivakirja.getHarjoitukset() === 4;
-     * treenipaivakirja.lisaa(tennis1); treenipaivakirja.getHarjoitukset() === 5;
-     * treenipaivakirja.lisaa(tennis1);            #THROWS SailoException
-     * </pre>
+     * #THROWS SailoException 
+     *  alustaTreenipaivakirja();
+     *  treeni.etsiHarjoitus("*",0).size() === 2;
+     *  Harjoituskerta har3 = new Harjoituskerta();
+     *  treeni.lisaa(har3);
+     *  treeni.etsiHarjoitus("*",0).size() === 3;
+     *  </pre>
      */
     public void lisaa(Harjoituskerta harjoitus) throws SailoException {
         harjoitukset.lisaa(harjoitus);
@@ -187,6 +175,15 @@ public class Treenipaivakirja {
      * Lisätään uusi laji.
      * @param laj lisättävä laji
      * @throws SailoException poikkeus
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     *  alustaTreenipaivakirja();
+     *  treeni.etsiLaji("*",0).size() === 5;
+     *  Laji l24 = new Laji();
+     *  treeni.lisaa(l24);
+     *  treeni.etsiLaji("*",0).size() === 6;
+     *  </pre>
      */
     public void lisaa(Laji laj) throws SailoException {
         lajit.lisaa(laj);
@@ -202,18 +199,6 @@ public class Treenipaivakirja {
     public Harjoituskerta annaHarjoituskerta(int i) throws IndexOutOfBoundsException {
         return harjoitukset.anna(i);
     }
-
-    
-    /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien harjoituskertojen viitteet.
-     * @param hakuehto hakuehto  
-     * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä harjoituskerroista
-     * @throws SailoException Jos jotakin menee väärin
-     */ 
-    public Collection<Harjoituskerta> etsiHarjoitus(String hakuehto, int k) throws SailoException { 
-        return harjoitukset.etsi(hakuehto, k); 
-    } 
 
 
     /**
@@ -234,16 +219,6 @@ public class Treenipaivakirja {
     }
     
 
-    /**
-     * Tallettaa treenipäiväkirjan tiedot tiedostoon.
-     * @throws SailoException jos tallettamisessa ongelmia
-     */
-    public void talleta() throws SailoException {
-        harjoitukset.tallenna("treenit");
-        // TODO: yritä tallettaa toinen vaikka toinen epäonnistuisi
-    }
- 
-    
     /**
      * Asettaa tiedostojen perusnimet.
      * @param nimi uusi nimi
@@ -289,12 +264,10 @@ public class Treenipaivakirja {
      * @example
      * <pre name="test">
      * #THROWS Exception
-     *   treenipaivakirja.etsi("*",0).size() === 2;
-     *   treenipaivakirja.annaHarjoituskerrat(tiistai1).size() === 2;
-     *   treenipaivakirja.poista(tiistai1) === 1;
-     *   treenipaivakirja.etsi("*",0).size() === 1;
-     *   treenipaivakirja.annaHarjoituskerrat(tiistai1).size() === 0;
-     *   treenipaivakirja.annaHarjoituskerrat(tiistai2).size() === 3;
+     * alustaTreenipaivakirja();
+     * treeni.etsiHarjoitus("*",0).size() === 2;
+     * treeni.poista(har1) === 1;
+     * treeni.etsiHarjoitus("*",0).size() === 1;
      * </pre>
      */
     public int poista(Harjoituskerta har) {
@@ -303,15 +276,17 @@ public class Treenipaivakirja {
         return ret; 
     }
     
+    
     /** 
      * Poistaa tämän lajin 
      * @param laji poistettava laji
      * @example
      * <pre name="test">
      * #THROWS Exception
-     *   treenipaivakirja.annaLajit(juoksu11).size() === 2;
-     *   treenipaivakirja.poistaHarrastus(pitsi11);
-     *   treenipaivakirja.annaHarrastukset(juoksu12).size() === 1;
+     * alustaTreenipaivakirja();
+     * treeni.etsiLaji("*",0).size() === 5;
+     * treeni.poistaLaji(l11);
+     * treeni.etsiLaji("*",0).size() === 4;
      */ 
     public void poistaLaji(Laji laji) { 
         lajit.poista(laji); 

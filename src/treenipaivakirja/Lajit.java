@@ -1,9 +1,11 @@
 package treenipaivakirja;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -18,7 +20,6 @@ public class Lajit implements Iterable<Laji> {
 
     @SuppressWarnings("unused")
     private String tiedostonNimi      = "";
-    @SuppressWarnings("unused")
     private String tiedostonPerusNimi = "";
     private boolean muutettu = false;
     
@@ -40,7 +41,25 @@ public class Lajit implements Iterable<Laji> {
     public int getLkm() {
         return alkiot.size();
     }
-
+ 
+    
+    /**
+     * Palauttaa varakopiotiedoston nimen
+     * @return varakopiotiedoston nimi
+     */
+    public String getBakNimi() {
+        return tiedostonPerusNimi + ".bak";
+    }
+    
+    
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen. 
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return tiedostonPerusNimi + ".dat";
+    }   
+    
     
     /**
      * Asettaa tiedoston perusnimen ilman tarkenninta.
@@ -128,38 +147,47 @@ public class Lajit implements Iterable<Laji> {
      *  Laji juoksu1 = new Laji(), juoksu2 = new Laji();
      *  juoksu1.vastaaJuoksu();
      *  juoksu2.vastaaJuoksu();
-     *  String tiedNimi = "testitreenit";
-     *  File ftied = new File(tiedNimi+"/lajit.dat");
+     *  String hakemisto = "testitreenit";
+     *  File ftied = new File(hakemisto+"/lajit.dat");
+     *  File dir = new File(hakemisto);
+     *  dir.mkdir();
      *  ftied.delete();
-     *  lajit.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  lajit.lueTiedostosta(hakemisto); #THROWS SailoException
      *  lajit.lisaa(juoksu1);
      *  lajit.lisaa(juoksu2);
-     *  lajit.tallenna(tiedNimi);
+     *  lajit.tallenna(hakemisto);
      *  lajit = new Lajit();   // Poistetaan vanhat luomalla uusi
-     *  lajit.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
+     *  lajit.lueTiedostosta(hakemisto);  // johon ladataan tiedot tiedostosta.
      *  Iterator<Laji> i = lajit.iterator();
      *  i.hasNext() === true;
      *  lajit.lisaa(juoksu2);
-     *  lajit.tallenna(tiedNimi);
+     *  lajit.tallenna(hakemisto);
      *  ftied.delete() === true;
+     *  File fbak = new File(hakemisto+"/lajit.bak");
+     *  fbak.delete() === true;
+     *  dir.delete() === true;
      * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        String tiedNimi = hakemisto + "/lajit.dat";
-        File ftied = new File(tiedNimi);
+        String tiedNimi = hakemisto + "/lajit";
+        setTiedostonPerusNimi(tiedNimi);
         
-        try (Scanner fi = new Scanner(new FileInputStream(ftied))) {
-            while (fi.hasNext()) {
-                String s = "";
-                s = fi.nextLine();
-                Laji laji = new Laji();
-                laji.parse(s); 
-                lisaa(laji);
+        try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
+            String rivi;
+            while ( (rivi = fi.readLine()) != null ) {
+                rivi = rivi.trim();
+                if ( "".equals(rivi) || rivi.charAt(0) == ';' ) continue;
+                Laji l = new Laji();
+                l.parse(rivi); // voisi palauttaa jotakin?
+                lisaa(l);
             }
             muutettu = false;
-        } catch (FileNotFoundException e) {
-            throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);
-        } 
+         } catch (FileNotFoundException e) {
+                throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);
+         } 
+           catch ( IOException e ) {
+               throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
     }
 
 
@@ -182,6 +210,7 @@ public class Lajit implements Iterable<Laji> {
         
         muutettu = false;
     }
+
 
     
     /**
@@ -329,7 +358,7 @@ public class Lajit implements Iterable<Laji> {
     
 
    /**
-    * Onko olemassa vielä seuraavaa lajia
+    * Onko olemassa vielä seuraavaa lajia.
     * @see java.util.Iterator#hasNext()
     * @return true jos on vielä lajeja
     */
@@ -340,7 +369,7 @@ public class Lajit implements Iterable<Laji> {
 
 
    /**
-    * Annetaan seuraava laji
+    * Annetaan seuraava laji.
     * @return seuraava laji
     * @throws NoSuchElementException jos seuraava alkiota ei enää ole
     * @see java.util.Iterator#next()
@@ -353,7 +382,7 @@ public class Lajit implements Iterable<Laji> {
 
 
     /**
-    * Tuhoamista ei ole toteutettu
+    * Tuhoamista ei ole toteutettu.
     * @throws UnsupportedOperationException aina
     * @see java.util.Iterator#remove()
     */
@@ -375,7 +404,7 @@ public class Lajit implements Iterable<Laji> {
 
 
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien lajien viitteet 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien lajien viitteet.
      * @param hakuehto hakuehto 
      * @param k etsittävän kentän indeksi  
      * @return tietorakenteen löytyneistä lajeista

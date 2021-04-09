@@ -6,15 +6,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
 import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
-import treenipaivakirja.Lajit;
 import treenipaivakirja.SailoException;
 import treenipaivakirja.Treenipaivakirja;
 
 import java.util.Collection;
-import java.util.List;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -22,7 +19,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 
 
 import fi.jyu.mit.fxgui.*;
@@ -31,7 +27,7 @@ import fi.jyu.mit.fxgui.*;
  * Luokka treenipäiväkirjan käyttöliittymän tapahtumien hoitamiseksi.
  * 
  * @author Jonna Määttä
- * @version 7.4.2021
+ * @version 9.4.2021
  */
 public class TreenipaivakirjaGUIController implements Initializable {
     
@@ -55,7 +51,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     }
     
     
-    @FXML private void handleAvaa() {
+    @FXML private void handleAvaa() throws IOException {
         avaa();
     }
     
@@ -191,8 +187,9 @@ public class TreenipaivakirjaGUIController implements Initializable {
        * Alustaa treenipäiväkirjan lukemalla sen valitun nimisestä tiedostosta.
        * @param nimi tiedosto josta treenipäiväkirjan tiedot luetaan
        * @return null jos onnistuu, muuten virhe tekstinä
+       * @throws IOException jos epäonnistuu
        */
-      protected String lueTiedosto(String nimi) {
+      protected String lueTiedosto(String nimi) throws IOException {
           tiednimi = nimi;
           try {
               treenipaivakirja.lueTiedostosta(nimi);
@@ -212,8 +209,9 @@ public class TreenipaivakirjaGUIController implements Initializable {
       /**
        * Näyttää ohjelman alkuvalikon
        * @return true jos onnistui, false jos ei
+      * @throws IOException jos epäonnistuu
        */
-      public boolean avaa() {
+      public boolean avaa() throws IOException {
           ModalController.showModal(TreenipaivakirjaGUIController.class.getResource("AlkuvalikkoView.fxml"), "Treenipäiväkirja", null, "");
           String uusinimi = tiednimi;
           if (uusinimi == null) return false;
@@ -256,7 +254,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
           Laji l = treenipaivakirja.annaLajiTn(harjoitusKohdalla.getLajiNro());
           if (harjoitusKohdalla == null) return;
           HarjoitusDialogController.naytaHarjoitus(edits, harjoitusKohdalla, l);
-          }
+      }
       
       
       /**
@@ -270,7 +268,6 @@ public class TreenipaivakirjaGUIController implements Initializable {
       }
       
 
- 
       /**
        * Hakee harjoituskerran tiedot listaan.
        * @param hnro harjotuksen numero, joka aktivoidaan haun jälkeen
@@ -306,7 +303,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
       }
       
       
-     /** Hakee lajin tiedot listaan
+     /** Hakee lajin tiedot listaan.
       * @param lnro lajin numero
       */
       protected void haeLaji(int lnro) {
@@ -319,7 +316,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
               int i = 0; 
               for (Laji laji:lajit) { 
                   if (laji.getTunnusNro() == lnro) index = i; 
-                  tableLajit.add(laji, laji.getTunnusNro() + " " + laji.getNimi()); 
+                  tableLajit.add(laji, laji.getNimi()); 
                   i++; 
               }
                 
@@ -376,13 +373,14 @@ public class TreenipaivakirjaGUIController implements Initializable {
          } catch (SailoException e) { 
              Dialogs.showMessageDialog(e.getMessage()); 
          } 
-      }
+     }
             
       
      /**
       * Näytetään virhe.
       * @param virhe virhe, joka näytetään
       */
+    @SuppressWarnings("unused")
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
@@ -416,16 +414,16 @@ public class TreenipaivakirjaGUIController implements Initializable {
      * Lajin poistaminen.
      */
     private void poistaLaji() {
-            int rivi = tableLajit.getRowNr();
-            if ( rivi < 0 ) return;
-            Laji laji = tableLajit.getObject();
-            if ( laji == null ) return;
-            treenipaivakirja.poistaLaji(laji);
-            naytaLajit();
-            int harrastuksia = tableLajit.getItems().size(); 
-            if ( rivi >= harrastuksia ) rivi = harrastuksia -1;
-            tableLajit.getFocusModel().focus(rivi);
-            tableLajit.getSelectionModel().select(rivi);
+        int rivi = tableLajit.getRowNr();
+        if ( rivi < 0 ) return;
+        Laji laji = tableLajit.getObject();
+        if ( laji == null ) return;
+        treenipaivakirja.poistaLaji(laji);
+        naytaLajit();
+        int harrastuksia = tableLajit.getItems().size(); 
+        if ( rivi >= harrastuksia ) rivi = harrastuksia -1;
+        tableLajit.getFocusModel().focus(rivi);
+        tableLajit.getSelectionModel().select(rivi);
     }
     
     
@@ -456,7 +454,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
     private void avustus() {
         Desktop desktop = Desktop.getDesktop();
         try {
-            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2020k/ht/jtmaatta");
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2021k/ht/jtmaatta");
             desktop.browse(uri);
         } catch (URISyntaxException e) {
             return;

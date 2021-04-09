@@ -1,6 +1,5 @@
 package fxTreenipaivakirja;
 
-import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
@@ -12,7 +11,7 @@ import javafx.scene.web.WebEngine;
  * Tulostuksen hoitava luokka
  * 
  * @author Jonna Määttä
- * @version 6.4.2021
+ * @version 9.4.2021
  */
 public class TulostusController implements ModalControllerInterface<String> {
     @FXML TextArea tulostusAlue;
@@ -22,6 +21,9 @@ public class TulostusController implements ModalControllerInterface<String> {
     }
 
     
+    /**
+     * Käsitellään tulostaminen
+     */
     @FXML private void handleTulosta() {
         // Dialogs.showMessageDialog("Ei osata vielä tulostaa");
         PrinterJob job = PrinterJob.createPrinterJob();
@@ -65,8 +67,8 @@ public class TulostusController implements ModalControllerInterface<String> {
     
     
     /**
-     * Näyttää tulostusalueessa tekstin
-     * @param tulostus tulostettava teskti
+     * Näyttää tulostusalueessa tekstin.
+     * @param tulostus tulostettava teksti
      * @return kontrolleri, jolta voidaan pyytää lisää tietoa
      */
     public static TulostusController tulosta(String tulostus) {

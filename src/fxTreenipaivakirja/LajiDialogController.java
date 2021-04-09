@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import treenipaivakirja.Harjoituskerta;
 import treenipaivakirja.Laji;
 import treenipaivakirja.Treenipaivakirja;
 
@@ -33,6 +32,7 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
         alusta();  
     }
     
+    
     @FXML private void handleOK() {
         if ( lajiKohdalla != null && lajiKohdalla.getNimi().trim().equals("") ) {
             naytaVirhe("Nimi ei saa olla tyhjä.");
@@ -51,7 +51,9 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
 // ========================================================    
     private Laji lajiKohdalla;
     private TextField edits[];
+    @SuppressWarnings("unused")
     private Treenipaivakirja treenipaivakirja;
+    @SuppressWarnings("unused")
     private int kentta = 0;
    
 
@@ -94,7 +96,7 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
     
     
     /**
-     * Mitä tehdään kun dialogi on näytetty
+     * Mitä tehdään kun dialogi on näytetty.
      */
     @Override
     public void handleShown() {
@@ -167,7 +169,5 @@ public class LajiDialogController implements ModalControllerInterface<Laji>,Init
     private void setKentta(int kentta) {
         this.kentta = kentta;
     }
-
-         
 
 }
