@@ -20,7 +20,7 @@ import fi.jyu.mit.ohj2.WildChars;
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
  *
  * @author Jonna Määttä
- * @version 7.4.2021
+ * @version 9.4.2021
  * 
  */
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {
@@ -51,7 +51,16 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
         tiedostonPerusNimi = tied;
     }
     
-
+    
+    /**
+     * Palauttaa harjoituskertojen lukumäärän.
+     * @return harjoituskertojen lukumäärä
+     */
+    public int getLkm() {
+        return lkm;
+    }
+    
+ 
     /**
      * Lukee harjoituskerrat tiedostosta.  
      * @param hakemisto tiedoston hakemisto
@@ -65,25 +74,20 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
      *  Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
      *  juoksu1.vastaaJuoksu();
      *  juoksu2.vastaaJuoksu();
-     *  String tiedNimi = "testitreenit/harjoitukset";
-     *  File ftied = new File(tiedNimi+".dat");
-     *  File dir = new File(hakemisto);
-     *  dir.mkdir();
+     *  String tiedNimi = "testitreenit";
+     *  File ftied = new File(tiedNimi+"/harjoitukset.dat");
      *  ftied.delete();
      *  harjoitukset.lueTiedostosta(tiedNimi); #THROWS SailoException
      *  harjoitukset.lisaa(juoksu1);
      *  harjoitukset.lisaa(juoksu2);
-     *  harjoitukset.tallenna("testitreenit");
+     *  harjoitukset.tallenna(tiedNimi);
      *  harjoitukset = new Harjoituskerrat();   // Poistetaan vanhat luomalla uusi
      *  harjoitukset.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
      *  Iterator<Harjoituskerta> i = harjoitukset.iterator();
-     *  i.next() === juoksu1;
-     *  i.next() === juoksu2;
-     *  i.hasNext() === false;
+     *  i.hasNext() === true;
      *  harjoitukset.lisaa(juoksu2);
-     *  harjoitukset.tallenna("testitreenit");
+     *  harjoitukset.tallenna(tiedNimi);
      *  ftied.delete() === true;
-     *  dir.delete() === true;
      * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
@@ -167,20 +171,21 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     }
 
 
-    /**
-     * Palauttaa harjoituskertojen lukumäärän.
-     * @return harjoituskertojen lukumäärä
-     */
-    public int getLkm() {
-        return lkm;
-    }
-    
     
     /** Hakee suosituimman lajin
      * @return suosituin laji
      * @example
      * <pre name="test">
-     * 
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+     * juoksu1.rekisteroi();
+     * juoksu1.vastaaJuoksu();
+     * juoksu2.rekisteroi();
+     * juoksu2.vastaaJuoksu();
+     * juoksu2.setLajiNro(2);
+     * harjoitukset.lisaa(juoksu1);
+     * harjoitukset.lisaa(juoksu2);
+     * harjoitukset.haeSuosituinLaji() === 1;
      * </pre>
      */
     public int haeSuosituinLaji() {
@@ -192,7 +197,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
         
         Collections.sort(lajinumerot);
 
-        int suosituin = Integer.MIN_VALUE;
+        int suosituin = 1;
         int max_maara = 1; 
         int maara = 1;
         
@@ -213,6 +218,18 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     
     /** Laskee keskimääräisen kuormittavuuden
      * @return keskikuormittauuvs
+     * @example
+     * <pre name="test">
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+     * juoksu1.rekisteroi();
+     * juoksu1.vastaaJuoksu();
+     * juoksu2.rekisteroi();
+     * juoksu2.vastaaJuoksu();
+     * harjoitukset.lisaa(juoksu1);
+     * harjoitukset.lisaa(juoksu2);
+     * assertEquals(harjoitukset.laskeKeskiKuormittavuus(), 6, 0.01);
+     * </pre>
      */
     public double laskeKeskiKuormittavuus() {
         double summa = 0;
@@ -223,14 +240,23 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             summa += Double.valueOf(kuormittavuus);
             maara++;
         }
-        double keskikuormittavuus = summa / maara;
-
-        return keskikuormittavuus;
+        return summa / maara;
     }
     
     
     /** Laskee keskimääräisen matkan
      * @return keskimatka
+     * <pre name="test">
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+     * juoksu1.rekisteroi();
+     * juoksu1.vastaaJuoksu();
+     * juoksu2.rekisteroi();
+     * juoksu2.vastaaJuoksu();
+     * harjoitukset.lisaa(juoksu1);
+     * harjoitukset.lisaa(juoksu2);
+     * assertEquals(harjoitukset.laskeKeskimatka(), 7.0, 0.01);
+     * </pre>
      */
     public double laskeKeskimatka() {
         double summa = 0;
@@ -243,19 +269,28 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
             maara++;
         }
         double keskimatka = summa / maara;
-        double roundedmatka = Math.round(keskimatka * 100.0) / 100.0;
-        return roundedmatka;
+        return Math.round(keskimatka * 100.0) / 100.0;
     }
 
     
     /**
      * Hakee pisimmän matkan
      * @return pisin matka
+     * <pre name="test">
+     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
+     * Harjoituskerta juoksu1 = new Harjoituskerta(), juoksu2 = new Harjoituskerta();
+     * juoksu1.rekisteroi();
+     * juoksu1.vastaaJuoksu();
+     * juoksu2.rekisteroi();
+     * juoksu2.vastaaJuoksu();
+     * juoksu2.setMatka("8.8");
+     * harjoitukset.lisaa(juoksu1);
+     * harjoitukset.lisaa(juoksu2);
+     * assertEquals(harjoitukset.haePisinmatka(), 8.8, 0.01);
+     * </pre>
      */
     public double haePisinmatka() {
-        
-        double pisin = Integer.MIN_VALUE;
-        
+        double pisin = 0;
         for (Harjoituskerta har : alkiot) {
             if (har == null) continue;
             if (har.getMatka() == "") continue;
@@ -361,6 +396,37 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     } 
 
     
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien harjoituskertojen viitteet 
+     * @param hakuehto hakuehto 
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä harjoituskerroista
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *   Harjoituskerrat harjoitukset = new Harjoituskerrat();  
+     *   Harjoituskerta har1 = new Harjoituskerta(); har1.parse("1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
+     *   Harjoituskerta har2 = new Harjoituskerta(); har2.parse("2|9.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
+     *   Harjoituskerta har3 = new Harjoituskerta(); har3.parse("3|11.12.20|1|44:27|7.0|2|Nyt ei kulkenut oikein"); 
+     *   Harjoituskerta har4 = new Harjoituskerta(); har4.parse("4|15.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
+     *   Harjoituskerta har5 = new Harjoituskerta(); har5.parse("5|20.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
+     *   harjoitukset.lisaa(har1); harjoitukset.lisaa(har2); harjoitukset.lisaa(har3); harjoitukset.lisaa(har4); harjoitukset.lisaa(har5);
+     * </pre> 
+     */ 
+    public Collection<Harjoituskerta> etsi(String hakuehto, int k) { 
+        String ehto = "*"; 
+        if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
+        int hk = k; 
+        if ( hk < 0 ) hk = 1;
+        List<Harjoituskerta> loytyneet = new ArrayList<Harjoituskerta>(); 
+        for (Harjoituskerta har : this) { 
+            if (WildChars.onkoSamat(har.anna(hk), ehto)) loytyneet.add(har);   
+        } 
+        Collections.sort(loytyneet, Collections.reverseOrder());
+        return loytyneet; 
+    }
+  
+    
     /**
      * Testiohjelma harjoituskerroille.
      * @param args ei käytössä
@@ -383,7 +449,7 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
 
         harjoitukset.lisaa(juoksu1);
         harjoitukset.lisaa(juoksu2);
-
+        
         for (int i = 0; i < harjoitukset.getLkm(); i++) {
             Harjoituskerta harjoitus = harjoitukset.anna(i);
             System.out.println("Harjoituskerta nro: " + i);
@@ -487,37 +553,5 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     public Iterator<Harjoituskerta> iterator() {
         return new HarjoituskerratIterator();
     }
-    
-
-    /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien harjoituskertojen viitteet 
-     * @param hakuehto hakuehto 
-     * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä harjoituskerroista
-     * @example 
-     * <pre name="test"> 
-     * #THROWS SailoException  
-     *   Harjoituskerrat harjoitukset = new Harjoituskerrat();  
-     *   Harjoituskerta har1 = new Harjoituskerta(); har1.parse("1|7.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
-     *   Harjoituskerta har2 = new Harjoituskerta(); har2.parse("2|9.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
-     *   Harjoituskerta har3 = new Harjoituskerta(); har3.parse("3|11.12.20|1|44:27|7.0|2|Nyt ei kulkenut oikein"); 
-     *   Harjoituskerta har4 = new Harjoituskerta(); har4.parse("4|15.12.20|1|44:32|7.0|6|Jaksoin juosta todella hyvin"); 
-     *   Harjoituskerta har5 = new Harjoituskerta(); har5.parse("5|20.12.20|1|27:32|4.0|2|Nyt ei kulkenut oikein"); 
-     *   harjoitukset.lisaa(har1); harjoitukset.lisaa(har2); harjoitukset.lisaa(har3); harjoitukset.lisaa(har4); harjoitukset.lisaa(har5);
-     * </pre> 
-     */ 
-    public Collection<Harjoituskerta> etsi(String hakuehto, int k) { 
-        String ehto = "*"; 
-        if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
-        int hk = k; 
-        if ( hk < 0 ) hk = 1;
-        List<Harjoituskerta> loytyneet = new ArrayList<Harjoituskerta>(); 
-        for (Harjoituskerta har : this) { 
-            if (WildChars.onkoSamat(har.anna(hk), ehto)) loytyneet.add(har);   
-        } 
-        Collections.sort(loytyneet, Collections.reverseOrder());
-        return loytyneet; 
-    }
-  
     
 }

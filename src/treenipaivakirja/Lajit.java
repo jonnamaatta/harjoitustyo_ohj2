@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -12,29 +11,39 @@ import java.util.*;
  * Treenipäiväkirjan lajit, joka osaa mm. lisätä uuden lajin.
  *
  * @author Jonna Määttä
- * @version 5.4.2021
+ * @version 9.4.2021
  * 
  */
 public class Lajit implements Iterable<Laji> {
 
+    @SuppressWarnings("unused")
     private String tiedostonNimi      = "";
+    @SuppressWarnings("unused")
     private String tiedostonPerusNimi = "";
     private boolean muutettu = false;
     
     /** Taulukko lajeista */
     private final List<Laji> alkiot        = new ArrayList<Laji>();
-
     
     /**
      * Lajien alustaminen.
      */
     public Lajit() {
-        // toistaiseksi ei tarvitse tehdä mitään
+        // 
     }
 
     
     /**
-     * Asettaa tiedoston perusnimen ilan tarkenninta.
+     * Palauttaa treenipäiväkirjan lajien lukumäärän.
+     * @return lajien lukumäärä
+     */
+    public int getLkm() {
+        return alkiot.size();
+    }
+
+    
+    /**
+     * Asettaa tiedoston perusnimen ilman tarkenninta.
      * @param tied tallennustiedoston perusnimi
      */
     public void setTiedostonPerusNimi(String tied) {
@@ -45,6 +54,22 @@ public class Lajit implements Iterable<Laji> {
     /**
      * Lisää uuden lajin tietorakenteeseen. Ottaa lajin omistukseensa.
      * @param l lisättävä laji. Huom tietorakenne muuttuu omistajaksi
+     * @example
+     * <pre name="test">
+     * Lajit lajit = new Lajit();
+     * Laji juoksu1 = new Laji(), juoksu2 = new Laji();
+     * lajit.getLkm() === 0;
+     * lajit.lisaa(juoksu1); lajit.getLkm() === 1;
+     * lajit.lisaa(juoksu2); lajit.getLkm() === 2;
+     * lajit.lisaa(juoksu1); lajit.getLkm() === 3;
+     * lajit.anna(0) === juoksu1;
+     * lajit.anna(1) === juoksu2;
+     * lajit.anna(2) === juoksu1;
+     * lajit.anna(1) == juoksu1 === false;
+     * lajit.anna(1) == juoksu2 === true;
+     * lajit.lisaa(juoksu1); lajit.getLkm() === 4;
+     * lajit.lisaa(juoksu1); lajit.getLkm() === 5;
+     * </pre>
      */
     public void lisaa(Laji l) {
         alkiot.add(l);
@@ -53,30 +78,29 @@ public class Lajit implements Iterable<Laji> {
     
     
     /**
-     * Korvaa harjoituskerran tietorakenteessa. Ottaa harjoituskerran omistukseensa.
-     * Etsitään samalla tunnusnumerolla oleva harjoituskerta.  Jos ei löydy,
-     * niin lisätään uutena harjoituskertana.
-     * @param laji lisättävän lajin viitee
+     * Korvaa lajin tietorakenteessa. Ottaa lajin omistukseensa.
+     * Etsitään samalla tunnusnumerolla oleva laji. Jos ei löydy,
+     * niin lisätään uutena lajina.
+     * @param laji lisättävän lajin viitteen
      * @throws SailoException jos tietorakenne on jo täynnä
      * <pre name="test">
      * #THROWS SailoException,CloneNotSupportedException
      * #PACKAGEIMPORT
-     * Harjoituskerrat harjoitukset = new Harjoituskerrat();
-     * Harjoituskerta harjoitus1 = new Harjoituskerta(), harjoitus2 = new Harjoituskerta();
-     * harjoitus1.rekisteroi(); harjoitus2.rekisteroi();
-     * harjoitukset.getLkm() === 0;
-     * harjoitukset.korvaaTaiLisaa(harjoitus1); harjoitukset.getLkm() === 1;
-     * harjoitukset.korvaaTaiLisaa(harjoitus2); harjoitukset.getLkm() === 2;
-     * Harjoituskerta harjoitus3 = harjoitus1.clone();
-     * harjoitus3.setKuormittavuus("3");
-     * Iterator<Harjoituskerta> it = harjoitukset.iterator();
-     * it.next() == harjoitus1 === true;
-     * harjoitukset.korvaaTaiLisaa(harjoitus3); harjoitukset.getLkm() === 2;
-     * it = harjoitukset.iterator();
-     * Harjoituskerta j0 = it.next();
-     * j0 === harjoitus3;
-     * j0 == harjoitus3 === true;
-     * j0 == harjoitus1 === false;
+     * Lajit lajit = new Lajit();
+     * Laji l1 = new Laji(), l2 = new Laji();
+     * l1.rekisteroi(); l2.rekisteroi();
+     * lajit.getLkm() === 0;
+     * lajit.korvaaTaiLisaaLaji(l1); lajit.getLkm() === 1;
+     * lajit.korvaaTaiLisaaLaji(l2); lajit.getLkm() === 2;
+     * Laji l3 = l1.clone();
+     * Iterator<Laji> it = lajit.iterator();
+     * it.next() == l1 === true;
+     * lajit.korvaaTaiLisaaLaji(l3); lajit.getLkm() === 2;
+     * it = lajit.iterator();
+     * Laji l0 = it.next();
+     * l0 === l3;
+     * l0 == l3 === true;
+     * l0 == l1 === false;
      * </pre>
      */
     public void korvaaTaiLisaaLaji(Laji laji) throws SailoException {
@@ -94,9 +118,31 @@ public class Lajit implements Iterable<Laji> {
 
     /**
      * Lukee lajit tiedostosta.  
-     * TODO Kesken.
      * @param hakemisto tiedoston hakemisto
      * @throws SailoException jos lukeminen epäonnistuu
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Lajit lajit = new Lajit();
+     *  Laji juoksu1 = new Laji(), juoksu2 = new Laji();
+     *  juoksu1.vastaaJuoksu();
+     *  juoksu2.vastaaJuoksu();
+     *  String tiedNimi = "testitreenit";
+     *  File ftied = new File(tiedNimi+"/lajit.dat");
+     *  ftied.delete();
+     *  lajit.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  lajit.lisaa(juoksu1);
+     *  lajit.lisaa(juoksu2);
+     *  lajit.tallenna(tiedNimi);
+     *  lajit = new Lajit();   // Poistetaan vanhat luomalla uusi
+     *  lajit.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
+     *  Iterator<Laji> i = lajit.iterator();
+     *  i.hasNext() === true;
+     *  lajit.lisaa(juoksu2);
+     *  lajit.tallenna(tiedNimi);
+     *  ftied.delete() === true;
+     * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
         String tiedNimi = hakemisto + "/lajit.dat";
@@ -107,22 +153,18 @@ public class Lajit implements Iterable<Laji> {
                 String s = "";
                 s = fi.nextLine();
                 Laji laji = new Laji();
-                laji.parse(s); // voisi palauttaa jotakin?
+                laji.parse(s); 
                 lisaa(laji);
             }
             muutettu = false;
         } catch (FileNotFoundException e) {
             throw new SailoException("Ei saa luettua tiedostoa " + tiedNimi);
-       // } catch (IOException e) {
-        //    throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
-        }
-  
+        } 
     }
 
 
     /**
      * Tallentaa lajit tiedostoon.  
-     * TODO Kesken.
      * @param tiednimi tallennettavan tiedoston nimi
      * @throws SailoException jos talletus epäonnistuu
      */
@@ -141,17 +183,9 @@ public class Lajit implements Iterable<Laji> {
         muutettu = false;
     }
 
-
-    /**
-     * Palauttaa treenipäiväkirjan lajien lukumäärän.
-     * @return lajien lukumäärä
-     */
-    public int getLkm() {
-        return alkiot.size();
-    }
-
     
     /**
+     * Palauttaa viitteen i:teen lajiin.
      * @param i lajin indeksi
      * @return alkio
      * @throws IndexOutOfBoundsException poikkeus
@@ -165,7 +199,7 @@ public class Lajit implements Iterable<Laji> {
     
     
     /**
-     * Palauttaa lajin tunnusnro perusteella, muuten palauttaa ekan mahollisen
+     * Palauttaa lajin tunnusnron perusteella, muuten palauttaa listan ekan.
      * @param tunnusNro lajin tunnusnumero
      * @return laji
      */
@@ -175,15 +209,15 @@ public class Lajit implements Iterable<Laji> {
                 return l;
             }
         }  
-        for (int i = 0; i < alkiot.size();) {
-            return alkiot.get(i);
+        if (alkiot.size() > 0) {
+            return alkiot.get(0);
         }
         return null;
     }
     
     
     /**
-     * Poistaa valitun lajin
+     * Poistaa valitun lajin.
      * @param laji poistettava laji
      * @return tosi jos löytyi poistettava tietue 
      * @example
@@ -196,15 +230,13 @@ public class Lajit implements Iterable<Laji> {
      *  Laji juoksu21 = new Laji(); juoksu21.vastaaJuoksu(); 
      *  Laji juoksu22 = new Laji(); juoksu22.vastaaJuoksu(); 
      *  Laji juoksu23 = new Laji(); juoksu23.vastaaJuoksu();
-     *  treenipaivakirja.lisaa(juoksu11);
-     *  treenipaivakirja.lisaa(juoksu12);     
-     *  treenipaivakirja.lisaa(juoksu21); 
-     *  treenipaivakirja.lisaa(juoksu22);
-     *  treenipaivakirja.poista(juoksu23) === false ; lajit.getLkm() === 4;
-     *  lajit.poista(juoksu11) === true;   lajit.getLkm() === 3;
-     *  List<Laji> l = lajit.annaLajiTn(1);
-     *  l.size() === 1; 
-     *  l.get(0) === juoksu12;
+     *  lajit.lisaa(juoksu11);
+     *  lajit.lisaa(juoksu12);     
+     *  lajit.lisaa(juoksu21); 
+     *  lajit.lisaa(juoksu22);
+     *  lajit.poista(juoksu23) === false; lajit.getLkm() === 4;
+     *  lajit.poista(juoksu11) === true; lajit.getLkm() === 3;
+     *  lajit.anna(0) === juoksu12;
      * </pre>
      */
     public boolean poista(Laji laji) {
@@ -247,8 +279,7 @@ public class Lajit implements Iterable<Laji> {
             uudetLajit.tallenna("treenit");
         } catch (SailoException e) {
             e.printStackTrace();
-        }
-       
+        } 
     }
     
     
@@ -358,7 +389,6 @@ public class Lajit implements Iterable<Laji> {
      *   Laji laji4 = new Laji(); laji4.parse("4|kuntosali"); 
      *   Laji laji5 = new Laji(); laji5.parse("5|tennis"); 
      *   lajit.lisaa(laji1); lajit.lisaa(laji2); lajit.lisaa(laji3); lajit.lisaa(laji4); lajit.lisaa(laji5);
-     *   // TODO: toistaiseksi palauttaa kaikki lajit.
      * </pre> 
      */ 
     @SuppressWarnings("unused")

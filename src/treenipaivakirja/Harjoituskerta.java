@@ -3,13 +3,14 @@ package treenipaivakirja;
 import java.io.*;
 
 import fi.jyu.mit.ohj2.Mjonot;
+import static tarkistus.PvmTarkistus.*;
 
 /**
 * Harjoituskerta joka osaa mm. itse huolehtia tunnusNro:staan.
 *
 * @author Jonna Määttä
-* @version 6.4.2021
-* TODO: kunnollinen päivämäärän oikeellisuus, ei regex
+* @version 9.4.2021
+* 
 */
 public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     
@@ -89,7 +90,9 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
     */
    public String setPvm(String s) {
        if(!s.matches("[0-9]{1,2}(\\.)([0-9]|1[012])(\\.)[0-9]{2}")) return "Päivämäärän on oltava muotoa d.m.yy";
-       this.pvm = s;
+       StringBuilder sb = new StringBuilder(s);
+       if (tarkista(sb) == false) return "Päivämäärä ei ole mahdollinen";
+       this.pvm = s; 
        return null;
    }
    
