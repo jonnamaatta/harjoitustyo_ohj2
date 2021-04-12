@@ -106,8 +106,9 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     /**
      * Käsitellään lajin poistaminen.
+     * @throws SailoException poikkeus
      */
-    @FXML private void handlePoistaLaji() {
+    @FXML private void handlePoistaLaji() throws SailoException {
         poistaLaji();
     }
     
@@ -179,7 +180,18 @@ public class TreenipaivakirjaGUIController implements Initializable {
           chooserHarjoitukset.clear();
           chooserHarjoitukset.addSelectionListener(e -> naytaHarjoituskerta());
          
-          edits = new TextField[]{editPvm, editLaji, editKesto, editMatka, editKuormittavuus, editKommentti};     
+          edits = new TextField[]{editPvm, editLaji, editKesto, editMatka, editKuormittavuus, editKommentti}; 
+          nollaaKentat();
+      }
+      
+      
+    /**
+     * Nollataan harjoituskerran tiedot kentissä
+     */
+    protected void nollaaKentat() {
+          for (TextField edit : edits) {
+              edit.setText("");
+          }
       }
       
       
@@ -252,7 +264,10 @@ public class TreenipaivakirjaGUIController implements Initializable {
       protected void naytaHarjoituskerta() {
           harjoitusKohdalla = chooserHarjoitukset.getSelectedObject();
           Laji l = treenipaivakirja.annaLajiTn(harjoitusKohdalla.getLajiNro());
-          if (harjoitusKohdalla == null) return;
+          if (harjoitusKohdalla == null) {
+              nollaaKentat();
+              return;
+          }
           HarjoitusDialogController.naytaHarjoitus(edits, harjoitusKohdalla, l);
       }
       
@@ -273,6 +288,7 @@ public class TreenipaivakirjaGUIController implements Initializable {
        * @param hnro harjotuksen numero, joka aktivoidaan haun jälkeen
        */
       protected void hae(int hnro) {
+          nollaaKentat();
           
           int harnro = hnro; // harnro harjoituksen numero, joka aktivoidaan haun jälkeen 
           if ( harnro <= 0 ) { 
@@ -411,13 +427,22 @@ public class TreenipaivakirjaGUIController implements Initializable {
     
     
     /**
-     * Lajin poistaminen.
+     * Lajin poistaminen. Poistamista ei tehdä jos lajilla on harjoituskertoja.
+     * @throws SailoException poikkeus
      */
-    private void poistaLaji() {
+    private void poistaLaji() throws SailoException {
         int rivi = tableLajit.getRowNr();
         if ( rivi < 0 ) return;
         Laji laji = tableLajit.getObject();
         if ( laji == null ) return;
+        int lajinro = laji.getTunnusNro();
+        Collection<Harjoituskerta> harjoitukset = treenipaivakirja.etsiHarjoitus("", 0); 
+        for (Harjoituskerta har : harjoitukset) {
+            if (har.getLajiNro() == lajinro) {
+                Dialogs.showMessageDialog("Ei voida poistaa lajia, jolla on harjoituskertoja!");
+                return;
+            }
+        }
         treenipaivakirja.poistaLaji(laji);
         naytaLajit();
         int harrastuksia = tableLajit.getItems().size(); 

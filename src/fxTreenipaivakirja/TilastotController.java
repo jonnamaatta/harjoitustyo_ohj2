@@ -68,22 +68,34 @@ public class TilastotController implements ModalControllerInterface<Treenipaivak
     
     
     /**
-     * Laskee tilastot ja asettaa ne kenttiin.
+     * Laskee tilastot.
      */
     private void laske() {
         int suosituinlaji = treenipaivakirja.haeSuosituinLaji();
         Laji laji = treenipaivakirja.annaLajiTn(suosituinlaji);
         String suosituimmannimi = laji.getNimi();
-        textSuosituinlaji.setText(suosituimmannimi);
-
-        double keskikuormittavuus = treenipaivakirja.laskeKeskikuormittavuus();
-        textKeskikuormittavuus.setText(String.valueOf(keskikuormittavuus));
-        
+        double keskikuormittavuus = treenipaivakirja.laskeKeskikuormittavuus();     
         double keskimatka = treenipaivakirja.laskeKeskimatka();
-        textKeskimatka.setText(String.valueOf(keskimatka));
-        
         double pisinmatka = treenipaivakirja.haePisinmatka();
+        asetaArvot(suosituimmannimi, keskikuormittavuus, pisinmatka, keskimatka);
+    }
+
+    /**
+     * Asettaa arvot tekstikenttiin
+     * @param suosituimmannimi suosituimman lajin nimi
+     * @param keskikuormittavuus keskimääräinen kuormittavuus
+     * @param pisinmatka pisinmatka
+     * @param keskimatka keskimääräin matka
+     */
+    private void asetaArvot(String suosituimmannimi, double keskikuormittavuus,
+            double pisinmatka, double keskimatka) {
+        textSuosituinlaji.setText(suosituimmannimi);
+        if(keskikuormittavuus == 0) {
+            textKeskikuormittavuus.setText("");
+        }
+        else textKeskikuormittavuus.setText(String.valueOf(keskikuormittavuus));
         textPisinmatka.setText(String.valueOf(pisinmatka));
+        textKeskimatka.setText(String.valueOf(keskimatka));
     }
 
 }

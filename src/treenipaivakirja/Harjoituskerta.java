@@ -102,7 +102,8 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
    * @return virheilmoitus, null jos ok
    * */
    public String setKesto(String s) {
-       if (!s.matches("[0-9]*:[0-9][0-9]")) return "Keston oltava muodossa 00:00";
+       if (s == "") return null;
+       if (!s.matches("[0-9]*:[0-5][0-9]")) return "Keston oltava muodossa 00:00";
        this.kesto = s;
        return null;
    }
@@ -114,6 +115,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
    * @return virheilmoitus, null jos ok
    * */
    public String setMatka(String s) {
+       if (s == "") return null;
        if (!s.matches("^\\d*\\.\\d+$")) return "Matkan oltava desimaaliluku";
        this.matka = s;
        return null;
@@ -126,6 +128,7 @@ public class Harjoituskerta implements Cloneable, Comparable<Harjoituskerta> {
    * @return virheilmoitus, null jos ok
    * */
    public String setKuormittavuus(String s) {
+       if (s == "") return null;
        if (!s.matches("[1-9]|10*")) return "Kuormittavuuden on oltava luku väliltä 1-10";
        this.kuormittavuus = s;
        return null;

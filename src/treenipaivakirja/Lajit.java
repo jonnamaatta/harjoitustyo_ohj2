@@ -143,27 +143,32 @@ public class Lajit implements Iterable<Laji> {
      * <pre name="test">
      * #THROWS SailoException 
      * #import java.io.File;
+     * 
      *  Lajit lajit = new Lajit();
-     *  Laji juoksu1 = new Laji(), juoksu2 = new Laji();
-     *  juoksu1.vastaaJuoksu();
-     *  juoksu2.vastaaJuoksu();
-     *  String hakemisto = "testitreenit";
-     *  File ftied = new File(hakemisto+"/lajit.dat");
-     *  File dir = new File(hakemisto);
+     *  Laji laji1 = new Laji(), laji2 = new Laji();
+     *  laji1.rekisteroi(); laji2.rekisteroi();
+     *  laji1.vastaaJuoksu();
+     *  laji2.vastaaJuoksu();
+     *  String tiedosto = "testilajit";
+     *  String tiedNimi = tiedosto+"/lajit";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  File dir = new File(tiedosto);
      *  dir.mkdir();
      *  ftied.delete();
-     *  lajit.lueTiedostosta(hakemisto); #THROWS SailoException
-     *  lajit.lisaa(juoksu1);
-     *  lajit.lisaa(juoksu2);
-     *  lajit.tallenna(hakemisto);
-     *  lajit = new Lajit();   // Poistetaan vanhat luomalla uusi
-     *  lajit.lueTiedostosta(hakemisto);  // johon ladataan tiedot tiedostosta.
+     *  lajit.lueTiedostosta(tiedosto); #THROWS SailoException
+     *  lajit.lisaa(laji1);
+     *  lajit.lisaa(laji2);
+     *  lajit.tallenna();
+     *  lajit = new Lajit();            // Poistetaan vanhat luomalla uusi
+     *  lajit.lueTiedostosta(tiedosto);  // johon ladataan tiedot tiedostosta.
      *  Iterator<Laji> i = lajit.iterator();
-     *  i.hasNext() === true;
-     *  lajit.lisaa(juoksu2);
-     *  lajit.tallenna(hakemisto);
+     *  i.next().equals(laji1);
+     *  i.next().equals(laji2);
+     *  i.hasNext() === false;
+     *  lajit.lisaa(laji2);
+     *  lajit.tallenna();
      *  ftied.delete() === true;
-     *  File fbak = new File(hakemisto+"/lajit.bak");
+     *  File fbak = new File(tiedosto+"/lajit.bak");
      *  fbak.delete() === true;
      *  dir.delete() === true;
      * </pre>
@@ -193,12 +198,16 @@ public class Lajit implements Iterable<Laji> {
 
     /**
      * Tallentaa lajit tiedostoon.  
-     * @param tiednimi tallennettavan tiedoston nimi
      * @throws SailoException jos talletus epäonnistuu
      */
-    public void tallenna(String tiednimi) throws SailoException {
+    public void tallenna() throws SailoException {
         if ( !muutettu ) return;
-        File ftied = new File(tiednimi + "/lajit.dat");
+
+        File fbak = new File(getBakNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete(); // if .. System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimetä");
+        
         try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))) {
             for (int i = 0; i < getLkm(); i++) {
                 Laji laji = anna(i);
@@ -305,7 +314,7 @@ public class Lajit implements Iterable<Laji> {
             }
             
         try {
-            uudetLajit.tallenna("treenit");
+            uudetLajit.tallenna();
         } catch (SailoException e) {
             e.printStackTrace();
         } 

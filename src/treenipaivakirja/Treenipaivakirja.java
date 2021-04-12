@@ -70,8 +70,10 @@ public class Treenipaivakirja {
      *  ftied.delete();
      *  fhtied.delete();
      *  treeni = new Treenipaivakirja();
-     *  treeni.lueTiedostosta(tiedNimi); 
+     *  treeni.lueTiedostosta(tiedNimi); #THROWS SailoException
      *  alustaTreenipaivakirja();
+     *  treeni.getLajit() === 5;
+     *  treeni.getHarjoitukset() === 2;
      *  treeni.setTiedosto(tiedNimi);
      *  treeni.tallenna();
      *  treeni = new Treenipaivakirja();
@@ -85,8 +87,8 @@ public class Treenipaivakirja {
         harjoitukset = new Harjoituskerrat(); // jos luetaan olemassa olevaan niin helpoin tyhjentää näin
         lajit = new Lajit();
         setTiedosto(nimi);
-        harjoitukset.lueTiedostosta("treenit");
-        lajit.lueTiedostosta("treenit");
+        harjoitukset.lueTiedostosta(nimi);
+        lajit.lueTiedostosta(nimi);
     }
     
     
@@ -103,7 +105,7 @@ public class Treenipaivakirja {
         }
 
         try {
-            lajit.tallenna("treenit");
+            lajit.tallenna();
         } catch ( SailoException ex ) {
             virhe += ex.getMessage();
         }
@@ -290,6 +292,7 @@ public class Treenipaivakirja {
      */ 
     public void poistaLaji(Laji laji) { 
         lajit.poista(laji); 
+        harjoitukset.poistaLajiTn(laji.getTunnusNro());
     } 
     
     
