@@ -21,7 +21,7 @@ import fi.jyu.mit.ohj2.WildChars;
  * Harjoituskerrat joka osaa mm. lisätä uuden harjoituskerran.
  *
  * @author Jonna Määttä
- * @version 9.4.2021
+ * @version 14.4.2021
  * 
  */
 public class Harjoituskerrat implements Iterable<Harjoituskerta> {
@@ -287,18 +287,17 @@ public class Harjoituskerrat implements Iterable<Harjoituskerta> {
     public double laskeKeskiKuormittavuus() {
         double summa = 0;
         double maara = 0;
-        double tulos = 0;
-        for (Harjoituskerta har : alkiot) {
-            if (har == null) continue;
+        for (Harjoituskerta har : this) {
             String kuormittavuus = har.getKuormittavuus();
             if (kuormittavuus.equals("")) {
-                return 0;
-            }
-            summa += Double.valueOf(kuormittavuus);
+                summa += 0;
+                continue;
+            } 
+            summa += Double.valueOf(har.getKuormittavuus());
             maara++;
         }
-        tulos = summa / maara;
-        return tulos;
+        if (maara == 0) return 0;
+        return summa / maara;
     }
     
     
